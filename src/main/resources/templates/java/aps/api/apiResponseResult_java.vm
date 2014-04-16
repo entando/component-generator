@@ -1,0 +1,19 @@
+#set( $beanClass = $bean.name)
+#set( $beanVar = $constants.getUnCapitalize($bean.name))
+#parse("templates/common/license/java_license.vm")
+package ${bean.getPackageName()}.${constants.servicesPackage}.${constants.getLowerCase($bean.name)}.api;
+
+import javax.xml.bind.annotation.XmlElement;
+
+import org.entando.entando.aps.system.services.api.model.AbstractApiResponseResult;
+
+
+public class ${beanClass}ResponseResult extends AbstractApiResponseResult {
+    
+    @Override
+    @XmlElement(name = "$beanVar", required = false)
+    public JAXB${beanClass} getResult() {
+        return (JAXB${beanClass}) this.getMainResult();
+    }
+    
+}

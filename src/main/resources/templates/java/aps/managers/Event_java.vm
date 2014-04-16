@@ -1,0 +1,44 @@
+#set( $beanVar = $constants.getUnCapitalize($bean.name))
+#set( $beanClass = $bean.name)
+#parse("templates/common/license/java_license.vm")
+package ${bean.getPackageName()}.${constants.servicesPackage}.${constants.getLowerCase($bean.name)}.event;
+
+import com.agiletec.aps.system.common.IManager;
+import com.agiletec.aps.system.common.notify.ApsEvent;
+import ${bean.getPackageName()}.${constants.servicesPackage}.${constants.getLowerCase($bean.name)}.${beanClass};
+
+
+public class ${beanClass}ChangedEvent extends ApsEvent {
+	
+	@Override
+	public void notify(IManager srv) {
+		((${beanClass}ChangedObserver) srv).updateFrom${beanClass}Changed(this);
+	}
+	
+	@Override
+	public Class getObserverInterface() {
+		return ${beanClass}ChangedObserver.class;
+	}
+	
+	public int getOperationCode() {
+		return _operationCode;
+	}
+	public void setOperationCode(int operationCode) {
+		this._operationCode = operationCode;
+	}
+	
+	public ${beanClass} get${beanClass}() {
+		return _$beanVar;
+	}
+	public void set${beanClass}(${beanClass} $beanVar) {
+		this._$beanVar = $beanVar;
+	}
+
+	private ${beanClass} _$beanVar;
+	private int _operationCode;
+	
+	public static final int INSERT_OPERATION_CODE = 1;
+	public static final int REMOVE_OPERATION_CODE = 2;
+	public static final int UPDATE_OPERATION_CODE = 3;
+
+}

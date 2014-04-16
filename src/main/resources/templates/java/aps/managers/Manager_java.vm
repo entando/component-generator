@@ -1,0 +1,139 @@
+#set( $daovar = "${constants.getUnCapitalize($bean.name)}DAO")
+#set( $beanVar = $constants.getUnCapitalize($bean.name))
+#set( $beanClass = $bean.name)
+#set( $pk_type = $bean.fields[0].type.javaType)
+#set( $pk_type_gen = $bean.fields[0].type.javaTypeGeneric)
+#set( $pk_var = $bean.fields[0].name)
+#parse("templates/common/license/java_license.vm")
+package ${bean.getPackageName()}.${constants.servicesPackage}.$constants.getLowerCase($bean.name);
+
+import ${bean.getPackageName()}.${constants.servicesPackage}.${constants.getLowerCase($bean.name)}.event.${beanClass}ChangedEvent;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+#parse("templates/java/aps/managers/inc/manager_api_imports.vm")
+$bean.getImports(false)
+#if($bean.entandoSearcherAvailable)
+import com.agiletec.aps.system.common.FieldSearchFilter;
+#end
+import com.agiletec.aps.system.common.AbstractService;
+import com.agiletec.aps.system.exception.ApsSystemException;
+import com.agiletec.aps.system.services.keygenerator.IKeyGeneratorManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class ${beanClass}Manager extends AbstractService implements I${beanClass}Manager {
+
+	private static final Logger _logger =  LoggerFactory.getLogger(${beanClass}Manager.class);
+
+	@Override
+	public void init() throws Exception {
+		_logger.debug("{} ready.", this.getClass().getName());
+	}
+ 
+	@Override
+	public ${beanClass} get${beanClass}($pk_type $pk_var) throws ApsSystemException {
+		${beanClass} ${beanVar} = null;
+		try {
+			${beanVar} = this.get${beanClass}DAO().load${beanClass}($pk_var);
+		} catch (Throwable t) {
+			_logger.error("Error loading ${beanVar} with $pk_var '{}'", $pk_var,  t);
+			throw new ApsSystemException("Error loading ${beanVar} with $pk_var: " + $pk_var, t);
+		}
+		return ${beanVar};
+	}
+
+	@Override
+	public List<$pk_type_gen> get${beanClass}s() throws ApsSystemException {
+		List<$pk_type_gen> ${beanVar}s = new ArrayList<$pk_type_gen>();
+		try {
+			${beanVar}s = this.get${beanClass}DAO().load${beanClass}s();
+		} catch (Throwable t) {
+			_logger.error("Error loading ${beanClass} list",  t);
+			throw new ApsSystemException("Error loading ${beanClass} ", t);
+		}
+		return ${beanVar}s;
+	}
+#if($bean.entandoSearcherAvailable)
+
+	@Override
+	public List<$pk_type_gen> search${beanClass}s(FieldSearchFilter filters[]) throws ApsSystemException {
+		List<$pk_type_gen> ${beanVar}s = new ArrayList<$pk_type_gen>();
+		try {
+			${beanVar}s = this.get${beanClass}DAO().search${beanClass}s(filters);
+		} catch (Throwable t) {
+			_logger.error("Error searching ${beanClass}s", t);
+			throw new ApsSystemException("Error searching ${beanClass}s", t);
+		}
+		return ${beanVar}s;
+	}
+#end
+
+	@Override
+	public void add$beanClass($beanClass $beanVar) throws ApsSystemException {
+		try {
+#if($pk_type == 'String')
+			//int key = this.getKeyGeneratorManager().getUniqueKeyCurrentValue();
+			//${beanVar}.set${constants.getCapitalize($pk_var)}(Integer.toString(key));
+#elseif($pk_type == 'int')
+			int key = this.getKeyGeneratorManager().getUniqueKeyCurrentValue();
+			${beanVar}.set${constants.getCapitalize($pk_var)}(key);
+#end		
+			this.get${beanClass}DAO().insert$beanClass($beanVar);
+			this.notify${beanClass}ChangedEvent(${beanVar}, ${beanClass}ChangedEvent.INSERT_OPERATION_CODE);
+		} catch (Throwable t) {
+			_logger.error("Error adding $beanClass", t);
+			throw new ApsSystemException("Error adding $beanClass", t);
+		}
+	}
+ 
+	@Override
+	public void update$beanClass($beanClass $beanVar) throws ApsSystemException {
+		try {
+			this.get${beanClass}DAO().update$beanClass($beanVar);
+			this.notify${beanClass}ChangedEvent(${beanVar}, ${beanClass}ChangedEvent.UPDATE_OPERATION_CODE);
+		} catch (Throwable t) {
+			_logger.error("Error updating ${beanClass}", t);
+			throw new ApsSystemException("Error updating $beanClass " + $beanVar, t);
+		}
+	}
+
+	@Override
+	public void delete$beanClass($pk_type $pk_var) throws ApsSystemException {
+		try {
+			${beanClass} ${beanVar} = this.get${beanClass}($pk_var);
+			this.get${beanClass}DAO().remove$beanClass($pk_var);
+			this.notify${beanClass}ChangedEvent(${beanVar}, ${beanClass}ChangedEvent.REMOVE_OPERATION_CODE);
+		} catch (Throwable t) {
+			_logger.error("Error deleting ${beanClass} with $pk_var {}", $pk_var, t);
+			throw new ApsSystemException("Error deleting $beanClass with $pk_var:" + $pk_var, t);
+		}
+	}
+
+#parse("templates/java/aps/managers/inc/manager_api_methods.vm")
+
+	private void notify${beanClass}ChangedEvent(${beanClass} ${beanVar}, int operationCode) {
+		${beanClass}ChangedEvent event = new ${beanClass}ChangedEvent();
+		event.set${beanClass}(${beanVar});
+		event.setOperationCode(operationCode);
+		this.notifyEvent(event);
+	}
+
+
+	protected IKeyGeneratorManager getKeyGeneratorManager() {
+		return _keyGeneratorManager;
+	}
+	public void setKeyGeneratorManager(IKeyGeneratorManager keyGeneratorManager) {
+		this._keyGeneratorManager = keyGeneratorManager;
+	}
+
+	public void set${beanClass}DAO(I${beanClass}DAO $daovar) {
+		 this._$daovar = $daovar;
+	}
+	protected I${beanClass}DAO get${beanClass}DAO() {
+		return _$daovar;
+	}
+
+	private IKeyGeneratorManager _keyGeneratorManager;
+	private I${beanClass}DAO _$daovar;
+}

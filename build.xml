@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ====================================================================== -->
+<!-- Ant build file (http://ant.apache.org/) for Ant 1.6.2 or above.        -->
+<!-- ====================================================================== -->
+
+<project name="edo" default="build-and-install" basedir=".">
+
+  <!-- ====================================================================== -->
+  <!-- Import build-maven.xml into the current project                        -->
+  <!-- ====================================================================== -->
+  <import file="build-properties.xml"/>
+  <import file="build-maven.xml"/>
+
+</project>

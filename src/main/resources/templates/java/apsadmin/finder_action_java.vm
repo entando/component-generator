@@ -1,0 +1,117 @@
+#set( $beanVar = $constants.getUnCapitalize($bean.name))
+#set( $beanClass = $bean.name)
+#set( $pk_var = $bean.fields[0].name)
+#set( $pk_type = $bean.fields[0].type.javaType)
+#set( $pk_type_gen = $bean.fields[0].type.javaTypeGeneric)
+#parse("templates/common/license/java_license.vm")
+package ${bean.getPackageName()}.${constants.apsadminPackage}.$constants.getLowerCase($beanVar);
+
+import java.util.List;
+import org.apache.commons.lang.StringUtils;
+$bean.getImports(false)
+#if($bean.entandoSearcherAvailable)
+import com.agiletec.aps.system.common.FieldSearchFilter;
+#end
+import ${bean.getPackageName()}.${constants.servicesPackage}.$constants.getLowerCase($bean.name).$beanClass;
+import ${bean.getPackageName()}.${constants.servicesPackage}.${constants.getLowerCase($bean.name)}.I${beanClass}Manager;
+import com.agiletec.apsadmin.system.BaseAction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class ${beanClass}FinderAction extends BaseAction {
+
+	private static final Logger _logger =  LoggerFactory.getLogger(${beanClass}FinderAction.class);
+
+#if($bean.entandoSearcherAvailable)
+	public List<$pk_type_gen> get${beanClass}sId() {
+		try {
+			FieldSearchFilter[] filters = new FieldSearchFilter[0];
+#foreach ($f in $bean.fields)
+#if($f.type.javaType == "String")
+			if (StringUtils.isNotBlank(this.get${constants.getCapitalize($f.name)}())) {
+				//TODO add a constant into your I${beanClass}Manager class
+				FieldSearchFilter filterToAdd = new FieldSearchFilter(("$f.name"), this.get${constants.getCapitalize($f.name)}(), true);
+				filters = this.addFilter(filters, filterToAdd);
+			}
+#elseif($f.type.javaType == "int" || $f.type.javaType == "BigDecimal")
+			if (null != this.get${constants.getCapitalize($f.name)}()) {
+				//TODO add a constant into your I${beanClass}Manager class
+				FieldSearchFilter filterToAdd = new FieldSearchFilter(("$f.name"), this.get${constants.getCapitalize($f.name)}(), false);
+				filters = this.addFilter(filters, filterToAdd);
+			}
+#elseif($f.type.javaType == "Date")
+			if (null != this.get${constants.getCapitalize($f.name)}Start() || null != this.get${constants.getCapitalize($f.name)}End()) {
+				Date startDate = this.get${constants.getCapitalize($f.name)}Start();
+				Date endDate = this.get${constants.getCapitalize($f.name)}End();
+				//TODO add a constant into your I${beanClass}Manager class
+				FieldSearchFilter filterToAdd = new FieldSearchFilter(("$f.name"), startDate, endDate);
+				filters = this.addFilter(filters, filterToAdd);
+			}
+
+#end
+#end
+			List<$pk_type_gen> ${beanVar}s = this.get${beanClass}Manager().search${beanClass}s(filters);
+			return ${beanVar}s;
+		} catch (Throwable t) {
+			_logger.error("Error getting ${beanVar}s list", t);
+			throw new RuntimeException("Error getting ${beanVar}s list", t);
+		}
+	}
+
+	protected FieldSearchFilter[] addFilter(FieldSearchFilter[] filters, FieldSearchFilter filterToAdd) {
+		int len = filters.length;
+		FieldSearchFilter[] newFilters = new FieldSearchFilter[len + 1];
+		for(int i=0; i < len; i++){
+			newFilters[i] = filters[i];
+		}
+		newFilters[len] = filterToAdd;
+		return newFilters;
+	}
+#else
+
+	public List<$pk_type_gen> get${beanClass}sId() {
+		try {
+			List<$pk_type_gen> ${beanVar}s = this.get${beanClass}Manager().get${beanClass}s();
+			return ${beanVar}s;
+		} catch (Throwable t) {
+			_logger.error("Error getting ${beanVar}s list", t);
+			throw new RuntimeException("Error getting ${beanVar}s list", t);
+		}
+	}
+
+#end
+
+	public ${beanClass} get${beanClass}($pk_type $pk_var) {
+		${beanClass} ${beanVar} = null;
+		try {
+			${beanVar} = this.get${beanClass}Manager().get${beanClass}($pk_var);
+		} catch (Throwable t) {
+			_logger.error("Error getting ${beanVar} with $pk_var {}", $pk_var, t);
+			throw new RuntimeException("Error getting ${beanVar} with $pk_var " + $pk_var, t);
+		}
+		return ${beanVar};
+	}
+
+#foreach ($f in $bean.searchFields)
+
+	public $f.type.getJavaTypeGeneric() get${constants.getCapitalize($f.name)}() {
+		return _${f.name};
+	}
+	public void set${constants.getCapitalize($f.name)}($f.type.getJavaTypeGeneric() ${f.name}) {
+		this._$f.getName() = ${f.name};
+	}
+
+#end
+
+	protected I${beanClass}Manager get${beanClass}Manager() {
+		return _${beanVar}Manager;
+	}
+	public void set${beanClass}Manager(I${beanClass}Manager ${beanVar}Manager) {
+		this._${beanVar}Manager = ${beanVar}Manager;
+	}
+	
+#foreach ($f in $bean.searchFields)
+	private $f.type.getJavaTypeGeneric() _${f.name};
+#end
+	private I${beanClass}Manager _${beanVar}Manager;
+}

@@ -1,0 +1,32 @@
+#set( $beanVar = $constants.getUnCapitalize($bean.name))
+#set( $beanClass = $bean.name)
+#set( $pk_type = $bean.fields[0].type.javaType)
+#set( $pk_type_gen = $bean.fields[0].type.javaTypeGeneric)
+#set( $pk_var = $bean.fields[0].name)
+#parse("templates/common/license/java_license.vm")
+package ${bean.getPackageName()}.${constants.servicesPackage}.$constants.getLowerCase($bean.name);
+
+import java.util.List;
+$bean.getImports(false)
+#if($bean.entandoSearcherAvailable)
+import com.agiletec.aps.system.common.FieldSearchFilter;
+#end
+
+public interface I${beanClass}DAO {
+
+#if($bean.entandoSearcherAvailable) 
+	public List<$pk_type_gen> search${beanClass}s(FieldSearchFilter[] filters);
+	
+#end
+	public ${beanClass} load${beanClass}($pk_type $pk_var);
+
+	public List<$pk_type_gen> load${beanClass}s();
+
+	public void remove${beanClass}($pk_type $pk_var);
+	
+	public void update${beanClass}(${beanClass} $beanVar);
+
+	public void insert${beanClass}(${beanClass} $beanVar);
+	
+
+}

@@ -1,0 +1,22 @@
+#parse("templates/common/license/java_license.vm")
+package ${bean.getPackageName()}.${constants.servicesPackage}.$constants.getLowerCase($bean.name);
+
+$bean.getImports(false)
+
+public class $bean.name {
+
+#foreach ($f in $bean.fields)
+	public $f.type.getJavaType() get${constants.getCapitalize($f.name)}() {
+		return _$f.getName();
+	}
+	public void set${constants.getCapitalize($f.name)}($f.type.getJavaType() $f.getName()) {
+		this._$f.getName() = $f.getName();
+	}
+
+#end
+	
+#foreach ($f in $bean.fields)	
+	private $f.type.getJavaType() _$f.getName();
+#end
+
+}

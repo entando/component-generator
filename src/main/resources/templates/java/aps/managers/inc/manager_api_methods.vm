@@ -1,0 +1,130 @@
+#set( $daovar = "${constants.getUnCapitalize($bean.name)}DAO")
+#set( $beanVar = $constants.getUnCapitalize($bean.name))
+#set( $beanClass = $bean.name)
+#set( $pk_type = $bean.fields[0].type.javaType)
+#set( $pk_type_gen = $bean.fields[0].type.javaTypeGeneric)
+#set( $pk_var = $bean.fields[0].name)
+
+	/**
+	 * GET http://localhost:8080/<portal>/api/rs/en/${beanVar}s?
+	 * @param properties
+	 * @return
+	 * @throws Throwable
+	 */
+	public List<JAXB${beanClass}> get${beanClass}sForApi(Properties properties) throws Throwable {
+		List<JAXB${beanClass}> list = new ArrayList<JAXB${beanClass}>();
+		List<$pk_type_gen> ${pk_var}List = this.get${beanClass}s();
+		if (null != ${pk_var}List && !${pk_var}List.isEmpty()) {
+			Iterator<$pk_type_gen> ${beanVar}Iterator = ${pk_var}List.iterator();
+			while (${beanVar}Iterator.hasNext()) {
+				$pk_type current${pk_var} = ${beanVar}Iterator.next();
+				${beanClass} $beanVar = this.get${beanClass}(current${pk_var});
+				if (null != $beanVar) {
+					list.add(new JAXB${beanClass}($beanVar));
+				}
+			}
+		}
+		return list;
+	}
+
+	/**
+	 * GET http://localhost:8080/<portal>/api/rs/en/${beanVar}?${pk_var}=1
+	 * @param properties
+	 * @return
+	 * @throws Throwable
+	 */
+    public JAXB${beanClass} get${beanClass}ForApi(Properties properties) throws Throwable {
+        String ${pk_var}String = properties.getProperty("${pk_var}");
+#if($pk_type == "String")
+        String ${pk_var} = null;
+#elseif($pk_type == "Date")
+        Date ${pk_var} = null;
+#elseif($pk_type == "int")
+        int ${pk_var} = 0;
+#elseif($pk_type == "BigDecimal")
+        BigDecimal ${pk_var} = null;
+#end
+		JAXB${beanClass} jaxb${beanClass} = null;
+        try {
+#if($pk_type == "String")
+            ${pk_var} = ${pk_var}String;
+#elseif($pk_type == "Date")
+            ${pk_var} = DateConverter.parseDate(${pk_var}String, SystemConstants.SYSTEM_DATE_FORMAT);
+            if (null == ${pk_var}) throw new NumberFormatException();
+#elseif($pk_type == "int")
+            ${pk_var} = Integer.parseInt(${pk_var}String);
+#elseif($pk_type == "BigDecimal")
+            ${pk_var} = new BigDecimal(${pk_var}String);
+#end
+        } catch (NumberFormatException e) {
+            throw new ApiException(IApiErrorCodes.API_PARAMETER_VALIDATION_ERROR, "Invalid $pk_type_gen format for '${pk_var}' parameter - '" + ${pk_var}String + "'", Response.Status.CONFLICT);
+        }
+        ${beanClass} ${beanVar} = this.get${beanClass}(${pk_var});
+        if (null == ${beanVar}) {
+            throw new ApiException(IApiErrorCodes.API_VALIDATION_ERROR, "${beanClass} with ${pk_var} '" + ${pk_var}String + "' does not exist", Response.Status.CONFLICT);
+        }
+        jaxb${beanClass} = new JAXB${beanClass}(${beanVar});
+        return jaxb${beanClass};
+    }
+
+    /**
+     * POST Content-Type: application/xml http://localhost:8080/<portal>/api/rs/en/${beanVar} 
+     * @param jaxb${beanClass}
+     * @throws ApiException
+     * @throws ApsSystemException
+     */
+    public void add${beanClass}ForApi(JAXB${beanClass} jaxb${beanClass}) throws ApiException, ApsSystemException {
+        if (null != this.get${beanClass}(jaxb${beanClass}.get${constants.getCapitalize(${pk_var})}())) {
+            throw new ApiException(IApiErrorCodes.API_VALIDATION_ERROR, "${beanClass} with ${pk_var} " + jaxb${beanClass}.get${constants.getCapitalize(${pk_var})}() + " already exists", Response.Status.CONFLICT);
+        }
+        ${beanClass} ${beanVar} = jaxb${beanClass}.get${beanClass}();
+        this.add${beanClass}(${beanVar});
+    }
+
+    /**
+     * PUT Content-Type: application/xml http://localhost:8080/<portal>/api/rs/en/${beanVar} 
+     * @param jaxb${beanClass}
+     * @throws ApiException
+     * @throws ApsSystemException
+     */
+    public void update${beanClass}ForApi(JAXB${beanClass} jaxb${beanClass}) throws ApiException, ApsSystemException {
+        if (null == this.get${beanClass}(jaxb${beanClass}.get${constants.getCapitalize(${pk_var})}())) {
+            throw new ApiException(IApiErrorCodes.API_VALIDATION_ERROR, "${beanClass} with ${pk_var} " + jaxb${beanClass}.get${constants.getCapitalize(${pk_var})}() + " does not exist", Response.Status.CONFLICT);
+        }
+        ${beanClass} ${beanVar} = jaxb${beanClass}.get${beanClass}();
+        this.update${beanClass}(${beanVar});
+    }
+
+    /**
+     * DELETE http://localhost:8080/<portal>/api/rs/en/${beanVar}?${pk_var}=1
+	 * @param properties
+     * @throws ApiException
+     * @throws ApsSystemException
+     */
+    public void delete${beanClass}ForApi(Properties properties) throws Throwable {
+        String ${pk_var}String = properties.getProperty("${pk_var}");
+#if($pk_type == "String")
+        String ${pk_var} = null;
+#elseif($pk_type == "Date")
+        Date ${pk_var} = null;
+#elseif($pk_type == "int")
+        int ${pk_var} = 0;
+#elseif($pk_type == "BigDecimal")
+        BigDecimal ${pk_var} = null;
+#end
+        try {
+#if($pk_type == "String")
+            ${pk_var} = ${pk_var}String;
+#elseif($pk_type == "Date")
+            ${pk_var} = DateConverter.parseDate(${pk_var}String, SystemConstants.SYSTEM_DATE_FORMAT);
+            if (null == ${pk_var}) throw new NumberFormatException();
+#elseif($pk_type == "int")
+            ${pk_var} = Integer.parseInt(${pk_var}String);
+#elseif($pk_type == "BigDecimal")
+            ${pk_var} = new BigDecimal(${pk_var}String);
+#end
+        } catch (NumberFormatException e) {
+            throw new ApiException(IApiErrorCodes.API_PARAMETER_VALIDATION_ERROR, "Invalid $pk_type_gen format for '${pk_var}' parameter - '" + ${pk_var}String + "'", Response.Status.CONFLICT);
+        }
+        this.delete${beanClass}(${pk_var});
+    }

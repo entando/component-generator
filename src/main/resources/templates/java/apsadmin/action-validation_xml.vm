@@ -1,0 +1,50 @@
+#set( $beanVar = $constants.getUnCapitalize($bean.name))
+#set( $beanClass = $bean.name)
+<!DOCTYPE validators PUBLIC
+        "-//Apache Struts//XWork Validator 1.0.2//EN"
+        "http://struts.apache.org/dtds/xwork-validator-1.0.2.dtd">
+<validators>
+#foreach($f in $bean.fields)
+#if ($f.required && !$foreach.first)
+    <field name="$f.name">
+#if($f.type.javaType == 'String')
+        <field-validator type="requiredstring" short-circuit="true">
+            <message key="requiredstring"/>
+        </field-validator>
+	#if($f.length)
+		<field-validator type="stringlength" short-circuit="true">
+			<param name="maxLength">$f.length</param>
+			<param name="trim">true</param>
+           <message key="stringlength" />
+		</field-validator>
+	#end  
+#elseif($f.type.javaType == 'int')
+        <field-validator type="required" short-circuit="true">
+            <message key="requiredstring"/>
+        </field-validator>
+	#if($f.length)
+		<field-validator type="int" short-circuit="true">
+			<param name="max">$f.length</param>
+           	<message key="error.${beanClass}.${f.name}.max" />
+		</field-validator>
+	#end
+#elseif($f.type.javaType == 'BigDecimal')
+        <field-validator type="required" short-circuit="true">
+            <message key="requiredstring"/>
+        </field-validator>
+		<!-- add better validation for BigDecimal -->
+#elseif($f.type.javaType == 'Date')
+        <field-validator type="required" short-circuit="true">
+            <message key="requiredstring"/>
+        </field-validator>
+	#if($f.length)
+		<field-validator type="date" short-circuit="true">
+			<param name="max">$f.length</param>
+           	<message key="error.${beanClass}.${f.name}.max" />
+		</field-validator>
+	#end	
+#end
+    </field>
+#end
+#end
+</validators>

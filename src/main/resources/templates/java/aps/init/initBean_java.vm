@@ -1,0 +1,43 @@
+#set( $daovar = "${constants.getUnCapitalize($bean.name)}DAO")
+#set( $beanVar = $constants.getLowerCase($bean.name))
+#set( $beanClass = $bean.name)
+#set( $pk_type = $bean.fields[0].type.javaType)
+#set( $pk_type_gen = $bean.fields[0].type.javaTypeGeneric)
+#set( $pk_var = $bean.fields[0].name)
+#set( $tableName = $bean.tableName)
+#parse("templates/common/license/java_license.vm")
+package ${bean.getPackageName()}.${constants.initPackage};
+import com.j256.ormlite.field.DataType;
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
+#foreach ($f in $bean.fields)	
+#if ($f.type.importString)
+$f.type.importString
+#end
+#end
+
+@DatabaseTable(tableName = ${beanClass}.TABLE_NAME)
+public class ${beanClass} {
+	
+	public ${beanClass}() {}
+	
+#foreach($f in $bean.fields)
+	@DatabaseField(columnName = "$constants.getLowerCase($f.name)", 
+#if($f.type.javaType == 'int')
+		dataType = DataType.INTEGER, 
+#elseif($f.type.javaType == 'String' && ($f.length || $f.primaryKey))
+		dataType = DataType.STRING, 
+#elseif($f.type.javaType == 'String' && !$f.length)
+		dataType = DataType.LONG_STRING,
+#elseif($f.type.javaType == 'Date')
+			dataType = DataType.DATE,
+#elseif($f.type.javaType == 'BigDecimal')
+			dataType = DataType.BIG_DECIMAL_NUMERIC,
+#end
+		#if($f.length)width=$f.length, #end canBeNull=#if ($f.required)false#else true#end#if($foreach.first), id = true#end)
+	private $f.type.javaType _${f.name};
+	
+#end
+
+public static final String TABLE_NAME = "$tableName";
+}

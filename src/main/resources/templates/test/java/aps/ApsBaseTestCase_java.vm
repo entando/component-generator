@@ -1,0 +1,21 @@
+#set( $beanVar = $constants.getUnCapitalize($bean.name))
+#set( $beanClass = $bean.name)
+#set( $springPrep = $constants.getLowerCase($bean.springBeanPreposition))
+#parse("templates/common/license/java_license.vm")
+package ${bean.getPackageName()}.${constants.apsPackage};
+
+
+import ${bean.getPackageName()}.${constants.getCapitalize($bean.springBeanPreposition)}ConfigTestUtils;
+
+import com.agiletec.ConfigTestUtils;
+import com.agiletec.aps.BaseTestCase;
+
+public class ${constants.getCapitalize($bean.springBeanPreposition)}BaseTestCase extends BaseTestCase {
+
+	@Override
+	protected ConfigTestUtils getConfigUtils() {
+		return new ${constants.getCapitalize($bean.springBeanPreposition)}ConfigTestUtils();
+	}
+
+	
+}

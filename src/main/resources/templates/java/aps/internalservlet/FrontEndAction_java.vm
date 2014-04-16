@@ -1,0 +1,11 @@
+#set( $beanVar = $constants.getUnCapitalize($bean.name))
+#set( $beanClass = $bean.name)
+#parse("templates/common/license/java_license.vm")
+package ${bean.getPackageName()}.aps.internalservlet.$constants.getLowerCase($beanVar);
+
+import ${bean.getPackageName()}.${constants.apsadminPackage}.$constants.getLowerCase($beanVar).${beanClass}Action;
+
+public class ${beanClass}FrontEndAction extends ${beanClass}Action {
+
+
+}

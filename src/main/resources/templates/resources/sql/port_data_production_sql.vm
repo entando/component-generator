@@ -1,0 +1,64 @@
+#set( $beanVar = $constants.getUnCapitalize($bean.name))
+#set( $beanClass = $bean.name)
+#set( $springPrep = $constants.getLowerCase($bean.springBeanPreposition))
+#set( $pk_field = $bean.fields[0])
+#if($bean.buildWidgets())
+INSERT INTO widgetcatalog (code, titles, parameters, plugincode, parenttypecode, defaultconfig, locked, maingroup) VALUES ('#if($bean.plugin)$bean.pluginName#end${beanClass}', '<?xml version="1.0" encoding="UTF-8"?>
+<properties>
+<property key="en">Publish ${beanClass}</property>
+<property key="it">Pubblica ${beanClass}</property>
+</properties>', '<config>
+	<parameter name="$pk_field.name">$pk_field.name</parameter>
+	<action name="${springPrep}${beanClass}Config"/>
+</config>',#if($bean.plugin)'$bean.pluginName'#else NULL #end, NULL, NULL, 1, 'free');
+
+INSERT INTO widgetcatalog (code, titles, parameters, plugincode, parenttypecode, defaultconfig, locked, maingroup) VALUES ('#if($bean.plugin)$bean.pluginName#end${beanClass}_list_form', '<?xml version="1.0" encoding="UTF-8"?>
+<properties>
+<property key="en">${beanClass} List and Form</property>
+<property key="it">Lista e Form ${beanClass}</property>
+</properties>', NULL, #if($bean.plugin)'$bean.pluginName'#else NULL #end, 'formAction', '<?xml version="1.0" encoding="UTF-8"?>
+<properties>
+<property key="actionPath">/ExtStr2/do/FrontEnd/${bean.springBeanPreposition}/${beanClass}/list.action</property>
+</properties>', 1, 'free');
+#end
+
+#set( $i18keyPrep = "")
+#if($bean.plugin)
+#set( $i18keyPrep = ${bean.pluginName}+"_")
+#end
+#set( $i18keyBean = $constants.toUpperCase($bean.name))
+#foreach($f in $bean.fields)
+#if($f.type.javaType == "Date")
+INSERT INTO localstrings ( keycode, langcode, stringvalue ) VALUES ('${i18keyPrep}${i18keyBean}_${constants.toUpperCase($f.name)}START', 'en', '${f.name} start');
+INSERT INTO localstrings ( keycode, langcode, stringvalue ) VALUES ('${i18keyPrep}${i18keyBean}_${constants.toUpperCase($f.name)}START', 'it', '${f.name} start');
+
+INSERT INTO localstrings ( keycode, langcode, stringvalue ) VALUES ('${i18keyPrep}${i18keyBean}_${constants.toUpperCase($f.name)}END', 'en', '${f.name} end');
+INSERT INTO localstrings ( keycode, langcode, stringvalue ) VALUES ('${i18keyPrep}${i18keyBean}_${constants.toUpperCase($f.name)}END', 'it', '${f.name} end');
+
+#end
+INSERT INTO localstrings ( keycode, langcode, stringvalue ) VALUES ('${i18keyPrep}${i18keyBean}_${constants.toUpperCase($f.name)}', 'en', '$f.name');
+INSERT INTO localstrings ( keycode, langcode, stringvalue ) VALUES ('${i18keyPrep}${i18keyBean}_${constants.toUpperCase($f.name)}', 'it', '$f.name');
+
+#end
+
+INSERT INTO localstrings ( keycode, langcode, stringvalue ) VALUES ('${i18keyPrep}${i18keyBean}_ACTIONS', 'it', 'Actions');
+INSERT INTO localstrings ( keycode, langcode, stringvalue ) VALUES ('${i18keyPrep}${i18keyBean}_ACTIONS', 'en', 'Actions');
+
+INSERT INTO localstrings ( keycode, langcode, stringvalue ) VALUES ('${i18keyPrep}${i18keyBean}_NEW', 'it', '${bean.name} New');
+INSERT INTO localstrings ( keycode, langcode, stringvalue ) VALUES ('${i18keyPrep}${i18keyBean}_NEW', 'en', '${bean.name} New');
+
+INSERT INTO localstrings ( keycode, langcode, stringvalue ) VALUES ('${i18keyPrep}${i18keyBean}_EDIT', 'it', '${bean.name} Edit');
+INSERT INTO localstrings ( keycode, langcode, stringvalue ) VALUES ('${i18keyPrep}${i18keyBean}_EDIT', 'en', '${bean.name} Edit');
+
+INSERT INTO localstrings ( keycode, langcode, stringvalue ) VALUES ('${i18keyPrep}${i18keyBean}_TRASH', 'it', '${bean.name} Trash');
+INSERT INTO localstrings ( keycode, langcode, stringvalue ) VALUES ('${i18keyPrep}${i18keyBean}_TRASH', 'en', '${bean.name} Trash');
+
+INSERT INTO localstrings ( keycode, langcode, stringvalue ) VALUES ('${i18keyPrep}${i18keyBean}_TRASH_CONFIRM', 'it', '${bean.name} Trash confirm');
+INSERT INTO localstrings ( keycode, langcode, stringvalue ) VALUES ('${i18keyPrep}${i18keyBean}_TRASH_CONFIRM', 'en', '${bean.name} Trash confirm');
+
+INSERT INTO localstrings ( keycode, langcode, stringvalue ) VALUES ('${i18keyPrep}${i18keyBean}_SEARCH_${i18keyBean}', 'it', '${bean.name} search');
+INSERT INTO localstrings ( keycode, langcode, stringvalue ) VALUES ('${i18keyPrep}${i18keyBean}_SEARCH_${i18keyBean}', 'en', '${bean.name} search');
+
+INSERT INTO localstrings ( keycode, langcode, stringvalue ) VALUES ('${i18keyPrep}${i18keyBean}_NOT_FOUND', 'it', '${bean.name} not found');
+INSERT INTO localstrings ( keycode, langcode, stringvalue ) VALUES ('${i18keyPrep}${i18keyBean}_NOT_FOUND', 'en', '${bean.name} not found');
+

@@ -1,0 +1,5 @@
+#foreach ($f in $bean.searchFields)
+#if($f.type.strutsConversionProperties)
+$f.name=$f.type.strutsConversionProperties
+#end
+#end

@@ -1,0 +1,53 @@
+#set( $beanVar = $constants.getLowerCase($bean.name))
+#set( $beanClass = $bean.name)
+#set( $springPrep = $constants.getLowerCase($bean.springBeanPreposition))
+#set( $tableName = $bean.tableName)
+#set( $componentCode = "${bean.projectName}_${beanVar}")
+<?xml version="1.0" encoding="UTF-8"?>
+<component>
+	<code>#if($bean.plugin)$bean.pluginName#else$componentCode#end</code>
+	<description>${beanClass}</description>
+	<installation>
+		<tableMapping>
+			<datasource name="servDataSource">
+				<class>${bean.getPackageName()}.${constants.initPackage}.$beanClass</class>
+			</datasource>
+		</tableMapping>
+		<environment code="production">
+			<defaultSqlResources>
+				<datasource name="portDataSource">
+#if($bean.plugin)
+classpath:sql/plugins/${bean.getPluginName()}/port_data_production.sql
+#else
+classpath:sql/misc/$componentCode/port_data_production.sql
+#end
+				</datasource>
+				<datasource name="servDataSource">
+#if($bean.plugin)
+classpath:sql/plugins/$bean.getPluginName()/serv_data_production.sql
+#else
+classpath:sql/misc/$componentCode/serv_data_production.sql
+#end
+				</datasource>
+			</defaultSqlResources>
+		</environment>
+		<environment code="test">
+			<defaultSqlResources>
+				<datasource name="portDataSource">
+#if($bean.plugin)
+classpath:sql/plugins/${bean.getPluginName()}/port_data_test.sql
+#else
+classpath:sql/misc/$componentCode/port_data_test.sql
+#end
+				</datasource>
+				<datasource name="servDataSource">
+#if($bean.plugin)
+classpath:sql/plugins/${bean.getPluginName()}/serv_data_test.sql
+#else
+classpath:sql/misc/$componentCode/serv_data_test.sql
+#end
+				</datasource>
+			</defaultSqlResources>
+		</environment>
+	</installation>
+</component>

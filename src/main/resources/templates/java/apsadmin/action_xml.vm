@@ -1,0 +1,56 @@
+#set( $beanVar = $constants.getUnCapitalize($bean.name))
+#set( $beanClass = $bean.name)
+#set( $springPrep = $constants.getLowerCase($bean.springBeanPreposition))
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+    "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+	
+    <package name="${springPrep}_do/${bean.springBeanPreposition}/${beanClass}" namespace="/do/${bean.springBeanPreposition}/${beanClass}" extends="entando-default">
+    	
+    	<action name="list" class="${springPrep}${beanClass}FinderAction">
+            <result type="tiles">${springPrep}.admin.${beanClass}.list</result>
+        	<interceptor-ref name="entandoDefaultStack">
+        		<param name="chain.includeParameters">fieldErrors,actionErrors,actionMessages</param>
+        		<param name="requestAuth.requiredPermission">$bean.permission</param>
+        	</interceptor-ref>
+        </action>
+        
+        <action name="search" class="${springPrep}${beanClass}FinderAction">
+            <result type="tiles">${springPrep}.admin.${beanClass}.list</result>
+        	<interceptor-ref name="entandoDefaultStack"><param name="requestAuth.requiredPermission">$bean.permission</param></interceptor-ref>
+        </action>
+    	
+        <action name="new" class="${springPrep}${beanClass}Action" method="new${beanClass}">
+            <result type="tiles">${springPrep}.admin.${beanClass}.entry</result>
+        	<interceptor-ref name="entandoDefaultStack"><param name="requestAuth.requiredPermission">$bean.permission</param></interceptor-ref>
+        </action>
+    	
+    	<action name="edit" class="${springPrep}${beanClass}Action" method="edit">
+            <result type="tiles">${springPrep}.admin.${beanClass}.entry</result>
+            <result name="input" type="redirectAction">list</result>
+        	<interceptor-ref name="entandoDefaultStack"><param name="requestAuth.requiredPermission">$bean.permission</param></interceptor-ref>
+        </action>
+        
+    	<action name="save" class="${springPrep}${beanClass}Action" method="save">
+        	<result name="input" type="tiles">${springPrep}.admin.${beanClass}.entry</result>
+        	<result type="redirectAction">list</result>
+        	<interceptor-ref name="entandoValidationStack"><param name="requestAuth.requiredPermission">$bean.permission</param></interceptor-ref>
+        </action>
+        
+    	<action name="trash" class="${springPrep}${beanClass}Action" method="trash">
+            <result type="tiles">${springPrep}.admin.${beanClass}.trash</result>
+        	<result name="input" type="redirectAction">list</result>
+        	<interceptor-ref name="entandoDefaultStack"><param name="requestAuth.requiredPermission">$bean.permission</param></interceptor-ref>
+        </action>
+        
+    	<action name="delete" class="${springPrep}${beanClass}Action" method="delete">
+        	<result type="redirectAction">list</result>
+        	<interceptor-ref name="entandoDefaultStack"><param name="requestAuth.requiredPermission">$bean.permission</param></interceptor-ref>
+        </action>
+    	
+    </package>
+   
+</struts>

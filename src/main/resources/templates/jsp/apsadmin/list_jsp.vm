@@ -1,0 +1,148 @@
+#set( $beanVar = $constants.getUnCapitalize($bean.name))
+#set( $beanClass = $bean.name)
+#set( $pk_field = $bean.fields[0])
+#if($bean.plugin)
+#set($label_prep="${bean.pluginName}.")
+#else
+#set($label_prep="")
+#end
+<%@ taglib prefix="s" uri="/struts-tags" %>
+<%@ taglib prefix="wpsa" uri="/apsadmin-core" %>
+<%@ taglib prefix="wpsf" uri="/apsadmin-form" %>
+<h1 class="panel panel-default title-page">
+	<span class="panel-body display-block">
+		<s:text name="${label_prep}title.${beanVar}Management" />
+	</span>
+</h1>
+<s:form action="list" cssClass="form-horizontal" role="search">
+	<s:if test="hasActionErrors()">
+		<div class="alert alert-danger alert-dismissable fade in">
+			<button class="close" data-dismiss="alert"><span class="icon fa fa-times"></span></button>
+			<h2 class="h4 margin-none"><s:text name="message.title.ActionErrors" /></h2>
+			<ul class="margin-base-top">
+				<s:iterator value="actionErrors">
+					<li><s:property escape="false" /></li>
+				</s:iterator>
+			</ul>
+		</div>
+	</s:if>
+	<div class="form-group">
+#foreach($f in $bean.searchFields)
+#if($foreach.first) 
+		<div class="input-group col-sm-12 col-md-12">
+			<span class="input-group-addon">
+				<span class="icon fa fa-file-text-o fa-lg" title="<s:text name="label.search.by"/>&#32;<s:text name="label.$f.name"/>"></span>
+			</span>
+			<label for="search-$f.name" class="sr-only"><s:text name="label.search.by"/>&#32;<s:text name="label.$f.name"/></label>
+			<wpsf:textfield
+				id="${beanVar}_$f.name"
+				name="$f.name"
+				cssClass="form-control input-lg"
+				title="%{getText('label.search.by')+' '+getText('label.$f.name')}"
+				placeholder="%{getText('label.$f.name')}" />
+			<div class="input-group-btn">
+				<wpsf:submit type="button" name="search-$f.name" id="search-$f.name" cssClass="btn btn-primary btn-lg" title="%{getText('label.search')}">
+					<span class="sr-only"><s:text name="label.search" /></span>
+					<span class="icon fa fa-search" title="<s:text name="label.search" />"></span>
+				</wpsf:submit>
+				<button type="button" class="btn btn-primary btn-lg dropdown-toggle" data-toggle="collapse" data-target="#search-advanced" title="<s:text name="title.searchFilters" />">
+					<span class="sr-only"><s:text name="title.searchFilters" /></span>
+					<span class="caret"></span>
+				</button>
+			</div>
+		</div>
+#end
+#if($bean.searchFields.size() > 1 && $foreach.first)
+
+	  <div class="input-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+			<div id="search-advanced" class="collapse well collapse-input-group">
+#end
+#if(!$foreach.first)
+#parse("templates/jsp/apsadmin/inc/search_form_input_field.vm")
+#end
+#if($bean.searchFields.size() > 1 && $foreach.last)
+			<div class="form-group">
+				<div class="col-sm-5 col-sm-offset-2">
+					<s:submit type="button" cssClass="btn btn-primary">
+						<span class="icon fa fa-search"></span>&#32;<s:text name="label.search" />
+					</s:submit>
+				</div>
+			</div>
+		</div>
+	</div>
+#end
+#end
+	</div>
+</s:form>
+
+<a href="<s:url action="new" />" class="btn btn-default">
+	<span class="icon fa fa-plus-circle" />
+	&#32;<s:text name="${label_prep}${beanVar}.label.new" />
+</a>
+
+<s:form action="search">
+	<p class="sr-only">
+#foreach($f in $bean.searchFields)
+		<wpsf:hidden name="${f.name}" />
+#end
+	</p>
+
+	<s:set var="${beanVar}sId_list" value="${beanVar}sId" />
+	<s:if test="#${beanVar}sId_list.size > 0">
+	<wpsa:subset source="#${beanVar}sId_list" count="10" objectName="group${beanClass}s" advanced="true" offset="5">
+	<s:set var="group" value="#group${beanClass}s" />
+	<div class="text-center">
+		<s:include value="/WEB-INF/apsadmin/jsp/common/inc/pagerInfo.jsp" />
+		<s:include value="/WEB-INF/apsadmin/jsp/common/inc/pager_formBlock.jsp" />
+	</div>
+	<div class="table-responsive">
+		<table class="table table-bordered">
+			<tr>
+				<th class="text-center padding-large-left padding-large-right col-xs-4 col-sm-3 col-md-2 col-lg-2"><abbr title="<s:text name="label.actions" />">&ndash;</abbr></th>
+#foreach ($f in $bean.fields)
+				<th#if($f.type.javaType == "Date") class="text-center"#elseif($f.type.javaType == "BigDecimal" || $f.type.javaType == "int") class="text-right"#end><s:text name="label.${f.name}" /></th>
+#end
+			</tr>
+			<s:iterator var="${pk_field.name}">
+			<s:set name="${beanVar}_var" value="%{get${beanClass}(#${pk_field.name})}" />
+			<s:url action="edit" var="edit${beanClass}ActionVar"><s:param name="${pk_field.name}" value="#${beanVar}_var.${pk_field.name}"/></s:url>
+			<s:url action="trash" var="trash${beanClass}ActionVar"><s:param name="${pk_field.name}" value="#${beanVar}_var.${pk_field.name}"/></s:url>
+			<tr>
+			<td class="text-center text-nowrap">
+				<div class="btn-group btn-group-xs">
+					<%-- edit --%>
+						<a class="btn btn-default" title="<s:text name="label.edit" />&#32;<s:property value="#${beanVar}_var.${pk_field.name}" />" href="<s:property value="#edit${beanClass}ActionVar" escapeHtml="false" />">
+							<span class="sr-only"><s:text name="label.edit" />&#32;<s:property value="#${beanVar}_var.${pk_field.name}" /></span>
+							<span class="icon fa fa-pencil-square-o"></span>
+						</a>
+				</div>
+				<%-- remove --%>
+				<div class="btn-group btn-group-xs">
+					<a
+						href="<s:property value="#trash${beanClass}ActionVar" escapeHtml="false" />"
+						title="<s:text name="${label_prep}${beanVar}.label.delete" />: <s:property value="#${beanVar}_var.${pk_field.name}" />"
+						class="btn btn-warning"
+						>
+						<span class="icon fa fa-times-circle-o"></span>&#32;
+						<span class="sr-only"><s:text name="${label_prep}${beanVar}.label.delete" /></span>
+					</a>
+				</div>
+			</td>
+#foreach ($f in $bean.fields)
+					<td#if($f.type.javaType == "Date") class="text-center"#elseif($f.type.javaType == "BigDecimal" || $f.type.javaType == "int") class="text-right"#end>#if($f.type.javaType == "Date" || $foreach.first)<code>#end#parse("templates/jsp/apsadmin/inc/s_property.vm")#if($f.type.javaType == "Date" || $foreach.first)</code>#end</td>
+#end
+			</tr>
+			</s:iterator>
+		</table>
+	</div>
+	<div class="text-center">
+		<s:include value="/WEB-INF/apsadmin/jsp/common/inc/pager_formBlock.jsp" />
+	</div>
+	</wpsa:subset>
+	</s:if>
+	<s:else>
+		<div class="alert alert-info margin-base-vertical">
+			<s:text name="${label_prep}${beanVar}.message.list.empty" />
+		</div>
+	</s:else>
+</s:form>

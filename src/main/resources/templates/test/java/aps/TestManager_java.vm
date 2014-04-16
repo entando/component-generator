@@ -1,0 +1,55 @@
+#set( $beanVar = $constants.getUnCapitalize($bean.name))
+#set( $beanClass = $bean.name)
+#set( $springPrep = $constants.getLowerCase($bean.springBeanPreposition))
+#parse("templates/common/license/java_license.vm")
+package ${bean.getPackageName()}.${constants.servicesPackage};
+
+import ${bean.getPackageName()}.${constants.apsPackage}.${constants.getCapitalize($bean.springBeanPreposition)}BaseTestCase;
+import ${bean.getPackageName()}.${constants.servicesPackage}.${constants.getLowerCase($bean.name)}.I${beanClass}Manager;
+
+public class Test${beanClass}Manager extends ${constants.getCapitalize($bean.springBeanPreposition)}BaseTestCase {
+
+	@Override
+	protected void setUp() throws Exception {
+		super.setUp();
+		this.init();
+	}
+	
+	public void testGet${beanClass}() {
+		//TODO complete test
+		assertNotNull(this._${beanVar}Manager);
+	}
+
+	public void testGet${beanClass}s() {
+		//TODO complete test
+		assertNotNull(this._${beanVar}Manager);
+	}
+	
+	public void testSearch${beanClass}s() {
+		//TODO complete test
+		assertNotNull(this._${beanVar}Manager);
+	}
+
+	public void testAdd${beanClass}() {
+		//TODO complete test
+		assertNotNull(this._${beanVar}Manager);
+	}
+
+	public void testUpdate${beanClass}() {
+		//TODO complete test
+		assertNotNull(this._${beanVar}Manager);
+	}
+
+	public void testDelete${beanClass}() {
+		//TODO complete test
+		assertNotNull(this._${beanVar}Manager);
+	}
+	
+	private void init() {
+		//TODO add the spring bean id as constant
+		this._${beanVar}Manager = (I${beanClass}Manager) this.getService("${springPrep}${beanClass}Manager");
+	}
+	
+	private I${beanClass}Manager _${beanVar}Manager;
+}
+

@@ -1,0 +1,11 @@
+#set( $pk_type = $bean.fields[0].type.javaType)
+import java.util.Properties;
+
+import javax.ws.rs.core.Response;
+import ${bean.getPackageName()}.${constants.servicesPackage}.${constants.getLowerCase($bean.name)}.api.JAXB${beanClass};
+import org.entando.entando.aps.system.services.api.IApiErrorCodes;
+import org.entando.entando.aps.system.services.api.model.ApiException;
+#if($pk_type == "Date")
+import com.agiletec.aps.system.SystemConstants;
+import com.agiletec.aps.util.DateConverter;
+#end

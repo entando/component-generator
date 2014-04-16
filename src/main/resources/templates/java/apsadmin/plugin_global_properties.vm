@@ -1,0 +1,12 @@
+#set( $beanVar = $constants.getUnCapitalize($bean.name))
+#set( $beanClass = $bean.name)
+#set( $pk_field = $bean.fields[0])
+#if($bean.plugin)
+#set($label_prep="${bean.pluginName}.")
+#else
+#set($label_prep="")
+#end
+${bean.pluginName}.code=${bean.pluginName}
+${bean.pluginName}.name=$beanClass Plugin
+
+${label_prep}title.${beanVar}Management=${beanClass}s

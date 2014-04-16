@@ -1,0 +1,46 @@
+#set( $beanVar = $constants.getUnCapitalize($bean.name))
+#set( $beanClass = $bean.name)
+#set( $springPrep = $constants.getLowerCase($bean.springBeanPreposition))
+#if($bean.plugin)
+#set($path="plugins/${bean.pluginName}")
+#else
+#set($path=$constants.getUnCapitalize($bean.projectName))
+#end
+#if($bean.plugin)
+#set($label_prep="${bean.pluginName}.")
+#else
+#set($label_prep="")
+#end
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+	"-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
+	"http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+
+<tiles-definitions>
+
+    <definition extends="layout.default" name="${springPrep}.admin.${beanClass}.list">
+		<put-attribute name="title" value="${label_prep}title.${beanVar}Management" />
+		<put-attribute name="body" value="/WEB-INF/${path}/apsadmin/jsp/$constants.getLowerCase(${beanVar})/${beanVar}-list.jsp" />
+		<put-attribute name="extraResources" value="/WEB-INF/${path}/apsadmin/jsp/common/layouts/assets-more/${beanVar}-list-extras.jsp"/>
+	</definition>
+    <definition extends="layout.default" name="${springPrep}.admin.${beanClass}.entry">
+		<put-attribute name="title" value="${label_prep}title.${beanVar}Management" />
+		<put-attribute name="body" value="/WEB-INF/${path}/apsadmin/jsp/$constants.getLowerCase(${beanVar})/${beanVar}-entry.jsp" />
+		<put-attribute name="extraResources" value="/WEB-INF/${path}/apsadmin/jsp/common/layouts/assets-more/${beanVar}-entry-extras.jsp"/>
+	</definition>
+    <definition extends="layout.default" name="${springPrep}.admin.${beanClass}.trash">
+		<put-attribute name="title" value="${label_prep}title.${beanVar}Management" />
+		<put-attribute name="body" value="/WEB-INF/${path}/apsadmin/jsp/$constants.getLowerCase(${beanVar})/${beanVar}-trash.jsp" />
+		<put-attribute name="extraResources" value="/WEB-INF/${path}/apsadmin/jsp/common/layouts/assets-more/${beanVar}-trash-extras.jsp"/>
+	</definition>
+
+#if($bean.buildWidgets())
+    <definition extends="layout.default" name="${springPrep}.admin.page.widget.${beanClass}.entry">
+		<put-attribute name="title" value="${label_prep}title.${beanVar}Management" />
+		<put-attribute name="body" value="/WEB-INF/${path}/apsadmin/jsp/portal/specialwidget/$constants.getLowerCase(${beanVar})/${beanVar}-config.jsp" />
+	</definition>
+#end
+
+</tiles-definitions>
+
+

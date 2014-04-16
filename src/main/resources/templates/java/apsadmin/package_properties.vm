@@ -1,0 +1,32 @@
+#set( $beanVar = $constants.getUnCapitalize($bean.name))
+#set( $beanClass = $bean.name)
+#set( $pk_field = $bean.fields[0])
+#set ($DOLLAR = "$")
+#if($bean.plugin)
+#set($label_prep="${bean.pluginName}.")
+#else
+#set($label_prep="")
+#end
+${label_prep}title.${beanVar}Management=${beanClass}s
+${label_prep}${beanVar}.label.list=${beanClass} list
+${label_prep}${beanVar}.label.new=New
+${label_prep}${beanVar}.label.edit=Edit
+${label_prep}${beanVar}.label.delete=Delete
+
+${label_prep}${beanVar}.message.list.empty=There are no ${beanClass}s
+
+#foreach($f in $bean.fields)
+#if($f.type.javaType == "Date")
+label.${f.name}Start=${f.name}Start Form
+label.${f.name}End=${f.name}End To
+#end
+label.${f.name}=$f.name
+#end
+
+note.delete${beanClass}.areYouSure=Are you sure you want to delete the ${beanClass}
+
+#foreach($f in $bean.fields)
+#if($f.type.javaType == "String" && $f.length && $f.length > 0)
+stringlength=${DOLLAR}{getText(fieldName)} cannot exceed ${DOLLAR}{getText(maxLength)} characters.
+#end
+#end

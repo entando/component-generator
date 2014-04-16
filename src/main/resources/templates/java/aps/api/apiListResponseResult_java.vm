@@ -1,0 +1,30 @@
+#set( $beanClass = $bean.name)
+#set( $beanVar = $constants.getUnCapitalize($bean.name))
+#parse("templates/common/license/java_license.vm")
+package ${bean.getPackageName()}.${constants.servicesPackage}.${constants.getLowerCase($bean.name)}.api;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlSeeAlso;
+
+import org.entando.entando.aps.system.services.api.model.AbstractApiResponseResult;
+import org.entando.entando.aps.system.services.api.model.ListResponse;
+
+@XmlSeeAlso({JAXB${beanClass}.class})
+public class ${beanClass}ListResponseResult extends AbstractApiResponseResult {
+    
+    @XmlElement(name = "items", required = false)
+    public ListResponse<JAXB${beanClass}> getResult() {
+        if (this.getMainResult() instanceof Collection) {
+            List<JAXB${beanClass}> ${beanVar}s = new ArrayList<JAXB${beanClass}>();
+            ${beanVar}s.addAll((Collection<JAXB${beanClass}>) this.getMainResult());
+            ListResponse<JAXB${beanClass}> entity = new ListResponse<JAXB${beanClass}>(${beanVar}s) {};
+            return entity;
+        }
+        return null;
+    }
+
+}

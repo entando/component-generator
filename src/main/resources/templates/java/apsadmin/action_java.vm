@@ -1,0 +1,156 @@
+#set( $beanVar = $constants.getUnCapitalize($bean.name))
+#set( $beanClass = $bean.name)
+#set( $pk_var = $bean.fields[0].name)
+#parse("templates/common/license/java_license.vm")
+package ${bean.getPackageName()}.${constants.apsadminPackage}.$constants.getLowerCase($beanVar);
+
+import ${bean.getPackageName()}.${constants.servicesPackage}.$constants.getLowerCase($bean.name).$beanClass;
+import ${bean.getPackageName()}.${constants.servicesPackage}.${constants.getLowerCase($bean.name)}.I${beanClass}Manager;
+
+$bean.getImports(false)
+
+import com.agiletec.apsadmin.system.ApsAdminSystemConstants;
+import com.agiletec.apsadmin.system.BaseAction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class ${beanClass}Action extends BaseAction {
+
+	private static final Logger _logger =  LoggerFactory.getLogger(${beanClass}Action.class);
+
+	public String new$beanClass() {
+		try {
+			this.setStrutsAction(ApsAdminSystemConstants.ADD);
+		} catch (Throwable t) {
+			_logger.error("error in new$beanClass", t);
+			return FAILURE;
+		}
+		return SUCCESS;
+	}
+	
+	public String edit() {
+		try {
+			${beanClass} $beanVar = this.get${beanClass}Manager().get${beanClass}(this.get$constants.getCapitalize($pk_var)());
+			if (null == $beanVar) {
+				this.addActionError(this.getText("error.${beanVar}.null"));
+				return INPUT;
+			}
+			this.populateForm($beanVar);
+			this.setStrutsAction(ApsAdminSystemConstants.EDIT);
+		} catch (Throwable t) {
+			_logger.error("error in edit", t);
+			return FAILURE;
+		}
+		return SUCCESS;
+	}
+
+	public String save() {
+		try {
+			${beanClass} $beanVar = this.create${beanClass}();
+			int strutsAction = this.getStrutsAction();
+			if (ApsAdminSystemConstants.ADD == strutsAction) {
+				this.get${beanClass}Manager().add${beanClass}($beanVar);
+			} else if (ApsAdminSystemConstants.EDIT == strutsAction) {
+				this.get${beanClass}Manager().update${beanClass}($beanVar);
+			}
+		} catch (Throwable t) {
+			_logger.error("error in save", t);
+			return FAILURE;
+		}
+		return SUCCESS;
+	}
+	
+	public String trash() {
+		try {
+			${beanClass} $beanVar = this.get${beanClass}Manager().get${beanClass}(this.get$constants.getCapitalize($pk_var)());
+			if (null == $beanVar) {
+				this.addActionError(this.getText("error.${beanVar}.null"));
+				return INPUT;
+			}
+			this.populateForm($beanVar);
+			this.setStrutsAction(ApsAdminSystemConstants.DELETE);
+		} catch (Throwable t) {
+			_logger.error("error in trash", t);
+			return FAILURE;
+		}
+		return SUCCESS;
+	}
+	
+	public String delete() {
+		try {
+			if (this.getStrutsAction() == ApsAdminSystemConstants.DELETE) {
+				this.get${beanClass}Manager().delete${beanClass}(this.get$constants.getCapitalize($pk_var)());
+			}
+		} catch (Throwable t) {
+			_logger.error("error in delete", t);
+			return FAILURE;
+		}
+		return SUCCESS;
+	}
+	
+	public String view() {
+		try {
+			${beanClass} $beanVar = this.get${beanClass}Manager().get${beanClass}(this.get$constants.getCapitalize($pk_var)());
+			if (null == $beanVar) {
+				this.addActionError(this.getText("error.${beanVar}.null"));
+				return INPUT;
+			}
+			this.populateForm($beanVar);
+		} catch (Throwable t) {
+			_logger.error("error in view", t);
+			return FAILURE;
+		}
+		return SUCCESS;
+	}
+	
+	private void populateForm(${beanClass} ${beanVar}) throws Throwable {
+#foreach ($f in $bean.fields)
+#set( $setter = "set$constants.getCapitalize($f.name)")
+#set( $getter = "get$constants.getCapitalize($f.name)")
+		this.$setter(${beanVar}.${getter}());
+#end
+	}
+	
+	private ${beanClass} create${beanClass}() {
+		${beanClass} $beanVar = new ${beanClass}();
+#foreach ($f in $bean.fields)
+#set( $setter = "set$constants.getCapitalize($f.name)")
+#set( $getter = "get$constants.getCapitalize($f.name)")
+		${beanVar}.${setter}(this.${getter}());
+#end
+		return $beanVar;
+	}
+	
+
+	public int getStrutsAction() {
+		return _strutsAction;
+	}
+	public void setStrutsAction(int strutsAction) {
+		this._strutsAction = strutsAction;
+	}
+	
+#foreach ($f in $bean.fields)
+	public $f.type.getJavaType() get${constants.getCapitalize($f.name)}() {
+		return _$f.getName();
+	}
+	public void set${constants.getCapitalize($f.name)}($f.type.getJavaType() $f.getName()) {
+		this._$f.getName() = $f.getName();
+	}
+
+#end
+	
+	protected I${beanClass}Manager get${beanClass}Manager() {
+		return _${beanVar}Manager;
+	}
+	public void set${beanClass}Manager(I${beanClass}Manager ${beanVar}Manager) {
+		this._${beanVar}Manager = ${beanVar}Manager;
+	}
+	
+	private int _strutsAction;
+#foreach ($f in $bean.fields)	
+	private $f.type.getJavaType() _$f.getName();
+#end
+	
+	private I${beanClass}Manager _${beanVar}Manager;
+	
+}

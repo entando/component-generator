@@ -1,0 +1,44 @@
+#set( $beanVar = $constants.getUnCapitalize($bean.name))
+#set( $beanClass = $bean.name)
+#set( $pk_field = $bean.fields[0])
+#if($bean.plugin)
+#set($label_prep="${bean.pluginName}.")
+#else
+#set($label_prep="")
+#end
+<%@ taglib prefix="s" uri="/struts-tags" %>
+<%@ taglib prefix="wpsa" uri="/apsadmin-core" %>
+<%@ taglib prefix="wpsf" uri="/apsadmin-form" %>
+
+<h1 class="panel panel-default title-page">
+	<span class="panel-body display-block">
+		<a href="<s:url action="list" />"><s:text name="${label_prep}title.${beanVar}Management" /></a>&#32;/&#32;
+		<s:if test="getStrutsAction() == 4">
+			<s:text name="${label_prep}${beanVar}.label.delete" />
+		</s:if>
+	</span>
+</h1>
+
+<div id="main" role="main">
+
+<s:form action="delete">
+	<p class="sr-only">
+		<wpsf:hidden name="strutsAction" />
+		<wpsf:hidden name="$pk_field.name" />
+	</p>
+	<div class="alert alert-warning">
+		<p>
+			<s:text name="note.delete${beanClass}.areYouSure" />&#32;
+			<code><s:property value="$pk_field.name"/></code>?
+		</p>
+		<div class="text-center margin-large-top">
+			<wpsf:submit type="button" cssClass="btn btn-warning btn-lg">
+				<span class="icon fa fa-times-circle"></span>&#32;
+				<s:text name="${label_prep}${beanVar}.label.delete" />
+			</wpsf:submit>
+			<a href="<s:url action="list"/>" class="btn btn-link"><s:text name="note.goToSomewhere" />: <s:text name="${label_prep}title.${beanVar}Management" /></a>
+		</div>
+	</div>
+</s:form>
+
+</div>

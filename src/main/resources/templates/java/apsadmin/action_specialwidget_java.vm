@@ -1,0 +1,66 @@
+#set( $beanVar = $constants.getUnCapitalize($bean.name))
+#set( $beanClass = $bean.name)
+#set( $pk = $bean.fields[0])
+#set( $pk_var = $bean.fields[0].name)
+#set( $pk_type = $bean.fields[0].type.javaType)
+#set( $pk_type_gen = $bean.fields[0].type.javaTypeGeneric)
+#parse("templates/common/license/java_license.vm")
+package ${bean.getPackageName()}.${constants.apsadminPackage}.portal.specialwidget.$constants.getLowerCase($beanVar);
+
+import java.util.List;
+import org.apache.commons.lang3.StringUtils;
+import com.agiletec.aps.system.services.lang.Lang;
+import com.agiletec.apsadmin.portal.specialwidget.SimpleWidgetConfigAction;
+import ${bean.getPackageName()}.${constants.servicesPackage}.${constants.getLowerCase($bean.name)}.I${beanClass}Manager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class ${beanClass}ConfigAction extends SimpleWidgetConfigAction {
+
+	private static final Logger _logger =  LoggerFactory.getLogger(${beanClass}ConfigAction.class);
+	
+	protected String extractInitConfig() {
+		String result = super.extractInitConfig();
+		String $pk.name = this.getWidget().getConfig().getProperty("$pk_var");
+#if($pk.type.javaType == "String")
+		this.set${constants.getCapitalize($pk.name)}($pk.name);
+#elseif($pk.type.javaType == "BigDecimal")
+		if (StringUtils.isNotBlank($pk.name)) {
+			this.set${constants.getCapitalize($pk.name)}(new BigDecimal($pk.name));
+		}
+#elseif($pk.type.javaType == "int")
+		if (StringUtils.isNotBlank($pk.name)) {
+			this.set${constants.getCapitalize($pk.name)}(new Integer($pk.name));
+		}
+#end
+		return result;
+	}
+
+	public List<$pk_type_gen> get${beanClass}sId() {
+		try {
+			List<$pk_type_gen> ${beanVar}s = this.get${beanClass}Manager().search${beanClass}s(null);
+			return ${beanVar}s;
+		} catch (Throwable t) {
+			_logger.error("error in get${beanClass}sId", t);
+			throw new RuntimeException("Error getting ${beanVar}s list", t);
+		}
+	}
+	
+	public $pk.type.getJavaType() get${constants.getCapitalize($pk.name)}() {
+		return _$pk.name;
+	}
+	public void set${constants.getCapitalize($pk.name)}($pk.type.getJavaType() $pk.getName()) {
+		this._$pk.getName() = $pk.getName();
+	}
+
+	protected I${beanClass}Manager get${beanClass}Manager() {
+		return _${beanVar}Manager;
+	}
+	public void set${beanClass}Manager(I${beanClass}Manager ${beanVar}Manager) {
+		this._${beanVar}Manager = ${beanVar}Manager;
+	}
+
+	private $pk.type.getJavaType() _$pk.getName();
+	private I${beanClass}Manager _${beanVar}Manager;
+}
+

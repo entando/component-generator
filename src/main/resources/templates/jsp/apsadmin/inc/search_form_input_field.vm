@@ -1,0 +1,49 @@
+#if($f.type.javaType == "Date")
+				<div class="form-group">
+					<label class="control-label col-sm-2 text-right" for="${beanVar}_$f.name">
+						<s:text name="label.$f.name"/>
+					</label>
+					<div class="col-sm-5">
+						<wpsf:textfield
+							id="${beanVar}_$f.name"
+							name="$f.name"
+							cssClass="form-control datepicker" />
+					</div>
+				</div>
+#elseif($f.type.javaType == "String")
+				<div class="form-group">
+					<label class="control-label col-sm-2 text-right" for="${beanVar}_$f.name">
+						<s:text name="label.$f.name"/>
+					</label>
+					<div class="col-sm-5">
+						<wpsf:textfield
+							id="${beanVar}_$f.name"
+							name="$f.name"
+							cssClass="form-control" />
+					</div>
+				</div>
+#elseif($f.type.javaType == "int")
+				<div class="form-group">
+					<label class="control-label col-sm-2 text-right" for="${beanVar}_$f.name">
+						<s:text name="label.$f.name"/>
+					</label>
+					<div class="col-sm-5">
+						<wpsf:textfield
+							id="${beanVar}_$f.name"
+							name="$f.name"
+							cssClass="form-control" />
+					</div>
+				</div>
+#elseif($f.type.javaType == "BigDecimal")
+				<div class="form-group">
+					<label class="control-label col-sm-2 text-right" for="${beanVar}_$f.name">
+						<s:text name="label.$f.name"/>
+					</label>
+					<div class="col-sm-5">
+						<wpsf:textfield
+							id="${beanVar}_$f.name"
+							name="$f.name"
+							cssClass="form-control" />
+					</div>
+				</div>
+#end

@@ -1,0 +1,30 @@
+#set( $beanVar = $constants.getUnCapitalize($bean.name))
+#set( $beanClass = $bean.name)
+#set( $springPrep = $constants.getLowerCase($bean.springBeanPreposition))
+#parse("templates/common/license/java_license.vm")
+package ${bean.getPackageName()};
+
+import org.apache.commons.lang.ArrayUtils;
+
+import com.agiletec.ConfigTestUtils;
+
+public class ${constants.getCapitalize($bean.springBeanPreposition)}ConfigTestUtils extends ConfigTestUtils {
+
+	@Override
+	protected String[] getSpringConfigFilePaths() {
+		String[] baseFiles = super.getSpringConfigFilePaths();
+		
+		//TODO EDIT THIS
+#if($bean.plugin)
+		String[] filePaths = new String[0];
+#else
+		String[] filePaths = new String[2];
+		filePaths[0] = "classpath*:spring/${bean.projectName}/aps/**/**.xml ";
+		filePaths[1] = "classpath*:spring/${bean.projectName}/**/**.xml";
+#end
+		String[] newFiles = (String[]) ArrayUtils.addAll(baseFiles, filePaths);
+		return newFiles;
+    }
+}
+
+

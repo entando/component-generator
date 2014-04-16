@@ -1,0 +1,69 @@
+#set( $beanClass = $bean.name)
+****************************************************************
+
+						Edo Report		
+								
+****************************************************************
+
+=== Command Line
+
+$bean.originalArgs
+
+
+
+=== List of geneated files that MUST be merged:
+#set($lines = 0)
+#set($files = 0)
+#foreach( $key in $report.sortedFilesToMerge )
+#set($lines = $lines+$key.lines)
+#set($files = $files+1)
+$key.path
+#end
+----------------------------------------------------------------
+Total files: ${files}
+Total lines: ${lines}
+
+
+=== List of geneated files:
+#set($lines = 0)
+#set($files = 0)
+#foreach( $key in $report.sortedFiles )
+#set($lines = $lines+$key.lines)
+#set($files = $files+1)
+$key.path
+#end
+----------------------------------------------------------------
+Total files: ${files}
+Total lines: ${lines}
+
+
+
+
+
+=== Revert *port inserts
+
+#set( $i18keyPrep = "")
+#if($bean.plugin)
+#set( $i18keyPrep = ${bean.pluginName}+"_")
+#end
+#set( $i18keyBean = $constants.toUpperCase($bean.name))
+#foreach($f in $bean.fields)
+#if($f.type.javaType == "Date")
+DELETE FROM localstrings where keycode = '${i18keyPrep}${i18keyBean}_${constants.toUpperCase($f.name)}_START'; 
+DELETE FROM localstrings where keycode = '${i18keyPrep}${i18keyBean}_${constants.toUpperCase($f.name)}_END'; 
+#end
+DELETE FROM localstrings where keycode = '${i18keyPrep}${i18keyBean}_${constants.toUpperCase($f.name)}'; 
+#end
+DELETE FROM localstrings where keycode = '${i18keyPrep}${i18keyBean}_ACTIONS'; 
+DELETE FROM localstrings where keycode = '${i18keyPrep}${i18keyBean}_NEW'; 
+DELETE FROM localstrings where keycode = '${i18keyPrep}${i18keyBean}_EDIT'; 
+DELETE FROM localstrings where keycode = '${i18keyPrep}${i18keyBean}_TRASH'; 
+DELETE FROM localstrings where keycode = '${i18keyPrep}${i18keyBean}_TRASH_CONFIRM'; 
+DELETE FROM localstrings where keycode = '${i18keyPrep}${i18keyBean}_SEARCH_${i18keyBean}'; 
+
+
+DELETE FROM widgetcatalog where code = '#if($bean.plugin)$bean.pluginName#end${beanClass}_list_form';
+DELETE FROM widgetcatalog where code = '#if($bean.plugin)$bean.pluginName#end${beanClass}';
+
+
+

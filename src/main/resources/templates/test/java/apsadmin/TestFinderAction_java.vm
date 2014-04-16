@@ -1,0 +1,38 @@
+#set( $beanVar = $constants.getUnCapitalize($bean.name))
+#set( $beanClass = $bean.name)
+#set( $springPrep = $constants.getLowerCase($bean.springBeanPreposition))
+#parse("templates/common/license/java_license.vm")
+package ${bean.getPackageName()}.${constants.apsadminPackage}.$constants.getLowerCase($beanVar);
+
+import java.util.HashMap;
+import java.util.Map;
+import ${bean.getPackageName()}.${constants.apsadminPackage}.${constants.getCapitalize($bean.springBeanPreposition)}ApsAdminBaseTestCase;
+import com.opensymphony.xwork2.Action;
+
+public class Test${beanClass}FinderAction extends ${constants.getCapitalize($bean.springBeanPreposition)}ApsAdminBaseTestCase {
+	
+	public void testList() throws Throwable {
+		String result = this.executeAction("list", null);
+		assertEquals(Action.SUCCESS, result);
+	}
+
+	public void testSearch() throws Throwable {
+		//TODO complete test
+		Map<String, String> params = new HashMap<String, String>();
+		String result = this.executeAction("search", params);
+		assertEquals(Action.SUCCESS, result);
+	}
+	
+	private String executeAction(String action, Map<String, String> params) throws Throwable {
+		this.setUserOnSession("admin");
+		this.initAction(NS, action);
+		if (null != params) {
+			this.addParameters(params);
+		}
+		String result = this.executeAction();
+		return result;
+	}
+
+	private static final String NS = "/do/${bean.springBeanPreposition}/${beanClass}";
+
+}

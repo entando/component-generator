@@ -1,0 +1,63 @@
+#set( $beanClass = $bean.name)
+#set( $beanVar = $constants.getUnCapitalize($bean.name))
+#set( $pk_var = $bean.fields[0].name)
+#set( $springPrep = $constants.getLowerCase($bean.springBeanPreposition))
+<apiMethodDefinitions>
+
+	<resource name="${beanVar}s">
+        <description>Return the ${beanVar} list</description>
+#if($bean.plugin)
+        <source pluginCode="${bean.pluginName}">plugins</source>
+#else
+        <source>${bean.projectName}</source>
+#end 
+		<method httpMethod="GET" active="true" canSpawnOthers="true">
+			<description>Return the ${beanVar}s list</description>
+			<springBean name="${springPrep}${beanClass}Manager" method="get${beanClass}sForApi" />
+			<responseClass>${bean.getPackageName()}.${constants.servicesPackage}.${constants.getLowerCase($bean.name)}.api.${beanClass}ListResponse</responseClass>
+			<!-- 
+			<parameters>
+			</parameters>
+			-->
+		</method>
+	</resource>
+  
+    <resource name="${beanVar}">
+        <description>The ${beanVar}</description>
+#if($bean.plugin)
+        <source pluginCode="${bean.pluginName}">plugins</source>
+#else
+        <source>${bean.projectName}</source>
+#end        
+        <method httpMethod="GET" active="true" canSpawnOthers="true">
+            <description>Return a ${beanVar} by $pk_var</description>
+            <springBean name="${springPrep}${beanClass}Manager" method="get${beanClass}ForApi" />
+            <responseClass>${bean.getPackageName()}.${constants.servicesPackage}.${constants.getLowerCase($bean.name)}.api.${beanClass}Response</responseClass>
+            <parameters>
+                <parameter key="$pk_var" required="true">
+                    <description>The $pk_var of the ${beanVar} to return</description>
+                </parameter>
+            </parameters>
+        </method>
+        <method httpMethod="POST" active="true" requiredAuth="true" requiredPermission="$bean.permission">
+            <description>Add a ${beanVar}</description>
+            <springBean name="${springPrep}${beanClass}Manager" method="add${beanClass}ForApi" />
+            <expectedType>${bean.getPackageName()}.${constants.servicesPackage}.${constants.getLowerCase($bean.name)}.api.JAXB${beanClass}</expectedType>
+        </method>
+        <method httpMethod="PUT" active="true" requiredAuth="true" requiredPermission="$bean.permission">
+            <description>Update a ${beanVar}</description>
+            <springBean name="${springPrep}${beanClass}Manager" method="update${beanClass}ForApi" />
+            <expectedType>${bean.getPackageName()}.${constants.servicesPackage}.${constants.getLowerCase($bean.name)}.api.JAXB${beanClass}</expectedType>
+        </method>
+        <method httpMethod="DELETE" active="true" requiredAuth="true" requiredPermission="$bean.permission">
+            <description>Delete a ${beanVar} by $pk_var</description>
+            <springBean name="${springPrep}${beanClass}Manager" method="delete${beanClass}ForApi" />
+            <parameters>
+                <parameter key="$pk_var" required="true">
+                    <description>The $pk_var of the ${beanVar} to delete</description>
+                </parameter>
+            </parameters>
+        </method>
+    </resource>
+	
+</apiMethodDefinitions>

@@ -1,0 +1,35 @@
+#if($pk_type == "Date")
+#if($f.required)## DATE REQUIRED
+			Timestamp ${pk_var}Timestamp = new Timestamp(${pk_var}.getTime());
+			stat.setTimestamp(index++, ${pk_var}Timestamp);	
+#else## DATE NOT REQUIRED
+			if(null != ${pk_var}) {
+				Timestamp ${pk_var}Timestamp = new Timestamp(${pk_var}.getTime());
+				stat.setTimestamp(index++, ${pk_var}Timestamp);	
+			} else {
+				stat.setNull(index++, Types.DATE);
+			}
+#end ## END DATE
+#elseif($pk_type == "String")
+#if($f.required) ##STRING REQ
+			stat.setString(index++, ${pk_var});
+#else ##STRING ! REQ
+			if(StringUtils.isNotBlank(${pk_var})) {
+				stat.setString(index++, ${pk_var});				
+			} else {
+				stat.setNull(index++, Types.VARCHAR);
+			}
+#end
+#elseif($pk_type == "BigDecimal")
+#if($f.required) ##BigDecimal REQ
+			stat.setBigDecimal(index++, ${pk_var});
+#else ##STRING ! REQ
+			if(null != ${pk_var}) {
+				stat.setBigDecimal(index++, ${pk_var});				
+			} else {
+				stat.setBigDecimal(index++, Types.DECIMAL);
+			}
+#end
+#elseif($pk_type == "int")
+			stat.setInt(index++, ${pk_var});
+#end

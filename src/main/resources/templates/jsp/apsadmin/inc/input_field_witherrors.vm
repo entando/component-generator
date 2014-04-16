@@ -1,0 +1,65 @@
+#if($f.type.javaType == "Date")
+	<%-- $f.name --%>
+		<s:set var="fieldFieldErrorsVar" value="%{fieldErrors['$f.name']}" />
+		<s:set var="fieldHasFieldErrorVar" value="#fieldFieldErrorsVar != null && !#fieldFieldErrorsVar.isEmpty()" />
+		<s:set var="controlGroupErrorClassVar" value="%{#fieldHasFieldErrorVar ? ' has-error' : ''}" />
+		<div class="form-group<s:property value="#controlGroupErrorClassVar" />">
+			<div class="col-xs-12">
+				<label for="${beanVar}_$f.name"><s:text name="label.$f.name" /></label>
+				<wpsf:textfield name="$f.name" id="${beanVar}_$f.name" cssClass="form-control datepicker" />
+				<s:if test="#fieldHasFieldErrorVar">
+					<span class="help-block text-danger">
+						<s:iterator value="%{#fieldFieldErrorsVar}"><s:property />&#32;</s:iterator>
+					</span>
+				</s:if>
+			</div>
+		</div>
+#elseif($f.type.javaType == "String")
+	<%-- $f.name --%>
+		<s:set var="fieldFieldErrorsVar" value="%{fieldErrors['$f.name']}" />
+		<s:set var="fieldHasFieldErrorVar" value="#fieldFieldErrorsVar != null && !#fieldFieldErrorsVar.isEmpty()" />
+		<s:set var="controlGroupErrorClassVar" value="%{#fieldHasFieldErrorVar ? ' has-error' : ''}" />
+		<div class="form-group<s:property value="#controlGroupErrorClassVar" />">
+			<div class="col-xs-12">
+				<label for="${beanVar}_$f.name"><s:text name="label.$f.name" /></label>
+				<wpsf:textfield name="$f.name" id="${beanVar}_$f.name" cssClass="form-control" />
+				<s:if test="#fieldHasFieldErrorVar">
+					<span class="help-block text-danger">
+						<s:iterator value="%{#fieldFieldErrorsVar}"><s:property />&#32;</s:iterator>
+					</span>
+				</s:if>
+			</div>
+		</div>
+#elseif($f.type.javaType == "int")
+	<%-- $f.name --%>
+		<s:set var="fieldFieldErrorsVar" value="%{fieldErrors['$f.name']}" />
+		<s:set var="fieldHasFieldErrorVar" value="#fieldFieldErrorsVar != null && !#fieldFieldErrorsVar.isEmpty()" />
+		<s:set var="controlGroupErrorClassVar" value="%{#fieldHasFieldErrorVar ? ' has-error' : ''}" />
+		<div class="form-group<s:property value="#controlGroupErrorClassVar" />">
+			<div class="col-xs-12">
+				<label for="${beanVar}_$f.name"><s:text name="label.$f.name" /></label>
+				<wpsf:textfield name="$f.name" id="${beanVar}_$f.name" cssClass="form-control" />
+				<s:if test="#fieldHasFieldErrorVar">
+					<span class="help-block text-danger">
+						<s:iterator value="%{#fieldFieldErrorsVar}"><s:property />&#32;</s:iterator>
+					</span>
+				</s:if>
+			</div>
+		</div>
+#elseif($f.type.javaType == "BigDecimal")
+	<%-- $f.name --%>
+		<s:set var="fieldFieldErrorsVar" value="%{fieldErrors['$f.name']}" />
+		<s:set var="fieldHasFieldErrorVar" value="#fieldFieldErrorsVar != null && !#fieldFieldErrorsVar.isEmpty()" />
+		<s:set var="controlGroupErrorClassVar" value="%{#fieldHasFieldErrorVar ? ' has-error' : ''}" />
+		<div class="form-group<s:property value="#controlGroupErrorClassVar" />">
+			<div class="col-xs-12">
+				<label for="${beanVar}_$f.name"><s:text name="label.$f.name" /></label>
+				<wpsf:textfield name="$f.name" id="${beanVar}_$f.name" cssClass="form-control" />
+				<s:if test="#fieldHasFieldErrorVar">
+					<span class="help-block text-danger">
+						<s:iterator value="%{#fieldFieldErrorsVar}"><s:property />&#32;</s:iterator>
+					</span>
+				</s:if>
+			</div>
+		</div>
+#end

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="edo-from-maven"
+         basedir="."
+         xmlns:if="ant:if"
+         xmlns:unless="ant:unless">
+
+	<target name="build" description="Build it ">
+	    <exec dir="." executable="mvn">
+			<arg line="clean package shade:shade -DskipTests" />
+		</exec>
+	</target>
+
+  <target name="build-and-install" depends="build" description="Build and install it">
+    <input
+        message="Where do you want me to install Edo?"
+        addproperty="path.installation.base"
+        defaultvalue="${default.path.installation.base}"
+      />
+    <fail>
+      <condition>
+        <not>
+          <isfileselected file="${path.installation.base}">
+            <writable />
+          </isfileselected>
+        </not>
+      </condition>
+
+      ${path.installation.base} is not writeable.
+
+      Please choose one of these fixes, then retry the installation of Edo:
+      - choose a different directory
+      - change the permissions of ${path.installation}
+      - (UNSAFE!) install with `sudo ant` instead of `ant`
+    </fail>
+    <copy file="${default.path.build}/${edo.baseName}.jar" todir="${path.installation.base}/edo" verbose="true" />
+
+    <antcall target="ask-for-alias" />
+  </target>
+
+  <target name="ask-for-alias">
+    <input
+        message="Do you want me to add an alias to ~/.bashrc for you?"
+        validargs="y,n"
+        defaultvalue="y"
+        addproperty="do.alias-wanted"
+      />
+    <condition property="do.alias-yes">
+      <equals arg1="y" arg2="${do.alias-wanted}" />
+    </condition>
+    <condition property="do.alias-no">
+      <equals arg1="n" arg2="${do.alias-wanted}" />
+    </condition>
+
+    <antcall if:set="do.alias-yes" target="alias-configure" />
+
+    <echo if:set="do.alias-no">
+      Edo installed, without an alias.
+
+      If you'll ever want an alias, add
+
+        alias edo="java -jar ${path.installation.base}/edo/${edo.baseName}.jar"
+
+      to your ~/.bashrc or relevant config file.
+    </echo>
+
+  </target>
+
+  <target name="alias-configure">
+
+    <concat destfile="${user.home}/.bashrc" append="true">
+alias edo="java -jar ${path.installation.base}/edo/${edo.baseName}.jar"
+    </concat>
+
+    <echo>
+      Edo installed, alias "edo" configured.
+
+      Reload your bash configuration:
+
+        $ source ~/.bashrc
+
+    </echo>
+  </target>
+
+  <target name="dist" description="Package it for a binary distribution." depends="build">
+    <copy file="${default.path.build}/${edo.baseName}.jar" todir="${default.path.dist}/${edo.baseName}" />
+    <zip destfile="${default.path.dist}/${edo.baseName}.zip" basedir="${default.path.dist}" />
+  </target>
+</project>

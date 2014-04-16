@@ -1,0 +1,12 @@
+#set( $beanVar = $constants.getUnCapitalize($bean.name))
+#set( $beanClass = $bean.name)
+#parse("templates/common/license/java_license.vm")
+package ${bean.getPackageName()}.${constants.servicesPackage}.${constants.getLowerCase($bean.name)}.event;
+
+import com.agiletec.aps.system.common.notify.ObserverService;
+
+public interface ${beanClass}ChangedObserver extends ObserverService {
+	
+	public void updateFrom${beanClass}Changed(${beanClass}ChangedEvent event);
+	
+}

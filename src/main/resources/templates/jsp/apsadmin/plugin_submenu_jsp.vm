@@ -1,0 +1,14 @@
+#set( $beanVar = $constants.getUnCapitalize($bean.name))
+#set( $beanClass = $bean.name)
+#set( $pk_field = $bean.fields[0])
+#if($bean.plugin)
+#set($label_prep="${bean.pluginName}.")
+#else
+#set($label_prep="")
+#end
+<%@ taglib prefix="s" uri="/struts-tags" %>
+<%@ taglib prefix="wp" uri="/aps-core" %>
+
+<wp:ifauthorized permission="$bean.permission">
+	<li><a href="<s:url namespace="/do/${bean.springBeanPreposition}/${beanClass}" action="list" />" ><s:text name="${label_prep}title.${beanVar}Management" /></a></li>
+</wp:ifauthorized>

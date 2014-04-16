@@ -1,0 +1,13 @@
+#set( $beanVar = $constants.getUnCapitalize($bean.name))
+#set( $beanClass = $bean.name)
+#set( $pk_field = $bean.fields[0])
+#if($bean.plugin)
+#set($label_prep="${bean.pluginName}.")
+#else
+#set($label_prep="")
+#end
+${label_prep}title.${beanVar}Management=${beanClass}s
+error.defaultLangTitle.required=Choose the widget title for the language {0}
+
+
+label.${pk_field.name}=$pk_field.name

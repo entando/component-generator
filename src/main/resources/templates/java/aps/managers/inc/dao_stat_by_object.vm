@@ -1,0 +1,35 @@
+#if($f.type.javaType == "Date")
+#if($f.required)## DATE REQUIRED
+			Timestamp ${f.name}Timestamp = new Timestamp(${beanVar}.get${constants.getCapitalize(${f.name})}().getTime());
+			stat.setTimestamp(index++, ${f.name}Timestamp);	
+#else## DATE NOT REQUIRED
+			if(null != ${beanVar}.get${constants.getCapitalize(${f.name})}()) {
+				Timestamp ${f.name}Timestamp = new Timestamp(${beanVar}.get${constants.getCapitalize(${f.name})}().getTime());
+				stat.setTimestamp(index++, ${f.name}Timestamp);	
+			} else {
+				stat.setNull(index++, Types.DATE);
+			}
+#end ## END DATE
+#elseif($f.type.javaType == "String")
+#if($f.required) ##STRING REQ
+			stat.set${constants.getCapitalize($f.type.javaType)}(index++, ${beanVar}.get${constants.getCapitalize(${f.name})}());
+#else ##STRING ! REQ
+			if(StringUtils.isNotBlank(${beanVar}.get${constants.getCapitalize(${f.name})}())) {
+				stat.setString(index++, ${beanVar}.get${constants.getCapitalize(${f.name})}());				
+			} else {
+				stat.setNull(index++, Types.VARCHAR);
+			}
+#end
+#elseif($f.type.javaType == "BigDecimal")
+#if($f.required) ##STRING REQ
+			stat.set${constants.getCapitalize($f.type.javaType)}(index++, ${beanVar}.get${constants.getCapitalize(${f.name})}());
+#else ##STRING ! REQ
+			if(null != ${beanVar}.get${constants.getCapitalize(${f.name})}()) {
+				stat.setBigDecimal(index++, ${beanVar}.get${constants.getCapitalize(${f.name})}());				
+			} else {
+				stat.setNull(index++, Types.DECIMAL);
+			}
+#end
+#elseif($f.type.javaType == "int")
+			stat.set${constants.getCapitalize($f.type.javaType)}(index++, ${beanVar}.get${constants.getCapitalize(${f.name})}());
+#end

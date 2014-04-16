@@ -1,0 +1,45 @@
+#set( $beanVar = $constants.getUnCapitalize($bean.name))
+#set( $beanClass = $bean.name)
+#set( $springPrep = $constants.getLowerCase($bean.springBeanPreposition))
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+    "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+
+    <package name="${springPrep}_do/${bean.springBeanPreposition}/${beanClass}/Page/SpecialWidget" namespace="/do/Page/SpecialWidget" extends="core_do/Page/SpecialWidget">
+
+
+    	<action name="${springPrep}${beanClass}Config" class="${springPrep}${beanClass}ConfigAction" method="init">
+        	<result type="tiles">${springPrep}.admin.page.widget.${beanClass}.entry</result>
+            <interceptor-ref name="entandoDefaultStack"><param name="requestAuth.requiredPermission">managePages</param></interceptor-ref>
+        </action>
+
+    </package>
+
+
+	<package name="${springPrep}_do/${bean.springBeanPreposition}/${beanClass}/Page/SpecialWidget/${springPrep}${beanClass}Config" namespace="/do/${bean.springBeanPreposition}/${beanClass}/Page/SpecialWidget/${springPrep}${beanClass}Config" extends="entando-default">
+
+		<global-results>
+    		<result name="pageTree" type="chain">
+    			<param name="namespace">/do/Page</param>
+    			<param name="actionName">viewTree</param>
+    		</result>
+    		<result name="configure" type="chain">
+            	<param name="namespace">/do/Page</param>
+    			<param name="actionName">configure</param>
+            </result>
+		</global-results>
+
+
+		<action name="saveConfig" class="${springPrep}${beanClass}ConfigAction" method="save">
+    		<result type="tiles" name="input">${springPrep}.admin.page.widget.${beanClass}.entry</result>
+        	<interceptor-ref name="entandoValidationStack"><param name="requestAuth.requiredPermission">managePages</param></interceptor-ref>
+        </action>
+
+	</package>
+
+
+
+</struts>

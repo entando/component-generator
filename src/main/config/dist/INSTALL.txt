@@ -1,0 +1,14 @@
+# Edo
+
+This is an excerpt from the file `README.md`.
+
+The file `README.md` contains more useful information, and you should read it once Edo is installed.
+
+## Installation from binary package
+
+If you obtained Edo as a pre-compiled binary package, follow these easy installation steps:
+
+1. Copy `edo-x.y.z.jar` into a folder of your choice
+2. (Optional for OS X and *nix systems) configure a shell alias like so:  
+alias edo="java -jar /folder-of-your-choice/edo-x.y.z.jar"
+3. Read the file `README.md` :)

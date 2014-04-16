@@ -1,0 +1,55 @@
+#set( $beanClass = $bean.name)
+#set( $beanVar = $constants.getUnCapitalize($bean.name))
+#parse("templates/common/license/java_license.vm")
+package ${bean.getPackageName()}.${constants.servicesPackage}.${constants.getLowerCase($bean.name)}.api;
+
+$bean.getImports(false)
+
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+
+import ${bean.getPackageName()}.${constants.servicesPackage}.${constants.getLowerCase($bean.name)}.$beanClass;
+
+@XmlRootElement(name = "${beanVar}")
+@XmlType(propOrder = {#foreach ($f in $bean.fields)"${f.name}"#if(!$foreach.last), #end#end})
+public class JAXB${beanClass} {
+
+    public JAXB${beanClass}() {
+        super();
+    }
+
+    public JAXB${beanClass}(${beanClass} ${beanVar}) {
+#foreach ($f in $bean.fields)
+#set( $setter = "set$constants.getCapitalize($f.name)")
+#set( $getter = "get$constants.getCapitalize($f.name)")
+		this.$setter(${beanVar}.${getter}());
+#end
+    }
+    
+    public ${beanClass} get${beanClass}() {
+    	${beanClass} ${beanVar} = new ${beanClass}();
+#foreach ($f in $bean.fields)
+#set( $setter = "set$constants.getCapitalize($f.name)")
+#set( $getter = "get$constants.getCapitalize($f.name)")
+		${beanVar}.${setter}(this.${getter}());
+#end
+    	return ${beanVar};
+    }
+
+#foreach ($f in $bean.fields)
+	@XmlElement(name = "${f.name}", required = true)
+	public $f.type.getJavaType() get${constants.getCapitalize($f.name)}() {
+		return _$f.getName();
+	}
+	public void set${constants.getCapitalize($f.name)}($f.type.getJavaType() $f.getName()) {
+		this._$f.getName() = $f.getName();
+	}
+
+#end
+
+#foreach ($f in $bean.fields)	
+	private $f.type.getJavaType() _$f.getName();
+#end
+
+}

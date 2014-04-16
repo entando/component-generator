@@ -1,0 +1,32 @@
+#set( $beanVar = $constants.getUnCapitalize($bean.name))
+#set( $beanClass = $bean.name)
+#set( $pk_type = $bean.fields[0].type.javaType)
+#set( $pk_type_gen = $bean.fields[0].type.javaTypeGeneric)
+#set( $pk_var = $bean.fields[0].name)
+#parse("templates/common/license/java_license.vm")
+package ${bean.getPackageName()}.${constants.servicesPackage}.$constants.getLowerCase($bean.name);
+
+import java.util.List;
+import com.agiletec.aps.system.exception.ApsSystemException;
+$bean.getImports(false)
+#if($bean.entandoSearcherAvailable)
+import com.agiletec.aps.system.common.FieldSearchFilter;
+#end
+
+public interface I${beanClass}Manager {
+
+	public ${beanClass} get${beanClass}($pk_type $pk_var) throws ApsSystemException;
+
+	public List<$pk_type_gen> get${beanClass}s() throws ApsSystemException;
+
+#if($bean.entandoSearcherAvailable)
+	public List<$pk_type_gen> search${beanClass}s(FieldSearchFilter filters[]) throws ApsSystemException;
+
+#end	
+	public void add${beanClass}($beanClass $beanVar) throws ApsSystemException;
+
+	public void update${beanClass}($beanClass $beanVar) throws ApsSystemException;
+
+	public void delete${beanClass}($pk_type $pk_var) throws ApsSystemException;
+
+}
