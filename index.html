@@ -1,0 +1,387 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Edo by entando</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Edo</h1>
+        <p>Ninja code generator for Entando</p>
+
+        <p class="view"><a href="https://github.com/entando/edo">View the Project on GitHub <small>entando/edo</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/entando/edo/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/entando/edo/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/entando/edo">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
+<a name="edo" class="anchor" href="#edo"><span class="octicon octicon-link"></span></a>Edo</h1>
+
+<p><img src="edo-logo-350.png" alt=""></p>
+
+<p>Edo is the official code generator tool for Entando, started with love by Stefano Puddu <a href="mailto:s.puddu@entando.com">s.puddu@entando.com</a> and maintained with pride by the Entando dev team.</p>
+
+<p>Use it to generate the following parts of Entando Components with a single command:</p>
+
+<ul>
+<li>Pojo</li>
+<li>DAO, Manager, events</li>
+<li>Entando component descriptor and related files</li>
+<li>REST API</li>
+<li>Backoffice actions, validations, tiles and JSPs</li>
+<li>A basic set of utility classes for JUnit tests</li>
+<li>Widgets, custom tags</li>
+<li>InternalServlet widget</li>
+<li>Final report</li>
+</ul><h2>
+<a name="tentative-roadmap" class="anchor" href="#tentative-roadmap"><span class="octicon octicon-link"></span></a>Tentative Roadmap</h2>
+
+<ul>
+<li>Permit to pick what's to be generated</li>
+</ul><h2>
+<a name="installation-from-binary-package" class="anchor" href="#installation-from-binary-package"><span class="octicon octicon-link"></span></a>Installation from binary package</h2>
+
+<p>If you obtained Edo as a pre-compiled binary package, follow these easy installation steps:</p>
+
+<ol>
+<li>Copy <code>edo-x.y.z.jar</code> into a folder of your choice</li>
+<li>(Optional for OS X and *nix systems) configure a shell alias like so:<br>
+alias edo="java -jar /folder-of-your-choice/edo-x.y.z.jar"</li>
+</ol><h2>
+<a name="installation-from-sources" class="anchor" href="#installation-from-sources"><span class="octicon octicon-link"></span></a>Installation from sources</h2>
+
+<p>The source comes with an Ant script, and <strong>you'll need Ant 1.9+</strong> to make it work.</p>
+
+<h3>
+<a name="build-and-install" class="anchor" href="#build-and-install"><span class="octicon octicon-link"></span></a>Build and Install</h3>
+
+<h4>
+<a name="os-x-and-linux--unix" class="anchor" href="#os-x-and-linux--unix"><span class="octicon octicon-link"></span></a>OS X and Linux / Unix</h4>
+
+<p>The <code>build-and-install</code> Ant task is the default one, so you just have to run:</p>
+
+<pre><code>$ ant
+</code></pre>
+
+<h4>
+<a name="windows" class="anchor" href="#windows"><span class="octicon octicon-link"></span></a>Windows</h4>
+
+<ol>
+<li>(Ant bug) Open <code>build-maven.xml</code> and replace any occurrency of <code>executable="mvn"</code> with <code>executable="mvn.bat"</code>
+</li>
+<li>Build (see next section)</li>
+<li>Copy <code>target/edo-x.y.z.jar</code> into a folder of your choice</li>
+</ol><h3>
+<a name="build-only" class="anchor" href="#build-only"><span class="octicon octicon-link"></span></a>Build only</h3>
+
+<pre><code>$ ant build
+</code></pre>
+
+<h2>
+<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h2>
+
+<h3>
+<a name="windows-and-os-x--unix-without-the-edo-alias" class="anchor" href="#windows-and-os-x--unix-without-the-edo-alias"><span class="octicon octicon-link"></span></a>Windows and OS X / Unix without the <code>edo</code> alias</h3>
+
+<pre><code>$ java -jar &lt;PATH_TO_YOUR_JAR&gt;/edo-x.y.z.jar [options] beanName field#1 field#2 ... field#n
+</code></pre>
+
+<p><strong>Example:</strong>  </p>
+
+<pre><code>$ java -jar &lt;PATH_TO_YOUR_JAR&gt;/edo-x.y.z.jar [options] Zombie name:string-r deathDate:date
+</code></pre>
+
+<h3>
+<a name="os-x--unix-with-the-edo-alias" class="anchor" href="#os-x--unix-with-the-edo-alias"><span class="octicon octicon-link"></span></a>OS X / Unix with the <code>edo</code> alias</h3>
+
+<pre><code>$ edo [options] beanName field#1 field#2 ... field#n
+</code></pre>
+
+<p><strong>Example:</strong>  </p>
+
+<pre><code>$ edo [options] Zombie name:string-r deathDate:date
+</code></pre>
+
+<h3>
+<a name="options-must-be-set-before-any-argument" class="anchor" href="#options-must-be-set-before-any-argument"><span class="octicon octicon-link"></span></a>Options (must be set BEFORE any argument):</h3>
+
+<ul>
+<li>
+<strong>--baseDir</strong><br>
+The path of the main directory, the root folder of your project. If not specified, will be used the current directory.<br>
+A <code>pom.xml</code> file must exist in the same directory.</li>
+<li>
+<strong>--permission</strong><br>
+The <code>code</code> of an existing Entando permission.<br>
+If not specified, default value is <em>superuser</em>
+</li>
+<li>
+<strong>--package</strong><br>
+The package that will be used.<br>
+If not specified, Edo will create a package following the <em>Entando Plugin Pattern</em>
+</li>
+</ul><h4>
+<a name="option-examples" class="anchor" href="#option-examples"><span class="octicon octicon-link"></span></a>Option Examples</h4>
+
+<pre><code>$ edo --baseDir=/tmp Foo name:string
+
+$ edo --baseDir=/tmp --package=org.entando.entando.plugins.jppet Cat name:string
+
+$ edo --baseDir=/tmp --package=com.mycompany -permission=manage_pet Dog name:string
+</code></pre>
+
+<h3>
+<a name="arguments" class="anchor" href="#arguments"><span class="octicon octicon-link"></span></a>Arguments</h3>
+
+<ul>
+<li>
+<strong>bean name</strong>:<br>
+The name of the bean</li>
+<li>
+<strong>field definition</strong>:<br>
+The field name, followed by the field data type and field options</li>
+</ul><h4>
+<a name="field-data-types" class="anchor" href="#field-data-types"><span class="octicon octicon-link"></span></a>Field Data Types</h4>
+
+<ul>
+<li><strong>string</strong></li>
+<li><strong>int</strong></li>
+<li><strong>date</strong></li>
+<li><strong>bigdecimal</strong></li>
+<li><strong>primary_key</strong></li>
+</ul><h4>
+<a name="field-options" class="anchor" href="#field-options"><span class="octicon octicon-link"></span></a>Field Options</h4>
+
+<ul>
+<li>
+<strong>-</strong>:<br>
+The separator between field data type and field options</li>
+<li>
+<strong>r</strong>:<br>
+Flags a field as <em>required</em>
+</li>
+<li>
+<strong>{1...n}</strong> (i.e. an integer)<br>
+Available only for the <code>string</code> data type, forces the max lentgh up to this value</li>
+</ul><p><strong>Examples:</strong></p>
+
+<pre><code>$ edo Foo name:string
+
+$ edo Foo name:string-8
+
+$ edo Foo name:string-8r
+
+$ edo Foo name:string-r8
+</code></pre>
+
+<h4>
+<a name="primary-key" class="anchor" href="#primary-key"><span class="octicon octicon-link"></span></a>Primary Key</h4>
+
+<p>By default Edo creates a <code>id:int</code> field and uses it as the primary key. </p>
+
+<p>If you want to specify a different name for the primary key, declare it as first field using the <code>primary_key</code> field data type.</p>
+
+<p><strong>Example:</strong></p>
+
+<pre><code>$ edo Foo fooid:primary_key name:string
+</code></pre>
+
+<h3>
+<a name="warning" class="anchor" href="#warning"><span class="octicon octicon-link"></span></a>Warning</h3>
+
+<p>Edo will overwrite any existing file, so be careful.</p>
+
+<p>Only the following files won't get overwritten, because these files are meant to exist just once per Plugin:</p>
+
+<p><strong>Note:</strong> <code>[sub-path]</code> can be the project name or <code>plugins/jp[beanName]</code></p>
+
+<ul>
+<li><code>src/main/resources/api/[sub-path]/aps/apiMethods.xml</code></li>
+<li><code>src/main/resources/entando-struts-plugin.xml</code></li>
+<li><code>src/main/resources/component/[sub-path]/component.xml</code></li>
+<li><code>src/main/resources/shortcuts/[sub-path]/apsadmin/shortcuts.xml</code></li>
+<li><code>src/main/resources/sql/[sub-path]/port_data_production.sql</code></li>
+<li><code>src/main/resources/sql/[sub-path]/serv_data_production.sql</code></li>
+<li><code>src/main/tld/[sub-path]/name-core.tld</code></li>
+<li><code>src/main/webapp/WEB-INF/[sub-path]/apsadmin/tiles.xml</code></li>
+<li><code>src/main/webapp/WEB-INF/[sub-path]/apsadmin/jsp/common/layouts/subMenu.jsp</code></li>
+<li><code>src/test/resources/sql/[sub-path]/port_data_test.sql</code></li>
+<li><code>src/test/resources/sql/[sub-path]/serv_data_test.sql</code></li>
+</ul><h2>
+<a name="a-full-example" class="anchor" href="#a-full-example"><span class="octicon octicon-link"></span></a>A full example</h2>
+
+<p>In a project named <code>myportal</code>, given the following command line</p>
+
+<pre><code>$ edo --package=org.mycompany Foo name:string-r10
+</code></pre>
+
+<p>Edo will create these files:</p>
+
+<pre><code>├── edo_YYYYMMdd_HHmmss_Foo-report.txt
+└── src
+    ├── main
+    │   ├── java
+    │   │   └── org
+    │   │       └── mycompany
+    │   │           ├── aps
+    │   │           │   ├── internalservlet
+    │   │           │   │   └── foo
+    │   │           │   │       ├── FooFinderFrontEndAction.java
+    │   │           │   │       ├── FooFrontEndAction.java
+    │   │           │   │       └── fooFront.xml
+    │   │           │   ├── system
+    │   │           │   │   ├── init
+    │   │           │   │   │   └── servdb
+    │   │           │   │   │       └── Foo.java
+    │   │           │   │   └── services
+    │   │           │   │       └── foo
+    │   │           │   │           ├── api
+    │   │           │   │           │   ├── FooListResponse.java
+    │   │           │   │           │   ├── FooListResponseResult.java
+    │   │           │   │           │   ├── FooResponse.java
+    │   │           │   │           │   ├── FooResponseResult.java
+    │   │           │   │           │   └── JAXBFoo.java
+    │   │           │   │           ├── event
+    │   │           │   │           │   ├── FooChangedEvent.java
+    │   │           │   │           │   └── FooChangedObserver.java
+    │   │           │   │           ├── FooDAO.java
+    │   │           │   │           ├── Foo.java
+    │   │           │   │           ├── FooManager.java
+    │   │           │   │           ├── IFooDAO.java
+    │   │           │   │           └── IFooManager.java
+    │   │           │   └── tags
+    │   │           │       ├── FooListTag.java
+    │   │           │       └── FooTag.java
+    │   │           └── apsadmin
+    │   │               ├── foo
+    │   │               │   ├── FooAction.java
+    │   │               │   ├── FooAction-validation.xml
+    │   │               │   ├── FooFinderAction.java
+    │   │               │   ├── foo.xml
+    │   │               │   ├── package_en.properties
+    │   │               │   └── package_it.properties
+    │   │               └── portal
+    │   │                   └── specialwidget
+    │   │                       └── foo
+    │   │                           ├── FooConfigAction.java
+    │   │                           ├── fooSpecialWidget.xml
+    │   │                           ├── package_en.properties
+    │   │                           └── package_it.properties
+    │   ├── resources
+    │   │   ├── api
+    │   │   │   └── myportal
+    │   │   │       └── aps
+    │   │   │           └── apiMethods.xml
+    │   │   ├── component
+    │   │   │   └── myportal
+    │   │   │       └── component.xml
+    │   │   ├── entando-struts-plugin.xml
+    │   │   ├── shortcuts
+    │   │   │   └── apsadmin
+    │   │   │       └── shortcuts.xml
+    │   │   ├── spring
+    │   │   │   └── myportal
+    │   │   │       ├── aps
+    │   │   │       │   └── managers
+    │   │   │       │       └── myportalFooManagersConfig.xml
+    │   │   │       └── apsadmin
+    │   │   │           └── myportalFooActionsConfig.xml
+    │   │   └── sql
+    │   │       └── misc
+    │   │           └── myportal_foo
+    │   │               ├── port_data_production.sql
+    │   │               └── serv_data_production.sql
+    │   ├── tld
+    │   │   └── myportal
+    │   │       └── myportal-core.tld
+    │   └── webapp
+    │       └── WEB-INF
+    │           ├── aps
+    │           │   └── jsp
+    │           │       ├── internalservlet
+    │           │       │   └── foo
+    │           │       │       ├── frontend-foo-entry.jsp
+    │           │       │       ├── frontend-foo-error.jsp
+    │           │       │       ├── frontend-foo-list.jsp
+    │           │       │       └── frontend-foo-trash.jsp
+    │           │       └── widgets
+    │           │           └── Foo.jsp
+    │           └── myportal
+    │               └── apsadmin
+    │                   ├── jsp
+    │                   │   ├── common
+    │                   │   │   └── layouts
+    │                   │   │       └── assets-more
+    │                   │   │           ├── foo-entry-extras.jsp
+    │                   │   │           ├── foo-list-extras.jsp
+    │                   │   │           └── foo-trash-extras.jsp
+    │                   │   ├── foo
+    │                   │   │   ├── foo-entry.jsp
+    │                   │   │   ├── foo-list.jsp
+    │                   │   │   └── foo-trash.jsp
+    │                   │   └── portal
+    │                   │       └── specialwidget
+    │                   │           └── foo
+    │                   │               └── foo-config.jsp
+    │                   └── myportal-tiles.xml
+    └── test
+        ├── java
+        │   └── org
+        │       └── mycompany
+        │           ├── aps
+        │           │   ├── MyportalBaseTestCase.java
+        │           │   └── system
+        │           │       └── services
+        │           │           └── TestFooManager.java
+        │           ├── apsadmin
+        │           │   ├── foo
+        │           │   │   ├── TestFooAction.java
+        │           │   │   └── TestFooFinderAction.java
+        │           │   └── MyportalApsAdminBaseTestCase.java
+        │           └── MyportalConfigTestUtils.java
+        └── resources
+            └── sql
+                └── misc
+                    └── myportal_foo
+                        ├── port_data_test.sql
+                        └── serv_data_test.sql
+</code></pre>
+
+<h2>
+<a name="issues" class="anchor" href="#issues"><span class="octicon octicon-link"></span></a>Issues</h2>
+
+<p>A lot :D</p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/entando">entando</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("FALSE-TEMP-TRUMBITTA");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+  </body>
+</html>
