@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+    "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+
+    <package name="jppet_do/FrontEnd/jppet/Cat" namespace="/do/FrontEnd/jppet/Cat" extends="entando-front-default">
+
+    	<global-results>
+            <result name="failure">/WEB-INF/plugins/jppet/aps/jsp/internalservlet/cat/frontend-cat-error.jsp</result>
+    	</global-results>
+
+    	<action name="list" class="jppetCatFinderFrontEndAction">
+    		<result type="dispatcher">/WEB-INF/plugins/jppet/aps/jsp/internalservlet/cat/frontend-cat-list.jsp</result>
+			<interceptor-ref name="entandoFrontEndFreeStack"></interceptor-ref>
+        </action>
+        
+        <action name="search" class="jppetCatFinderFrontEndAction">
+            <result type="dispatcher">/WEB-INF/plugins/jppet/aps/jsp/internalservlet/cat/frontend-cat-list.jsp</result>
+        	<interceptor-ref name="entandoFrontEndFreeStack"></interceptor-ref>
+        </action>
+    	
+        <action name="new" class="jppetCatFrontEndAction" method="newCat">
+            <result type="dispatcher">/WEB-INF/plugins/jppet/aps/jsp/internalservlet/cat/frontend-cat-entry.jsp</result>
+        	<interceptor-ref name="entandoFrontEndFreeStack"></interceptor-ref>
+        </action>
+    	
+    	<action name="edit" class="jppetCatFrontEndAction" method="edit">
+            <result type="dispatcher">/WEB-INF/plugins/jppet/aps/jsp/internalservlet/cat/frontend-cat-entry.jsp</result>
+        	<result name="input" type="frontRedirectAction">
+				<param name="actionName">list</param>
+			</result>
+        	<interceptor-ref name="entandoFrontEndFreeStack"></interceptor-ref>
+        </action>
+        
+    	<action name="save" class="jppetCatFrontEndAction" method="save">
+        	<result name="input" type="dispatcher">/WEB-INF/plugins/jppet/aps/jsp/internalservlet/cat/frontend-cat-entry.jsp</result>
+        	<result type="frontRedirectAction">
+				<param name="actionName">list</param>
+			</result>
+        	<interceptor-ref name="entandoFrontEndFreeValidationStack"></interceptor-ref>
+        </action>
+        
+    	<action name="trash" class="jppetCatFrontEndAction" method="trash">
+            <result type="dispatcher">/WEB-INF/plugins/jppet/aps/jsp/internalservlet/cat/frontend-cat-trash.jsp</result>
+        	<result name="input" type="frontRedirectAction">
+				<param name="actionName">list</param>
+			</result>
+        	<interceptor-ref name="entandoFrontEndFreeStack"></interceptor-ref>
+        </action>
+        
+    	<action name="delete" class="jppetCatFrontEndAction" method="delete">
+        	<result type="frontRedirectAction">
+				<param name="actionName">list</param>
+			</result>
+        	<interceptor-ref name="entandoFrontEndFreeStack"></interceptor-ref>
+        </action>
+    	
+    </package>
+   
+</struts>

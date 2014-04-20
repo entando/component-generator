@@ -1,0 +1,51 @@
+<apiMethodDefinitions>
+
+	<resource name="cats">
+        <description>Return the cat list</description>
+        <source pluginCode="jppet">plugins</source>
+		<method httpMethod="GET" active="true" canSpawnOthers="true">
+			<description>Return the cats list</description>
+			<springBean name="jppetCatManager" method="getCatsForApi" />
+			<responseClass>org.entando.entando.plugins.jppet.aps.system.services.cat.api.CatListResponse</responseClass>
+			<!-- 
+			<parameters>
+			</parameters>
+			-->
+		</method>
+	</resource>
+  
+    <resource name="cat">
+        <description>The cat</description>
+        <source pluginCode="jppet">plugins</source>
+        <method httpMethod="GET" active="true" canSpawnOthers="true">
+            <description>Return a cat by id</description>
+            <springBean name="jppetCatManager" method="getCatForApi" />
+            <responseClass>org.entando.entando.plugins.jppet.aps.system.services.cat.api.CatResponse</responseClass>
+            <parameters>
+                <parameter key="id" required="true">
+                    <description>The id of the cat to return</description>
+                </parameter>
+            </parameters>
+        </method>
+        <method httpMethod="POST" active="true" requiredAuth="true" requiredPermission="superuser">
+            <description>Add a cat</description>
+            <springBean name="jppetCatManager" method="addCatForApi" />
+            <expectedType>org.entando.entando.plugins.jppet.aps.system.services.cat.api.JAXBCat</expectedType>
+        </method>
+        <method httpMethod="PUT" active="true" requiredAuth="true" requiredPermission="superuser">
+            <description>Update a cat</description>
+            <springBean name="jppetCatManager" method="updateCatForApi" />
+            <expectedType>org.entando.entando.plugins.jppet.aps.system.services.cat.api.JAXBCat</expectedType>
+        </method>
+        <method httpMethod="DELETE" active="true" requiredAuth="true" requiredPermission="superuser">
+            <description>Delete a cat by id</description>
+            <springBean name="jppetCatManager" method="deleteCatForApi" />
+            <parameters>
+                <parameter key="id" required="true">
+                    <description>The id of the cat to delete</description>
+                </parameter>
+            </parameters>
+        </method>
+    </resource>
+	
+</apiMethodDefinitions>

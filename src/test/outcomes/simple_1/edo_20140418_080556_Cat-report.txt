@@ -1,0 +1,112 @@
+****************************************************************
+
+						Edo Report		
+								
+****************************************************************
+
+=== Command Line
+
+[--package=org.entando.entando.plugins.jppet, Cat, name:string-r8, age:int, weight:bigdecimal, createdat:date]
+
+
+
+=== List of geneated files that MUST be merged:
+----------------------------------------------------------------
+Total files: 0
+Total lines: 0
+
+
+=== List of geneated files:
+src/main/java/org/entando/entando/plugins/jppet/aps/internalservlet/cat/CatFinderFrontEndAction.java
+src/main/java/org/entando/entando/plugins/jppet/aps/internalservlet/cat/CatFrontEndAction.java
+src/main/java/org/entando/entando/plugins/jppet/aps/internalservlet/cat/catFront.xml
+src/main/java/org/entando/entando/plugins/jppet/aps/system/init/servdb/Cat.java
+src/main/java/org/entando/entando/plugins/jppet/aps/system/services/cat/Cat.java
+src/main/java/org/entando/entando/plugins/jppet/aps/system/services/cat/CatDAO.java
+src/main/java/org/entando/entando/plugins/jppet/aps/system/services/cat/CatManager.java
+src/main/java/org/entando/entando/plugins/jppet/aps/system/services/cat/ICatDAO.java
+src/main/java/org/entando/entando/plugins/jppet/aps/system/services/cat/ICatManager.java
+src/main/java/org/entando/entando/plugins/jppet/aps/system/services/cat/api/CatListResponse.java
+src/main/java/org/entando/entando/plugins/jppet/aps/system/services/cat/api/CatListResponseResult.java
+src/main/java/org/entando/entando/plugins/jppet/aps/system/services/cat/api/CatResponse.java
+src/main/java/org/entando/entando/plugins/jppet/aps/system/services/cat/api/CatResponseResult.java
+src/main/java/org/entando/entando/plugins/jppet/aps/system/services/cat/api/JAXBCat.java
+src/main/java/org/entando/entando/plugins/jppet/aps/system/services/cat/event/CatChangedEvent.java
+src/main/java/org/entando/entando/plugins/jppet/aps/system/services/cat/event/CatChangedObserver.java
+src/main/java/org/entando/entando/plugins/jppet/aps/tags/CatListTag.java
+src/main/java/org/entando/entando/plugins/jppet/aps/tags/CatTag.java
+src/main/java/org/entando/entando/plugins/jppet/apsadmin/cat/CatAction-conversion.properties
+src/main/java/org/entando/entando/plugins/jppet/apsadmin/cat/CatAction-validation.xml
+src/main/java/org/entando/entando/plugins/jppet/apsadmin/cat/CatAction.java
+src/main/java/org/entando/entando/plugins/jppet/apsadmin/cat/CatFinderAction-conversion.properties
+src/main/java/org/entando/entando/plugins/jppet/apsadmin/cat/CatFinderAction.java
+src/main/java/org/entando/entando/plugins/jppet/apsadmin/cat/cat.xml
+src/main/java/org/entando/entando/plugins/jppet/apsadmin/cat/package_en.properties
+src/main/java/org/entando/entando/plugins/jppet/apsadmin/cat/package_it.properties
+src/main/java/org/entando/entando/plugins/jppet/apsadmin/global-messages_en.properties
+src/main/java/org/entando/entando/plugins/jppet/apsadmin/global-messages_it.properties
+src/main/java/org/entando/entando/plugins/jppet/apsadmin/portal/specialwidget/cat/CatConfigAction.java
+src/main/java/org/entando/entando/plugins/jppet/apsadmin/portal/specialwidget/cat/catSpecialWidget.xml
+src/main/java/org/entando/entando/plugins/jppet/apsadmin/portal/specialwidget/cat/package_en.properties
+src/main/java/org/entando/entando/plugins/jppet/apsadmin/portal/specialwidget/cat/package_it.properties
+src/main/resources/api/plugins/jppet/aps/apiMethods.xml
+src/main/resources/component/plugins/jppet/component.xml
+src/main/resources/entando-struts-plugin.xml
+src/main/resources/shortcuts/plugins/jppet/apsadmin/shortcuts.xml
+src/main/resources/spring/plugins/jppet/aps/managers/jppetCatManagersConfig.xml
+src/main/resources/spring/plugins/jppet/apsadmin/jppetCatActionsConfig.xml
+src/main/resources/sql/plugins/jppet/port_data_production.sql
+src/main/resources/sql/plugins/jppet/serv_data_production.sql
+src/main/tld/plugins/jppet/jppet-core.tld
+src/main/webapp/WEB-INF/plugins/jppet/aps/jsp/internalservlet/cat/frontend-cat-entry.jsp
+src/main/webapp/WEB-INF/plugins/jppet/aps/jsp/internalservlet/cat/frontend-cat-error.jsp
+src/main/webapp/WEB-INF/plugins/jppet/aps/jsp/internalservlet/cat/frontend-cat-list.jsp
+src/main/webapp/WEB-INF/plugins/jppet/aps/jsp/internalservlet/cat/frontend-cat-trash.jsp
+src/main/webapp/WEB-INF/plugins/jppet/aps/jsp/widgets/jppetCat.jsp
+src/main/webapp/WEB-INF/plugins/jppet/apsadmin/jppet-tiles.xml
+src/main/webapp/WEB-INF/plugins/jppet/apsadmin/jsp/cat/cat-entry.jsp
+src/main/webapp/WEB-INF/plugins/jppet/apsadmin/jsp/cat/cat-list.jsp
+src/main/webapp/WEB-INF/plugins/jppet/apsadmin/jsp/cat/cat-trash.jsp
+src/main/webapp/WEB-INF/plugins/jppet/apsadmin/jsp/common/layouts/assets-more/cat-entry-extras.jsp
+src/main/webapp/WEB-INF/plugins/jppet/apsadmin/jsp/common/layouts/assets-more/cat-list-extras.jsp
+src/main/webapp/WEB-INF/plugins/jppet/apsadmin/jsp/common/layouts/assets-more/cat-trash-extras.jsp
+src/main/webapp/WEB-INF/plugins/jppet/apsadmin/jsp/common/layouts/subMenu.jsp
+src/main/webapp/WEB-INF/plugins/jppet/apsadmin/jsp/portal/specialwidget/cat/cat-config.jsp
+src/test/java/org/entando/entando/plugins/jppet/JppetConfigTestUtils.java
+src/test/java/org/entando/entando/plugins/jppet/aps/JppetBaseTestCase.java
+src/test/java/org/entando/entando/plugins/jppet/aps/system/services/TestCatManager.java
+src/test/java/org/entando/entando/plugins/jppet/apsadmin/JppetApsAdminBaseTestCase.java
+src/test/java/org/entando/entando/plugins/jppet/apsadmin/cat/TestCatAction.java
+src/test/java/org/entando/entando/plugins/jppet/apsadmin/cat/TestCatFinderAction.java
+src/test/resources/sql/plugins/jppet/port_data_test.sql
+src/test/resources/sql/plugins/jppet/serv_data_test.sql
+----------------------------------------------------------------
+Total files: 63
+Total lines: 3039
+
+
+
+
+
+=== Revert *port inserts
+
+DELETE FROM localstrings where keycode = 'jppet_CAT_ID'; 
+DELETE FROM localstrings where keycode = 'jppet_CAT_NAME'; 
+DELETE FROM localstrings where keycode = 'jppet_CAT_AGE'; 
+DELETE FROM localstrings where keycode = 'jppet_CAT_WEIGHT'; 
+DELETE FROM localstrings where keycode = 'jppet_CAT_CREATEDAT_START'; 
+DELETE FROM localstrings where keycode = 'jppet_CAT_CREATEDAT_END'; 
+DELETE FROM localstrings where keycode = 'jppet_CAT_CREATEDAT'; 
+DELETE FROM localstrings where keycode = 'jppet_CAT_ACTIONS'; 
+DELETE FROM localstrings where keycode = 'jppet_CAT_NEW'; 
+DELETE FROM localstrings where keycode = 'jppet_CAT_EDIT'; 
+DELETE FROM localstrings where keycode = 'jppet_CAT_TRASH'; 
+DELETE FROM localstrings where keycode = 'jppet_CAT_TRASH_CONFIRM'; 
+DELETE FROM localstrings where keycode = 'jppet_CAT_SEARCH_CAT'; 
+
+
+DELETE FROM widgetcatalog where code = 'jppetCat_list_form';
+DELETE FROM widgetcatalog where code = 'jppetCat';
+
+
+
