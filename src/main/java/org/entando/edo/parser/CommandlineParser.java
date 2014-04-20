@@ -66,6 +66,7 @@ public class CommandlineParser {
 			}
 			/////////
 
+			if (this.checkForPom) {	
 			_logger.trace("check for a pom.xml");
 			boolean pomExists = new File(edoBean.getBaseDir(), "pom.xml").exists();
 			if (!pomExists) {
@@ -73,6 +74,7 @@ public class CommandlineParser {
 				throw new Exception("no pom.xml found in " + edoBean.getBaseDir());
 			}
 			_logger.trace("found {}.pom.xml", edoBean.getBaseDir());
+			}
 
 
 
@@ -127,7 +129,7 @@ public class CommandlineParser {
 				edoBean.setBaseDir(baseDir);
 			}
 		}
-		_logger.info("baseDir is: '{}'", edoBean.getBaseDir());
+		_logger.debug("baseDir is: '{}'", edoBean.getBaseDir());
 
 		if (cl.hasOption(OPTION_PERMISSION)) {
 			String perm = cl.getOptionValue(OPTION_PERMISSION);
@@ -135,7 +137,7 @@ public class CommandlineParser {
 				edoBean.setPermission(perm);
 			}
 		}
-		_logger.info("permission is: '{}'", edoBean.getPermission());
+		_logger.debug("permission is: '{}'", edoBean.getPermission());
 
 		String packageName = null;
 		if (cl.hasOption(OPTION_PACKAGE)) {
@@ -153,12 +155,19 @@ public class CommandlineParser {
 			packageName = "org.entando.entando.plugins.jp" + cl.getArgs()[0].toLowerCase();
 		}
 		edoBean.setPackageName(packageName);
-		_logger.info("packagename: is '{}'", edoBean.getPackageName());
+		_logger.debug("packagename: is '{}'", edoBean.getPackageName());
 
 
 		args = Arrays.copyOfRange(args, cl.getOptions().length, args.length);
 		return args;
 	}
+
+
+	protected void setCheckForPom(boolean checkForPom) {
+		this.checkForPom = checkForPom;
+	}
+	
+	private boolean checkForPom = true;
 
 	public static final String OPTION_BASE_DIR = "baseDir";
 	public static final String OPTION_PERMISSION = "permission";

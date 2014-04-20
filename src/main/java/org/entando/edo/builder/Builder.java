@@ -481,7 +481,7 @@ public class Builder {
 
 
 
-	private void writeFile(String baseDir, String path, String text) {
+	protected void writeFile(String baseDir, String path, String text) {
 		try {
 			Report report = Report.getInstance();
 
@@ -500,7 +500,6 @@ public class Builder {
 			logger.error("error!", t);
 			t.printStackTrace();
 		}
-
 	}
 
 }
