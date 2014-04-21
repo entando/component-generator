@@ -1,9 +1,10 @@
+#set( $builder = $bean.edoBuilder)
 #set( $beanVar = $constants.getUnCapitalize($bean.name))
 #set( $beanClass = $bean.name)
-#set( $springPrep = $constants.getLowerCase($bean.edoBuilder.springBeanPreposition))
+#set( $springPrep = $constants.getLowerCase($builder.springBeanPreposition))
 #set( $i18keyPrep = "")
-#if($bean.edoBuilder.plugin)
-#set( $i18keyPrep = ${bean.edoBuilder.pluginName}+"_")
+#if($builder.plugin)
+#set( $i18keyPrep = ${builder.pluginName}+"_")
 #end
 #set( $i18keyBean = $constants.toUpperCase($bean.name))
 #set( $pk_field = $bean.fields[0])
@@ -71,7 +72,7 @@ optional CSS
 
 <h1><wp:i18n key="${i18keyPrep}${i18keyBean}_SEARCH_${i18keyBean}" /></h1>
 
-<form action="<wp:action path="/ExtStr2/do/FrontEnd/${bean.edoBuilder.springBeanPreposition}/${beanClass}/search.action" />" method="post" >
+<form action="<wp:action path="/ExtStr2/do/FrontEnd/${builder.springBeanPreposition}/${beanClass}/search.action" />" method="post" >
 
   <fieldset>
 #foreach($f in $bean.searchFields)
@@ -92,7 +93,7 @@ optional CSS
 </div>
 
 <p>
-  <a href="<wp:action path="/ExtStr2/do/FrontEnd/${bean.edoBuilder.springBeanPreposition}/${beanClass}/new.action"></wp:action>" title="<wp:i18n key="NEW" />" class="btn btn-info">
+  <a href="<wp:action path="/ExtStr2/do/FrontEnd/${builder.springBeanPreposition}/${beanClass}/new.action"></wp:action>" title="<wp:i18n key="NEW" />" class="btn btn-info">
     <span class="icon-plus-sign icon-white"></span>&#32;
     <wp:i18n key="NEW" />
   </a>
@@ -127,7 +128,7 @@ optional CSS
 #if($foreach.first)
 	<td class="text-right">
     <a
-      href="<wp:action path="/ExtStr2/do/FrontEnd/${bean.edoBuilder.springBeanPreposition}/${beanClass}/edit.action"><wp:parameter name="${pk_field.name}"><s:property value="#${beanVar}.${pk_field.name}" /></wp:parameter></wp:action>"
+      href="<wp:action path="/ExtStr2/do/FrontEnd/${builder.springBeanPreposition}/${beanClass}/edit.action"><wp:parameter name="${pk_field.name}"><s:property value="#${beanVar}.${pk_field.name}" /></wp:parameter></wp:action>"
       title="<wp:i18n key="EDIT" />: <s:property value="#${beanVar}.${pk_field.name}" />"
       class="label label-info display-block">
     <s:property value="#${beanVar}.${pk_field.name}" />&#32;
@@ -145,7 +146,7 @@ optional CSS
 #end
 	<td class="text-center">
     <a
-      href="<wp:action path="/ExtStr2/do/FrontEnd/${bean.edoBuilder.springBeanPreposition}/${beanClass}/trash.action"><wp:parameter name="${pk_field.name}"><s:property value="#${beanVar}.${pk_field.name}" /></wp:parameter></wp:action>"
+      href="<wp:action path="/ExtStr2/do/FrontEnd/${builder.springBeanPreposition}/${beanClass}/trash.action"><wp:parameter name="${pk_field.name}"><s:property value="#${beanVar}.${pk_field.name}" /></wp:parameter></wp:action>"
       title="<wp:i18n key="TRASH" />: <s:property value="#${beanVar}.${pk_field.name}" />"
       class="btn btn-warning btn-small">
       <span class="icon-trash icon-white"></span>&#32;

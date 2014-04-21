@@ -1,7 +1,8 @@
+#set( $builder = $bean.edoBuilder)
 #set( $beanVar = $constants.getLowerCase($bean.name))
 #set( $beanClass = $bean.name)
-#set( $package = "${bean.edoBuilder.packageName}.${constants.servicesPackage}.${beanVar}")
-#set( $springPrep = $constants.getLowerCase($bean.edoBuilder.springBeanPreposition))
+#set( $package = "${builder.packageName}.${constants.servicesPackage}.${beanVar}")
+#set( $springPrep = $constants.getLowerCase($builder.springBeanPreposition))
 #set( $daoName = "$constants.getUnCapitalize($beanClass)DAO")
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"

@@ -1,30 +1,31 @@
+#set( $builder = $bean.edoBuilder)
 #set( $beanVar = $constants.getUnCapitalize($bean.name))
 #set( $beanClass = $bean.name)
-#set( $springPrep = $constants.getLowerCase($bean.edoBuilder.springBeanPreposition))
+#set( $springPrep = $constants.getLowerCase($builder.springBeanPreposition))
 #set( $pk_field = $bean.fields[0])
 #if($bean.buildWidgets())
-INSERT INTO widgetcatalog (code, titles, parameters, plugincode, parenttypecode, defaultconfig, locked, maingroup) VALUES ('#if($bean.edoBuilder.plugin)$bean.edoBuilder.pluginName#end${beanClass}', '<?xml version="1.0" encoding="UTF-8"?>
+INSERT INTO widgetcatalog (code, titles, parameters, plugincode, parenttypecode, defaultconfig, locked, maingroup) VALUES ('#if($builder.plugin)$builder.pluginName#end${beanClass}', '<?xml version="1.0" encoding="UTF-8"?>
 <properties>
 <property key="en">Publish ${beanClass}</property>
 <property key="it">Pubblica ${beanClass}</property>
 </properties>', '<config>
 	<parameter name="$pk_field.name">$pk_field.name</parameter>
 	<action name="${springPrep}${beanClass}Config"/>
-</config>',#if($bean.edoBuilder.plugin)'$bean.edoBuilder.pluginName'#else NULL #end, NULL, NULL, 1, 'free');
+</config>',#if($builder.plugin)'$builder.pluginName'#else NULL #end, NULL, NULL, 1, 'free');
 
-INSERT INTO widgetcatalog (code, titles, parameters, plugincode, parenttypecode, defaultconfig, locked, maingroup) VALUES ('#if($bean.edoBuilder.plugin)$bean.edoBuilder.pluginName#end${beanClass}_list_form', '<?xml version="1.0" encoding="UTF-8"?>
+INSERT INTO widgetcatalog (code, titles, parameters, plugincode, parenttypecode, defaultconfig, locked, maingroup) VALUES ('#if($builder.plugin)$builder.pluginName#end${beanClass}_list_form', '<?xml version="1.0" encoding="UTF-8"?>
 <properties>
 <property key="en">${beanClass} List and Form</property>
 <property key="it">Lista e Form ${beanClass}</property>
-</properties>', NULL, #if($bean.edoBuilder.plugin)'$bean.edoBuilder.pluginName'#else NULL #end, 'formAction', '<?xml version="1.0" encoding="UTF-8"?>
+</properties>', NULL, #if($builder.plugin)'$builder.pluginName'#else NULL #end, 'formAction', '<?xml version="1.0" encoding="UTF-8"?>
 <properties>
-<property key="actionPath">/ExtStr2/do/FrontEnd/${bean.edoBuilder.springBeanPreposition}/${beanClass}/list.action</property>
+<property key="actionPath">/ExtStr2/do/FrontEnd/${builder.springBeanPreposition}/${beanClass}/list.action</property>
 </properties>', 1, 'free');
 #end
 
 #set( $i18keyPrep = "")
-#if($bean.edoBuilder.plugin)
-#set( $i18keyPrep = ${bean.edoBuilder.pluginName}+"_")
+#if($builder.plugin)
+#set( $i18keyPrep = ${builder.pluginName}+"_")
 #end
 #set( $i18keyBean = $constants.toUpperCase($bean.name))
 #foreach($f in $bean.fields)

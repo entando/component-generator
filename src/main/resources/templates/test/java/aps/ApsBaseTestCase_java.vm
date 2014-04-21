@@ -1,20 +1,21 @@
+#set( $builder = $bean.edoBuilder)
 #set( $beanVar = $constants.getUnCapitalize($bean.name))
 #set( $beanClass = $bean.name)
-#set( $springPrep = $constants.getLowerCase($bean.edoBuilder.springBeanPreposition))
+#set( $springPrep = $constants.getLowerCase($builder.springBeanPreposition))
 #parse("templates/common/license/java_license.vm")
-package ${bean.edoBuilder.packageName}.${constants.apsPackage};
+package ${builder.packageName}.${constants.apsPackage};
 
 
-import ${bean.edoBuilder.packageName}.${constants.getCapitalize($bean.edoBuilder.springBeanPreposition)}ConfigTestUtils;
+import ${builder.packageName}.${constants.getCapitalize($builder.springBeanPreposition)}ConfigTestUtils;
 
 import com.agiletec.ConfigTestUtils;
 import com.agiletec.aps.BaseTestCase;
 
-public class ${constants.getCapitalize($bean.edoBuilder.springBeanPreposition)}BaseTestCase extends BaseTestCase {
+public class ${constants.getCapitalize($builder.springBeanPreposition)}BaseTestCase extends BaseTestCase {
 
 	@Override
 	protected ConfigTestUtils getConfigUtils() {
-		return new ${constants.getCapitalize($bean.edoBuilder.springBeanPreposition)}ConfigTestUtils();
+		return new ${constants.getCapitalize($builder.springBeanPreposition)}ConfigTestUtils();
 	}
 
 	

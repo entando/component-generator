@@ -1,29 +1,30 @@
+#set( $builder = $bean.edoBuilder)
 #set( $beanClass = $bean.name)
 #set( $beanVar = $constants.getUnCapitalize($bean.name))
-#set( $componentCode = "${bean.edoBuilder.projectName}_${beanVar}")
+#set( $componentCode = "${builder.projectName}_${beanVar}")
 #set ( $d = "$")
 #set ( $br_o = "{")
 #set ( $br_c = "}")
 #set( $pk = $bean.fields[0])
 #set( $i18keyPrep = "")
-#if($bean.edoBuilder.plugin)
-#set( $i18keyPrep = ${bean.edoBuilder.pluginName}+"_")
+#if($builder.plugin)
+#set( $i18keyPrep = ${builder.pluginName}+"_")
 #end
 #set( $i18keyBean = $constants.toUpperCase($bean.name))
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="wp" uri="/aps-core"%>
-<%@ taglib prefix="#if($bean.edoBuilder.plugin)$bean.edoBuilder.pluginName#else$componentCode#end" uri="/#if($bean.edoBuilder.plugin)$bean.edoBuilder.pluginName#else$componentCode#end-core"%>
+<%@ taglib prefix="#if($builder.plugin)$builder.pluginName#else$componentCode#end" uri="/#if($builder.plugin)$builder.pluginName#else$componentCode#end-core"%>
 
-<#if($bean.edoBuilder.plugin)$bean.edoBuilder.pluginName#else$componentCode#end:${beanVar} var="${beanVar}" />
+<#if($builder.plugin)$builder.pluginName#else$componentCode#end:${beanVar} var="${beanVar}" />
 <article>
 <c:choose>
 	<c:when test="$d${br_o}not empty ${beanVar}${br_c}">
-	<h1><wp:i18n key="#if($bean.edoBuilder.plugin)${bean.edoBuilder.pluginName}_#end$constants.toUpperCase("${beanVar}_${pk.name}")" />: <c:out value="${${beanVar}.$pk.name}" /></h1>
+	<h1><wp:i18n key="#if($builder.plugin)${builder.pluginName}_#end$constants.toUpperCase("${beanVar}_${pk.name}")" />: <c:out value="${${beanVar}.$pk.name}" /></h1>
 	<ul>
 		<li>
 #foreach ($f in $bean.fields)
 #if(!$foreach.first)
-			<wp:i18n key="#if($bean.edoBuilder.plugin)${bean.edoBuilder.pluginName}_#end$constants.toUpperCase("${beanVar}_${f.name}")" />: <c:out value="${${beanVar}.$f.name}" /><br />
+			<wp:i18n key="#if($builder.plugin)${builder.pluginName}_#end$constants.toUpperCase("${beanVar}_${f.name}")" />: <c:out value="${${beanVar}.$f.name}" /><br />
 #end
 #end
 		</li>

@@ -1,9 +1,10 @@
+#set( $builder = $bean.edoBuilder)
 #set( $beanVar = $constants.getUnCapitalize($bean.name))
 #set( $beanClass = $bean.name)
 #set( $pk_field = $bean.fields[0])
 #set ($DOLLAR = "$")
-#if($bean.edoBuilder.plugin)
-#set($label_prep="${bean.edoBuilder.pluginName}.")
+#if($builder.plugin)
+#set($label_prep="${builder.pluginName}.")
 #else
 #set($label_prep="")
 #end

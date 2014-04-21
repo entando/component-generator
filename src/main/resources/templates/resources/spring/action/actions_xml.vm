@@ -1,8 +1,9 @@
+#set( $builder = $bean.edoBuilder)
 #set( $beanVar = $constants.getUnCapitalize($bean.name))
 #set( $beanClass = $bean.name)
-#set( $springPrep = $constants.getLowerCase($bean.edoBuilder.springBeanPreposition))
-#if($bean.edoBuilder.plugin)
-#set($path="plugins/${bean.edoBuilder.pluginName}")
+#set( $springPrep = $constants.getLowerCase($builder.springBeanPreposition))
+#if($builder.plugin)
+#set($path="plugins/${builder.pluginName}")
 #else
 #set($path=$constants.getUnCapitalize($bean.projectName))
 #end
@@ -13,27 +14,27 @@
 		xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
 				http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd" >
 
-#if($bean.edoBuilder.plugin)
+#if($builder.plugin)
 	<bean id="${springPrep}${beanClass}PluginSubMenu" class="com.agiletec.apsadmin.system.plugin.PluginSubMenuContainer" >
 		<property name="subMenuFilePath"><value>/WEB-INF/${path}/apsadmin/jsp/common/layouts/subMenu.jsp</value></property>
 	</bean>
 #end
 
 	<bean id="${springPrep}${beanClass}FinderAction" scope="prototype" 
-			class="${bean.edoBuilder.packageName}.${constants.apsadminPackage}.$constants.getLowerCase($beanVar).${beanClass}FinderAction" 
+			class="${builder.packageName}.${constants.apsadminPackage}.$constants.getLowerCase($beanVar).${beanClass}FinderAction" 
 			parent="abstractBaseAction" >
 		<property name="$constants.getUnCapitalize($beanClass)Manager" ref="${springPrep}${beanClass}Manager" />
 	</bean>
 
 	<bean id="${springPrep}${beanClass}Action" scope="prototype" 
-			class="${bean.edoBuilder.packageName}.${constants.apsadminPackage}.$constants.getLowerCase($beanVar).${beanClass}Action" 
+			class="${builder.packageName}.${constants.apsadminPackage}.$constants.getLowerCase($beanVar).${beanClass}Action" 
 			parent="abstractBaseAction" >
 		<property name="$constants.getUnCapitalize($beanClass)Manager" ref="${springPrep}${beanClass}Manager" />
 	</bean>
 
 
 #if($bean.buildWidgets())
-	<bean id="${springPrep}${beanClass}ConfigAction" class="${bean.edoBuilder.packageName}.${constants.apsadminPackage}.portal.specialwidget.$constants.getLowerCase($beanVar).${beanClass}ConfigAction"
+	<bean id="${springPrep}${beanClass}ConfigAction" class="${builder.packageName}.${constants.apsadminPackage}.portal.specialwidget.$constants.getLowerCase($beanVar).${beanClass}ConfigAction"
 		parent="simpleWidgetAction" scope="prototype">
 		<property name="$constants.getUnCapitalize($beanClass)Manager" ref="${springPrep}${beanClass}Manager" />
 	</bean>
@@ -41,13 +42,13 @@
 
 	<!-- INTERNAL_SERVLET -->
 	<bean id="${springPrep}${beanClass}FinderFrontEndAction" scope="prototype" 
-			class="${bean.edoBuilder.packageName}.aps.internalservlet.$constants.getLowerCase($beanVar).${beanClass}FinderFrontEndAction" 
+			class="${builder.packageName}.aps.internalservlet.$constants.getLowerCase($beanVar).${beanClass}FinderFrontEndAction" 
 			parent="abstractBaseAction" >
 		<property name="$constants.getUnCapitalize($beanClass)Manager" ref="${springPrep}${beanClass}Manager" />
 	</bean>
 	
 	<bean id="${springPrep}${beanClass}FrontEndAction" scope="prototype" 
-			class="${bean.edoBuilder.packageName}.aps.internalservlet.$constants.getLowerCase($beanVar).${beanClass}FrontEndAction" 
+			class="${builder.packageName}.aps.internalservlet.$constants.getLowerCase($beanVar).${beanClass}FrontEndAction" 
 			parent="abstractBaseAction" >
 		<property name="$constants.getUnCapitalize($beanClass)Manager" ref="${springPrep}${beanClass}Manager" />
 	</bean>
