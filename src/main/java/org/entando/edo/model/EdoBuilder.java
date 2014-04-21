@@ -1,19 +1,19 @@
 /*
-*
-* Copyright 2013 Entando S.r.l. (http://www.entando.com) All rights reserved.
-*
-* This file is part of Entando Enterprise Edition software.
-* You can redistribute it and/or modify it
-* under the terms of the Entando's EULA
-* 
-* See the file License for the specific language governing permissions   
-* and limitations under the License
-* 
-* 
-* 
-* Copyright 2013 Entando S.r.l. (http://www.entando.com) All rights reserved.
-*
-*/
+ *
+ * Copyright 2013 Entando S.r.l. (http://www.entando.com) All rights reserved.
+ *
+ * This file is part of Entando Enterprise Edition software.
+ * You can redistribute it and/or modify it
+ * under the terms of the Entando's EULA
+ * 
+ * See the file License for the specific language governing permissions   
+ * and limitations under the License
+ * 
+ * 
+ * 
+ * Copyright 2013 Entando S.r.l. (http://www.entando.com) All rights reserved.
+ *
+ */
 package org.entando.edo.model;
 
 import java.io.File;
@@ -30,11 +30,11 @@ public class EdoBuilder {
 		edoBean.setEdoBuilder(this);
 		this.getBeans().add(edoBean);
 	}
-	
+
 	public EdoBean getBean() {
 		return this.getBeans().get(0);
 	}
-	
+
 	public boolean isPlugin() {
 		return this.getPackageName().contains(".plugins.");
 	}
@@ -53,7 +53,7 @@ public class EdoBuilder {
 		name = name.replaceAll("-", "");
 		return StringUtils.uncapitalize(name);
 	}
-	
+
 	/**
 	 * @return
 	 */
@@ -73,7 +73,7 @@ public class EdoBuilder {
 		return name;
 	}
 
-	
+
 	public String getJavaFolder() {
 		String pojoPath = this.getBaseDir() + FolderConstants.getJavaFolder() + this.getPackageName().replaceAll("\\.", Matcher.quoteReplacement(File.separator)) +  File.separator;
 		return pojoPath;
@@ -110,8 +110,8 @@ public class EdoBuilder {
 		String pojoPath = this.getJavaFolder() + "aps" + File.separator + "internalservlet"  + File.separator;
 		return pojoPath;
 	}
-	
-//--------------------------
+
+	//--------------------------
 	/**
 	 * 
 	 * @return .../src/main/resources/plugin|project/dirName/whatever/subDirName
@@ -128,8 +128,8 @@ public class EdoBuilder {
 		}
 		return folderPath;
 	}
-	
-	
+
+
 	public String getTldFolder() {
 		String pojoPath = this.getBaseDir() + FolderConstants.getTldFolder();
 		if (this.isPlugin()) {
@@ -146,7 +146,7 @@ public class EdoBuilder {
 	 */
 	public String getEntandoComponentSqlFolder() {
 		String componentPath = this.getBaseDir() + FolderConstants.getSqlFolder();
-		
+
 		if (this.isPlugin()) {
 			componentPath = componentPath + "plugins" + File.separator + this.getPluginName();
 		} else {			
@@ -156,7 +156,7 @@ public class EdoBuilder {
 		return componentPath;
 	}
 
-//-------------------------------------
+	//-------------------------------------
 	/**
 	 * 
 	 * @return  .../src/main/resources/spring/whatever/managers/
@@ -169,7 +169,7 @@ public class EdoBuilder {
 			apsSpringPath = apsSpringPath + this.getProjectName() + File.separator;	
 		}
 		apsSpringPath = apsSpringPath + "aps" + File.separator + "managers" + File.separator;
-		
+
 		return apsSpringPath;
 	}
 
@@ -187,8 +187,8 @@ public class EdoBuilder {
 		apsSpringPath = apsSpringPath + "apsadmin" + File.separator;
 		return apsSpringPath;
 	}
-	
-	
+
+
 	/**
 	 * 
 	 * @return  .../src/test/resources/sql/whatever/
@@ -203,31 +203,47 @@ public class EdoBuilder {
 		componentPath = componentPath + File.separator;
 		return componentPath;
 	}
-	
+
 	/**
 	 * 
 	 * @return .../WEB-INF/whatever/
 	 */
 	public String getWebInfFolder() {
-		String pojoPath = this.getBaseDir() + FolderConstants.getWebInfFolder();
-		
+		String folder = this.getBaseDir() + FolderConstants.getWebInfFolder();
 		if (this.isPlugin()) {
-			pojoPath = pojoPath + "plugins" + File.separator + this.getPluginName() + File.separator;
+			folder = folder + "plugins" + File.separator + this.getPluginName() + File.separator;
 		} else {
-			pojoPath = pojoPath + this.getProjectName() + File.separator;	
+			folder = folder + this.getProjectName() + File.separator;	
 		}
-		return pojoPath;
+		return folder;
 	}
 	
+//	public String getWebInfRootFolder() {
+//	String folder = this.getBaseDir() + FolderConstants.getWebInfFolder();
+//	if (this.isPlugin()) {
+//		folder = folder + "plugins" + File.separator + this.getPluginName() + File.separator;
+//	} 
+//	return folder;
+//}
 
-	
+//	//XXX RENAME
+	public String getJspWidgetFolder() {
+		String folder = this.getBaseDir() + FolderConstants.getWebInfFolder();
+		if (this.isPlugin()) {
+			folder = folder + "plugins" + File.separator + this.getPluginName() + File.separator;
+		} 
+		return folder;
+	}
+
+
+
 	public String getPackageName() {
 		return _packageName;
 	}
 	public void setPackageName(String packageName) {
 		this._packageName = packageName;
 	}
-	
+
 	public String getBaseDir() {
 		return _baseDir;
 	}
@@ -248,7 +264,7 @@ public class EdoBuilder {
 	public void setOriginalArgs(String originalArgs) {
 		this._originalArgs = originalArgs;
 	}
-	
+
 	public List<EdoBean> getBeans() {
 		return _beans;
 	}

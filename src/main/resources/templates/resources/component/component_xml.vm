@@ -3,10 +3,9 @@
 #set( $beanClass = $bean.name)
 #set( $springPrep = $constants.getLowerCase($builder.springBeanPreposition))
 #set( $tableName = $bean.tableName)
-#set( $componentCode = "${builder.projectName}_${beanVar}")
 <?xml version="1.0" encoding="UTF-8"?>
 <component>
-	<code>#if($builder.plugin)$builder.pluginName#else$componentCode#end</code>
+	<code>#if($builder.plugin)$builder.pluginName#else${builder.projectName}#end</code>
 	<description>${beanClass}</description>
 	<installation>
 		<tableMapping>
@@ -20,14 +19,14 @@
 #if($builder.plugin)
 classpath:sql/plugins/${bean.getEdoBuilder().getPluginName()}/port_data_production.sql
 #else
-classpath:sql/misc/$componentCode/port_data_production.sql
+classpath:sql/misc/${builder.projectName}/port_data_production.sql
 #end
 				</datasource>
 				<datasource name="servDataSource">
 #if($builder.plugin)
 classpath:sql/plugins/${builder.pluginName}/serv_data_production.sql
 #else
-classpath:sql/misc/$componentCode/serv_data_production.sql
+classpath:sql/misc/${builder.projectName}/serv_data_production.sql
 #end
 				</datasource>
 			</defaultSqlResources>
@@ -38,14 +37,14 @@ classpath:sql/misc/$componentCode/serv_data_production.sql
 #if($builder.plugin)
 classpath:sql/plugins/${bean.getEdoBuilder().getPluginName()}/port_data_test.sql
 #else
-classpath:sql/misc/$componentCode/port_data_test.sql
+classpath:sql/misc/${builder.projectName}/port_data_test.sql
 #end
 				</datasource>
 				<datasource name="servDataSource">
 #if($builder.plugin)
 classpath:sql/plugins/${bean.getEdoBuilder().getPluginName()}/serv_data_test.sql
 #else
-classpath:sql/misc/$componentCode/serv_data_test.sql
+classpath:sql/misc/${builder.projectName}/serv_data_test.sql
 #end
 				</datasource>
 			</defaultSqlResources>

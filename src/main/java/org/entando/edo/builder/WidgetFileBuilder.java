@@ -72,7 +72,7 @@ public class WidgetFileBuilder {
 	}
 
 	public static String getJspWidgetFilePath(EdoBean bean) {
-		String folder = bean.getEdoBuilder().getWebInfFolder();
+		String folder = bean.getEdoBuilder().getJspWidgetFolder();
 		folder = folder + FolderConstants.getWidgetFolder();
 
 		String filename = "";

@@ -5,7 +5,7 @@
 #if($builder.plugin)
 #set($path="plugins/${builder.pluginName}")
 #else
-#set($path=$constants.getUnCapitalize($bean.projectName))
+#set($path=$constants.getUnCapitalize($builder.projectName))
 #end
 #if($builder.plugin)
 #set($label_prep="${builder.pluginName}.")

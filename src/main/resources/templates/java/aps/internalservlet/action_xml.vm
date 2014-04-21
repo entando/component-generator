@@ -5,7 +5,7 @@
 #if($builder.plugin)
 #set($path="plugins/${builder.pluginName}")
 #else
-#set($path=$constants.getUnCapitalize($bean.projectName))
+#set($path=$constants.getUnCapitalize($builder.projectName))
 #end
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE struts PUBLIC

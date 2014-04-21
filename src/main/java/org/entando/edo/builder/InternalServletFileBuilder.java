@@ -57,7 +57,7 @@ public class InternalServletFileBuilder {
 
 	
 	public static String getInternalServletJspFilePath(EdoBean bean, String suffix) {
-		String folder = bean.getEdoBuilder().getWebInfFolder();
+		String folder = bean.getEdoBuilder().getJspWidgetFolder();
 		folder = folder + FolderConstants.getInternalServletJspFolder();
 		folder = folder + bean.getName().toLowerCase() + File.separator;
 		

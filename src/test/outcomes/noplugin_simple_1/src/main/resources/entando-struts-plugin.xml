@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+    "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+
+	<!-- include this snippet into your struts-plugin.xml file or rename this file 
+		edit also this file: /src/test/java/apsadmin/SandboxApsAdminBaseTestCase.java
+	-->
+
+	<include file="com/myportal/apsadmin/cat/cat.xml"/>
+	<include file="com/myportal/apsadmin/portal/specialwidget/cat/catSpecialWidget.xml"/>
+	<include file="com/myportal/aps/internalservlet/cat/catFront.xml"/>
+ 	
+</struts>

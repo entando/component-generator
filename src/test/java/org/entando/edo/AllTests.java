@@ -16,8 +16,8 @@
 */
 package org.entando.edo;
 
-import org.entando.edo.builder.TestControllerFileBuilder;
-import org.entando.edo.builder.TestFileBuilder;
+import org.entando.edo.builder.TestBuilder;
+import org.entando.edo.builder.TestBuilderNoPlugin;
 import org.entando.edo.model.TestEdoBean;
 import org.entando.edo.parser.TestCommandlineParser;
 import org.entando.edo.parser.TestFieldsParser;
@@ -29,17 +29,17 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-	TestControllerFileBuilder.class,
-	TestFileBuilder.class,
+	TestBuilder.class,
+	TestBuilderNoPlugin.class,
 	
-	TestEdoBean.class,
-	
-	TestCommandlineParser.class,
-	TestFieldsParser.class,
-	TestNameParser.class,
-	TestPackageValidator.class,
-	
-	TestReport.class
+//	TestEdoBean.class,
+//	
+//	TestCommandlineParser.class,
+//	TestFieldsParser.class,
+//	TestNameParser.class,
+//	TestPackageValidator.class,
+//	
+//	TestReport.class
 	
 })
 public class AllTests {

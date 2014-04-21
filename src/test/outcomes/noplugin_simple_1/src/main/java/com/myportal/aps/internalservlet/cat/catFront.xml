@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+    "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+
+    <package name="sandbox_do/FrontEnd/sandbox/Cat" namespace="/do/FrontEnd/sandbox/Cat" extends="entando-front-default">
+
+    	<global-results>
+            <result name="failure">/WEB-INF/sandbox/aps/jsp/internalservlet/cat/frontend-cat-error.jsp</result>
+    	</global-results>
+
+    	<action name="list" class="sandboxCatFinderFrontEndAction">
+    		<result type="dispatcher">/WEB-INF/sandbox/aps/jsp/internalservlet/cat/frontend-cat-list.jsp</result>
+			<interceptor-ref name="entandoFrontEndFreeStack"></interceptor-ref>
+        </action>
+        
+        <action name="search" class="sandboxCatFinderFrontEndAction">
+            <result type="dispatcher">/WEB-INF/sandbox/aps/jsp/internalservlet/cat/frontend-cat-list.jsp</result>
+        	<interceptor-ref name="entandoFrontEndFreeStack"></interceptor-ref>
+        </action>
+    	
+        <action name="new" class="sandboxCatFrontEndAction" method="newCat">
+            <result type="dispatcher">/WEB-INF/sandbox/aps/jsp/internalservlet/cat/frontend-cat-entry.jsp</result>
+        	<interceptor-ref name="entandoFrontEndFreeStack"></interceptor-ref>
+        </action>
+    	
+    	<action name="edit" class="sandboxCatFrontEndAction" method="edit">
+            <result type="dispatcher">/WEB-INF/sandbox/aps/jsp/internalservlet/cat/frontend-cat-entry.jsp</result>
+        	<result name="input" type="frontRedirectAction">
+				<param name="actionName">list</param>
+			</result>
+        	<interceptor-ref name="entandoFrontEndFreeStack"></interceptor-ref>
+        </action>
+        
+    	<action name="save" class="sandboxCatFrontEndAction" method="save">
+        	<result name="input" type="dispatcher">/WEB-INF/sandbox/aps/jsp/internalservlet/cat/frontend-cat-entry.jsp</result>
+        	<result type="frontRedirectAction">
+				<param name="actionName">list</param>
+			</result>
+        	<interceptor-ref name="entandoFrontEndFreeValidationStack"></interceptor-ref>
+        </action>
+        
+    	<action name="trash" class="sandboxCatFrontEndAction" method="trash">
+            <result type="dispatcher">/WEB-INF/sandbox/aps/jsp/internalservlet/cat/frontend-cat-trash.jsp</result>
+        	<result name="input" type="frontRedirectAction">
+				<param name="actionName">list</param>
+			</result>
+        	<interceptor-ref name="entandoFrontEndFreeStack"></interceptor-ref>
+        </action>
+        
+    	<action name="delete" class="sandboxCatFrontEndAction" method="delete">
+        	<result type="frontRedirectAction">
+				<param name="actionName">list</param>
+			</result>
+        	<interceptor-ref name="entandoFrontEndFreeStack"></interceptor-ref>
+        </action>
+    	
+    </package>
+   
+</struts>

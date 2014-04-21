@@ -35,6 +35,13 @@ public class ControllerFileBuilder {
 		return pojoPath;
 	}
 
+//	private static String getJspApsAdminFolder(EdoBean bean) {
+//		String result = bean.getEdoBuilder().getWebInfRootFolder() + "apsadmin" + File.separator + "jsp" + File.separator;
+//		return result;
+//	}
+
+	//----------------------
+	
 	public static String getActionFilePath(EdoBean bean) {
 		String filename = bean.getName() + "Action.java";
 		String finalfile = ControllerFileBuilder.getActionFolder(bean) + filename;
