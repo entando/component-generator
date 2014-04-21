@@ -85,17 +85,6 @@ public class FolderConstants {
 		return "/src/main/tld/".replaceAll("/", Matcher.quoteReplacement(File.separator));
 	}
 
-	/**
-	 * aps/jsp/widgets/
-	 * @return
-	 */
-	public static String getWidgetFolder() {
-		return "aps/jsp/widgets/".replaceAll("/", Matcher.quoteReplacement(File.separator));
-	}
-
-	public static String getInternalServletJspFolder() {
-		return "aps/jsp/internalservlet/".replaceAll("/", Matcher.quoteReplacement(File.separator));
-	}
 
 	/**
 	 * /src/main/resources/

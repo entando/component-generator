@@ -208,32 +208,28 @@ public class EdoBuilder {
 	 * 
 	 * @return .../WEB-INF/whatever/
 	 */
-	public String getWebInfFolder() {
+
+	public String getWebinfApsFolder() {
+		String folder = this.getBaseDir() + FolderConstants.getWebInfFolder();
+		if (this.isPlugin()) {
+			folder = folder + "plugins" + File.separator + this.getPluginName() + File.separator;	
+		}
+		folder = folder + "aps" + File.separator;
+		return folder;	
+	}
+
+	public String getWebinfApsadminFolder() {
 		String folder = this.getBaseDir() + FolderConstants.getWebInfFolder();
 		if (this.isPlugin()) {
 			folder = folder + "plugins" + File.separator + this.getPluginName() + File.separator;
 		} else {
 			folder = folder + this.getProjectName() + File.separator;	
 		}
-		return folder;
+		folder = folder + "apsadmin" + File.separator;
+		return folder;	
 	}
 	
-//	public String getWebInfRootFolder() {
-//	String folder = this.getBaseDir() + FolderConstants.getWebInfFolder();
-//	if (this.isPlugin()) {
-//		folder = folder + "plugins" + File.separator + this.getPluginName() + File.separator;
-//	} 
-//	return folder;
-//}
 
-//	//XXX RENAME
-	public String getJspWidgetFolder() {
-		String folder = this.getBaseDir() + FolderConstants.getWebInfFolder();
-		if (this.isPlugin()) {
-			folder = folder + "plugins" + File.separator + this.getPluginName() + File.separator;
-		} 
-		return folder;
-	}
 
 
 

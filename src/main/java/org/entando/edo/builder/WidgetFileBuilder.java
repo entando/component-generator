@@ -17,14 +17,22 @@
 package org.entando.edo.builder;
 
 import java.io.File;
-import java.util.regex.Matcher;
 
 import org.apache.commons.lang.StringUtils;
 import org.entando.edo.model.EdoBean;
 
 public class WidgetFileBuilder {
 
+	private static String getApsadminJspFolder(EdoBean bean) {
+		String result = bean.getEdoBuilder().getWebinfApsadminFolder() + "jsp" + File.separator;
+		return result;
+	}
 
+	private static String getApsJspFolder(EdoBean bean) {
+		String result = bean.getEdoBuilder().getWebinfApsFolder() + "jsp" + File.separator;
+		return result;
+	}
+	
 	private static String getSpecialWidgetActionDir(EdoBean bean) {
 		String pojoPath = bean.getEdoBuilder().getJavaControllerFolder()  + "portal" +  File.separator  + "specialwidget" + File.separator  + bean.getName().toLowerCase() + File.separator;
 		return pojoPath;
@@ -55,7 +63,7 @@ public class WidgetFileBuilder {
 
 	public static String getJspSpecialWidgetFilePath(EdoBean bean) {
 		String filename = StringUtils.uncapitalize(bean.getName()) + "-config.jsp";
-		String finalfile = bean.getEdoBuilder().getWebInfFolder() + "apsadmin" + File.separator + "jsp" + File.separator + "portal" + File.separator + "specialwidget" + File.separator + bean.getName().toLowerCase() + File.separator +  filename;
+		String finalfile = getApsadminJspFolder(bean) + "portal" + File.separator + "specialwidget" + File.separator + bean.getName().toLowerCase() + File.separator +  filename;
 		return finalfile;
 	}
 
@@ -72,8 +80,9 @@ public class WidgetFileBuilder {
 	}
 
 	public static String getJspWidgetFilePath(EdoBean bean) {
-		String folder = bean.getEdoBuilder().getJspWidgetFolder();
-		folder = folder + FolderConstants.getWidgetFolder();
+		String folder = getApsJspFolder(bean);
+		
+		folder = folder + "widgets" + File.separator;
 
 		String filename = "";
 		if (bean.getEdoBuilder().isPlugin()) {
@@ -97,17 +106,5 @@ public class WidgetFileBuilder {
 		String finalfile = Filebuilder.checkAndRenameFile(bean.getEdoBuilder().getBaseDir(), path, filename);
 		return finalfile;
 	}
-
-	//	private static String getWebInfDir(EdoBean bean) {
-	//		String pojoPath = bean.getBaseDir() + FolderConstants.getWebInfFolder();
-	//		
-	//		if (bean.isPlugin()) {
-	//			pojoPath = pojoPath + "plugins" + File.separator + bean.getEdoBuilder().getPluginName() + File.separator;
-	//		} else {
-	//			pojoPath = pojoPath + bean.getProjectName() + File.separator;	
-	//		}
-	//		
-	//		return pojoPath;
-	//	}
 
 }

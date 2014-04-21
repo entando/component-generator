@@ -17,6 +17,7 @@
 package org.entando.edo.builder;
 
 import java.io.File;
+import java.util.regex.Matcher;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -27,12 +28,7 @@ public class InternalServletFileBuilder {
 
 	public static Logger logger = LogManager.getLogger(ControllerFileBuilder.class);
 
-//	
-//	private static String getJspDir(EdoBean bean) {
-//
-//		return pojoPath;
-//	}
-//	
+
 	
 	public static String getInternalServletXmlFilePath(EdoBean bean) {
 		String folder = bean.getEdoBuilder().getJavaControllerInternalServletFolder() + StringUtils.uncapitalize(bean.getName()) +  File.separator;
@@ -57,8 +53,9 @@ public class InternalServletFileBuilder {
 
 	
 	public static String getInternalServletJspFilePath(EdoBean bean, String suffix) {
-		String folder = bean.getEdoBuilder().getJspWidgetFolder();
-		folder = folder + FolderConstants.getInternalServletJspFolder();
+		String folder = bean.getEdoBuilder().getWebinfApsFolder();
+		String subfolder = "jsp/internalservlet/".replaceAll("/", Matcher.quoteReplacement(File.separator));
+		folder = folder + subfolder;
 		folder = folder + bean.getName().toLowerCase() + File.separator;
 		
 		String filename = "frontend-"+StringUtils.uncapitalize(bean.getName()) + suffix;
