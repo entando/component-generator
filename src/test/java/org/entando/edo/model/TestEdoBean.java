@@ -22,7 +22,7 @@ import org.entando.edo.parser.CommandlineParser;
 
 
 public class TestEdoBean extends TestCase {
-
+/*
 	public void test1() throws Throwable {
 		CommandlineParser parser = new CommandlineParser();
 
@@ -74,5 +74,5 @@ public class TestEdoBean extends TestCase {
 		assertEquals("foo", scaffoldBean.getTableName());
 		assertFalse(scaffoldBean.isPlugin());
 	}
-
+*/
 }

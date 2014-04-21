@@ -1,7 +1,7 @@
 package org.entando.edo.mock.parser;
 
 import org.apache.commons.lang.StringUtils;
-import org.entando.edo.model.EdoBean;
+import org.entando.edo.model.EdoBuilder;
 import org.entando.edo.parser.CommandlineParser;
 
 public class MockCommandLineParser extends CommandlineParser {
@@ -10,7 +10,7 @@ public class MockCommandLineParser extends CommandlineParser {
 		super.setCheckForPom(false);
 	}
 
-	public EdoBean generate() throws Throwable {
+	public EdoBuilder generate() throws Throwable {
 		return this.generate(this.getArgs());
 	}
 

@@ -20,6 +20,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.entando.edo.builder.Builder;
 import org.entando.edo.model.EdoBean;
+import org.entando.edo.model.EdoBuilder;
 import org.entando.edo.parser.CommandlineParser;
 
 public class Edo {
@@ -29,12 +30,13 @@ public class Edo {
 	public static void main(String[] args) {
 		try {
 			CommandlineParser commandlineParser = new CommandlineParser();
-			EdoBean edoBean = commandlineParser.generate(args);
+			EdoBuilder edoBuilder = commandlineParser.generate(args);
+			EdoBean edoBean = edoBuilder.getBean();
 			if (null == edoBean) return; //throw new Throwable("error parsing options");
 
 			logger.info("Start process...");
 			Builder b = new Builder();
-			b.build(edoBean);
+			b.build(edoBuilder);
 			logger.info("Done");
 
 		} catch (Throwable t) {

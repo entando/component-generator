@@ -1,3 +1,4 @@
+#set( $builder = $bean.edoBuilder)
 #set( $beanVar = $constants.getUnCapitalize($bean.name))
 #set( $beanClass = $bean.name)
 #set( $pk_type = $bean.fields[0].type.javaType)
@@ -6,7 +7,7 @@
 #set( $queryName = $constants.toUpperCase($beanClass))
 #set( $tableName = $bean.tableName)
 #parse("templates/common/license/java_license.vm")
-package ${bean.getPackageName()}.${constants.servicesPackage}.$constants.getLowerCase($bean.name);
+package ${builder.packageName}.${constants.servicesPackage}.$constants.getLowerCase($bean.name);
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

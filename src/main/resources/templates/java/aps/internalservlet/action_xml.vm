@@ -1,8 +1,9 @@
+#set( $builder = $bean.edoBuilder)
 #set( $beanVar = $constants.getUnCapitalize($bean.name))
 #set( $beanClass = $bean.name)
-#set( $springPrep = $constants.getLowerCase($bean.springBeanPreposition))
-#if($bean.plugin)
-#set($path="plugins/${bean.pluginName}")
+#set( $springPrep = $constants.getLowerCase($builder.springBeanPreposition))
+#if($builder.plugin)
+#set($path="plugins/${builder.pluginName}")
 #else
 #set($path=$constants.getUnCapitalize($bean.projectName))
 #end
@@ -13,7 +14,7 @@
 
 <struts>
 
-    <package name="${springPrep}_do/FrontEnd/${bean.springBeanPreposition}/${beanClass}" namespace="/do/FrontEnd/${bean.springBeanPreposition}/${beanClass}" extends="entando-front-default">
+    <package name="${springPrep}_do/FrontEnd/${builder.springBeanPreposition}/${beanClass}" namespace="/do/FrontEnd/${builder.springBeanPreposition}/${beanClass}" extends="entando-front-default">
 
     	<global-results>
             <result name="failure">/WEB-INF/${path}/aps/jsp/internalservlet/$constants.getLowerCase($beanVar)/frontend-${beanVar}-error.jsp</result>

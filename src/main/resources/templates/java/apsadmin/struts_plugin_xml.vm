@@ -8,13 +8,13 @@
 <struts>
 
 	<!-- include this snippet into your struts-plugin.xml file or rename this file 
-		edit also this file: /src/test/java/apsadmin/${constants.getCapitalize($bean.springBeanPreposition)}ApsAdminBaseTestCase.java
+		edit also this file: /src/test/java/apsadmin/${constants.getCapitalize($bean.edoBuilder.springBeanPreposition)}ApsAdminBaseTestCase.java
 	-->
 
-	<include file="${bean.packageFolder}/${constants.apsadminPackage}/$constants.getLowerCase($beanVar)/${beanVar}.xml"/>
+	<include file="${bean.edoBuilder.packageFolder}/${constants.apsadminPackage}/$constants.getLowerCase($beanVar)/${beanVar}.xml"/>
 #if($bean.buildWidgets())
-	<include file="${bean.packageFolder}/${constants.apsadminPackage}/portal/specialwidget/$constants.getLowerCase($beanVar)/${beanVar}SpecialWidget.xml"/>
-	<include file="${bean.packageFolder}/aps/internalservlet/$constants.getLowerCase($beanVar)/${beanVar}Front.xml"/>
+	<include file="${bean.edoBuilder.packageFolder}/${constants.apsadminPackage}/portal/specialwidget/$constants.getLowerCase($beanVar)/${beanVar}SpecialWidget.xml"/>
+	<include file="${bean.edoBuilder.packageFolder}/aps/internalservlet/$constants.getLowerCase($beanVar)/${beanVar}Front.xml"/>
 #end
  	
 </struts>

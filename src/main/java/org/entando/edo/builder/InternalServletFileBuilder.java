@@ -17,7 +17,6 @@
 package org.entando.edo.builder;
 
 import java.io.File;
-import java.util.regex.Matcher;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -28,45 +27,42 @@ public class InternalServletFileBuilder {
 
 	public static Logger logger = LogManager.getLogger(ControllerFileBuilder.class);
 
-	private static String getActionDir(EdoBean bean) {
-		String pojoPath = bean.getBaseDir() + FolderConstants.getJavaFolder() + bean.getPackageName().replaceAll("\\.", Matcher.quoteReplacement(File.separator)) + File.separator + FolderConstants.getApsFolder() + File.separator + "internalservlet" + File.separator + bean.getName().toLowerCase() + File.separator;
-		return pojoPath;
-	}
-	
-	private static String getJspDir(EdoBean bean) {
-		String pojoPath = bean.getBaseDir() + FolderConstants.getWebInfFolder();
-		if (bean.isPlugin()) {
-			pojoPath = pojoPath + "plugins" + File.separator + bean.getPluginName() + File.separator;
-		} else {
-			pojoPath = pojoPath + File.separator;	
-		}
-		pojoPath = pojoPath + FolderConstants.getInternalServletJspFolder();
-		return pojoPath;
-	}
-	
+//	
+//	private static String getJspDir(EdoBean bean) {
+//
+//		return pojoPath;
+//	}
+//	
 	
 	public static String getInternalServletXmlFilePath(EdoBean bean) {
+		String folder = bean.getEdoBuilder().getJavaControllerInternalServletFolder() + StringUtils.uncapitalize(bean.getName()) +  File.separator;
 		String filename = StringUtils.uncapitalize(bean.getName()) + "Front.xml";
-		String finalfile = InternalServletFileBuilder.getActionDir(bean) + filename;
+		String finalfile = folder + filename;
 		return finalfile;
 	}
 
 	public static String getInternalServletActionFilePath(EdoBean bean) {
+		String folder = bean.getEdoBuilder().getJavaControllerInternalServletFolder() + StringUtils.uncapitalize(bean.getName()) +  File.separator;
 		String filename = bean.getName() + "FrontEndAction.java";
-		String finalfile = InternalServletFileBuilder.getActionDir(bean) + filename;
+		String finalfile = folder + filename;
 		return finalfile;
 	}
 
 	public static String getInternalServletFinderActionFilePath(EdoBean bean) {
+		String folder = bean.getEdoBuilder().getJavaControllerInternalServletFolder() + StringUtils.uncapitalize(bean.getName()) +  File.separator;
 		String filename = bean.getName() + "FinderFrontEndAction.java";
-		String finalfile = InternalServletFileBuilder.getActionDir(bean) + filename;
+		String finalfile = folder + filename;
 		return finalfile;
 	}
 
 	
 	public static String getInternalServletJspFilePath(EdoBean bean, String suffix) {
+		String folder = bean.getEdoBuilder().getWebInfFolder();
+		folder = folder + FolderConstants.getInternalServletJspFolder();
+		folder = folder + bean.getName().toLowerCase() + File.separator;
+		
 		String filename = "frontend-"+StringUtils.uncapitalize(bean.getName()) + suffix;
-		String finalfile = InternalServletFileBuilder.getJspDir(bean) + bean.getName().toLowerCase() + File.separator + filename;
+		String finalfile = folder + filename;
 		return finalfile;
 	}
 	

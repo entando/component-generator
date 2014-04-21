@@ -24,7 +24,7 @@ public class TestEdo extends TestCase {
 
 
 	public void testForReal() {
-		String inString = "-baseDir=/tmp/portal410 Task descr:string-r10 status:int";
+		String inString = "-baseDir=/tmp/aaaa --package=com.myportal Cat name:string-r8 age:int weight:bigdecimal createdat:date";
 		String[] args = inString.split(" ");
 		Edo.main(args);
 		assertTrue(true);

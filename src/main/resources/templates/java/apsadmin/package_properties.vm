@@ -2,8 +2,8 @@
 #set( $beanClass = $bean.name)
 #set( $pk_field = $bean.fields[0])
 #set ($DOLLAR = "$")
-#if($bean.plugin)
-#set($label_prep="${bean.pluginName}.")
+#if($bean.edoBuilder.plugin)
+#set($label_prep="${bean.edoBuilder.pluginName}.")
 #else
 #set($label_prep="")
 #end

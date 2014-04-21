@@ -1,19 +1,19 @@
 /*
-*
-* Copyright 2013 Entando S.r.l. (http://www.entando.com) All rights reserved.
-*
-* This file is part of Entando Enterprise Edition software.
-* You can redistribute it and/or modify it
-* under the terms of the Entando's EULA
-* 
-* See the file License for the specific language governing permissions   
-* and limitations under the License
-* 
-* 
-* 
-* Copyright 2013 Entando S.r.l. (http://www.entando.com) All rights reserved.
-*
-*/
+ *
+ * Copyright 2013 Entando S.r.l. (http://www.entando.com) All rights reserved.
+ *
+ * This file is part of Entando Enterprise Edition software.
+ * You can redistribute it and/or modify it
+ * under the terms of the Entando's EULA
+ * 
+ * See the file License for the specific language governing permissions   
+ * and limitations under the License
+ * 
+ * 
+ * 
+ * Copyright 2013 Entando S.r.l. (http://www.entando.com) All rights reserved.
+ *
+ */
 package org.entando.edo.builder;
 
 import java.io.File;
@@ -26,35 +26,12 @@ public class WidgetFileBuilder {
 
 
 	private static String getSpecialWidgetActionDir(EdoBean bean) {
-		String pojoPath = bean.getBaseDir() + FolderConstants.getJavaFolder() + bean.getPackageName().replaceAll("\\.", Matcher.quoteReplacement(File.separator)) + File.separator + FolderConstants.getApsadminFolder() + File.separator + "portal" +  File.separator  + "specialwidget" + File.separator  + bean.getName().toLowerCase() + File.separator;
-		return pojoPath;
-	}
-
-
-	private static String getWidgetsDir(EdoBean bean) {
-		String pojoPath = bean.getBaseDir() + FolderConstants.getWebInfFolder();
-		if (bean.isPlugin()) {
-			pojoPath = pojoPath + "plugins" + File.separator + bean.getPluginName() + File.separator;
-		} else {
-			pojoPath = pojoPath + File.separator;	
-		}
-		pojoPath = pojoPath + FolderConstants.getWidgetFolder();
-		return pojoPath;
-	}
-
-
-	private static String getTldDir(EdoBean bean) {
-		String pojoPath = bean.getBaseDir() + FolderConstants.getTldFolder();
-		if (bean.isPlugin()) {
-			pojoPath = pojoPath + "plugins" + File.separator + bean.getPluginName() + File.separator;
-		} else {
-			pojoPath = pojoPath + bean.getProjectName() + File.separator;	
-		}
+		String pojoPath = bean.getEdoBuilder().getJavaControllerFolder()  + "portal" +  File.separator  + "specialwidget" + File.separator  + bean.getName().toLowerCase() + File.separator;
 		return pojoPath;
 	}
 
 	private static String getApsTagsActionDir(EdoBean bean) {
-		String pojoPath = bean.getBaseDir() + FolderConstants.getJavaFolder() + bean.getPackageName().replaceAll("\\.", Matcher.quoteReplacement(File.separator)) + File.separator + FolderConstants.getApsFolder() + File.separator + "tags" +  File.separator;
+		String pojoPath = bean.getEdoBuilder().getJavaFolder() + FolderConstants.getApsFolder() + File.separator + "tags" +  File.separator;
 		return pojoPath;
 	}
 
@@ -78,7 +55,7 @@ public class WidgetFileBuilder {
 
 	public static String getJspSpecialWidgetFilePath(EdoBean bean) {
 		String filename = StringUtils.uncapitalize(bean.getName()) + "-config.jsp";
-		String finalfile = WidgetFileBuilder.getWebInfDir(bean) + "apsadmin" + File.separator + "jsp" + File.separator + "portal" + File.separator + "specialwidget" + File.separator + bean.getName().toLowerCase() + File.separator +  filename;
+		String finalfile = bean.getEdoBuilder().getWebInfFolder() + "apsadmin" + File.separator + "jsp" + File.separator + "portal" + File.separator + "specialwidget" + File.separator + bean.getName().toLowerCase() + File.separator +  filename;
 		return finalfile;
 	}
 
@@ -95,39 +72,42 @@ public class WidgetFileBuilder {
 	}
 
 	public static String getJspWidgetFilePath(EdoBean bean) {
+		String folder = bean.getEdoBuilder().getWebInfFolder();
+		folder = folder + FolderConstants.getWidgetFolder();
+
 		String filename = "";
-		if (bean.isPlugin()) {
-			filename = bean.getPluginName();
+		if (bean.getEdoBuilder().isPlugin()) {
+			filename = bean.getEdoBuilder().getPluginName();
 		} 
 		filename = filename + StringUtils.capitalize(bean.getName()) + ".jsp";
-		String finalfile = WidgetFileBuilder.getWidgetsDir(bean) + filename;
+		String finalfile = folder + filename;
 
 		return finalfile;
 	}
 
 	public static String getApsTldFilePath(EdoBean bean) {
 		String filename = null;
-		if (bean.isPlugin()) {
-			filename = bean.getPluginName();
+		if (bean.getEdoBuilder().isPlugin()) {
+			filename = bean.getEdoBuilder().getPluginName();
 		} else {
-			filename = bean.getProjectName();
+			filename = bean.getEdoBuilder().getProjectName();
 		}
 		filename = filename + "-core.tld";
-		String path = WidgetFileBuilder.getTldDir(bean);
-		String finalfile = Filebuilder.checkAndRenameFile(bean.getBaseDir(), path, filename);
+		String path = bean.getEdoBuilder().getTldFolder();
+		String finalfile = Filebuilder.checkAndRenameFile(bean.getEdoBuilder().getBaseDir(), path, filename);
 		return finalfile;
 	}
 
-	private static String getWebInfDir(EdoBean bean) {
-		String pojoPath = bean.getBaseDir() + FolderConstants.getWebInfFolder();
-		
-		if (bean.isPlugin()) {
-			pojoPath = pojoPath + "plugins" + File.separator + bean.getPluginName() + File.separator;
-		} else {
-			pojoPath = pojoPath + bean.getProjectName() + File.separator;	
-		}
-		
-		return pojoPath;
-	}
+	//	private static String getWebInfDir(EdoBean bean) {
+	//		String pojoPath = bean.getBaseDir() + FolderConstants.getWebInfFolder();
+	//		
+	//		if (bean.isPlugin()) {
+	//			pojoPath = pojoPath + "plugins" + File.separator + bean.getEdoBuilder().getPluginName() + File.separator;
+	//		} else {
+	//			pojoPath = pojoPath + bean.getProjectName() + File.separator;	
+	//		}
+	//		
+	//		return pojoPath;
+	//	}
 
 }

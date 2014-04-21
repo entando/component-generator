@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
 import org.entando.edo.builder.Builder;
@@ -17,11 +18,14 @@ public class MockBuilder extends Builder {
 		try {
 			Report report = Report.getInstance();
 			String workingDir = baseDir;
-			//File file = new File(path);
-			this.getContents().put(path, text);
 			//TODO
+			this.getContents().put(path, text);
 			int lines = -1;//FileUtils.readLines(file).size();
 			path = StringUtils.substringAfter(path, workingDir  + File.separator);
+			
+
+			
+			
 
 			if (FilenameUtils.getBaseName(path).startsWith(EdoConstants.FILE_NO_OVERRIDE_PREFIX)) {
 				report.addFileToMerge(path, lines);

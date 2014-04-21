@@ -1,3 +1,4 @@
+#set( $builder = $bean.edoBuilder)
 #set( $beanClass = $bean.name)
 ****************************************************************
 
@@ -43,8 +44,8 @@ Total lines: ${lines}
 === Revert *port inserts
 
 #set( $i18keyPrep = "")
-#if($bean.plugin)
-#set( $i18keyPrep = ${bean.pluginName}+"_")
+#if($builder.plugin)
+#set( $i18keyPrep = ${builder.pluginName}+"_")
 #end
 #set( $i18keyBean = $constants.toUpperCase($bean.name))
 #foreach($f in $bean.fields)
@@ -62,8 +63,8 @@ DELETE FROM localstrings where keycode = '${i18keyPrep}${i18keyBean}_TRASH_CONFI
 DELETE FROM localstrings where keycode = '${i18keyPrep}${i18keyBean}_SEARCH_${i18keyBean}'; 
 
 
-DELETE FROM widgetcatalog where code = '#if($bean.plugin)$bean.pluginName#end${beanClass}_list_form';
-DELETE FROM widgetcatalog where code = '#if($bean.plugin)$bean.pluginName#end${beanClass}';
+DELETE FROM widgetcatalog where code = '#if($builder.plugin)$builder.pluginName#end${beanClass}_list_form';
+DELETE FROM widgetcatalog where code = '#if($builder.plugin)$builder.pluginName#end${beanClass}';
 
 
 

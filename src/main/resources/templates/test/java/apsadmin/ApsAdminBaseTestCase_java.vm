@@ -1,20 +1,20 @@
 #set( $beanVar = $constants.getUnCapitalize($bean.name))
 #set( $beanClass = $bean.name)
-#set( $springPrep = $constants.getLowerCase($bean.springBeanPreposition))
+#set( $springPrep = $constants.getLowerCase($bean.edoBuilder.springBeanPreposition))
 #parse("templates/common/license/java_license.vm")
-package ${bean.getPackageName()}.${constants.apsadminPackage};
+package ${bean.edoBuilder.packageName}.${constants.apsadminPackage};
 
 import java.util.Properties;
 
 import com.agiletec.ConfigTestUtils;
 import com.agiletec.apsadmin.ApsAdminBaseTestCase;
-import ${bean.getPackageName()}.${constants.getCapitalize($bean.springBeanPreposition)}ConfigTestUtils;
+import ${bean.edoBuilder.packageName}.${constants.getCapitalize($bean.edoBuilder.springBeanPreposition)}ConfigTestUtils;
 
-public class ${constants.getCapitalize($bean.springBeanPreposition)}ApsAdminBaseTestCase extends ApsAdminBaseTestCase {
+public class ${constants.getCapitalize($bean.edoBuilder.springBeanPreposition)}ApsAdminBaseTestCase extends ApsAdminBaseTestCase {
 
 	@Override
 	protected ConfigTestUtils getConfigUtils() {
-		return new ${constants.getCapitalize($bean.springBeanPreposition)}ConfigTestUtils();
+		return new ${constants.getCapitalize($bean.edoBuilder.springBeanPreposition)}ConfigTestUtils();
 	}
 
     protected void setInitParameters(Properties params) {
@@ -28,5 +28,5 @@ public class ${constants.getCapitalize($bean.springBeanPreposition)}ApsAdminBase
     }
     
     // TODO Edit this constant before running your junit test
-    private static final String CUSTOM_STRUTS_PLUGIN = "change_me-${bean.springBeanPreposition}-struts-plugin.xml";
+    private static final String CUSTOM_STRUTS_PLUGIN = "change_me-${bean.edoBuilder.springBeanPreposition}-struts-plugin.xml";
 }

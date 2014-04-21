@@ -1,30 +1,30 @@
 #set( $beanVar = $constants.getLowerCase($bean.name))
 #set( $beanClass = $bean.name)
-#set( $springPrep = $constants.getLowerCase($bean.springBeanPreposition))
+#set( $springPrep = $constants.getLowerCase($bean.edoBuilder.springBeanPreposition))
 #set( $tableName = $bean.tableName)
-#set( $componentCode = "${bean.projectName}_${beanVar}")
+#set( $componentCode = "${bean.edoBuilder.projectName}_${beanVar}")
 <?xml version="1.0" encoding="UTF-8"?>
 <component>
-	<code>#if($bean.plugin)$bean.pluginName#else$componentCode#end</code>
+	<code>#if($bean.edoBuilder.plugin)$bean.edoBuilder.pluginName#else$componentCode#end</code>
 	<description>${beanClass}</description>
 	<installation>
 		<tableMapping>
 			<datasource name="servDataSource">
-				<class>${bean.getPackageName()}.${constants.initPackage}.$beanClass</class>
+				<class>${bean.edoBuilder.packageName}.${constants.initPackage}.$beanClass</class>
 			</datasource>
 		</tableMapping>
 		<environment code="production">
 			<defaultSqlResources>
 				<datasource name="portDataSource">
-#if($bean.plugin)
-classpath:sql/plugins/${bean.getPluginName()}/port_data_production.sql
+#if($bean.edoBuilder.plugin)
+classpath:sql/plugins/${bean.getEdoBuilder().getPluginName()}/port_data_production.sql
 #else
 classpath:sql/misc/$componentCode/port_data_production.sql
 #end
 				</datasource>
 				<datasource name="servDataSource">
-#if($bean.plugin)
-classpath:sql/plugins/$bean.getPluginName()/serv_data_production.sql
+#if($bean.edoBuilder.plugin)
+classpath:sql/plugins/${bean.edoBuilder.pluginName}/serv_data_production.sql
 #else
 classpath:sql/misc/$componentCode/serv_data_production.sql
 #end
@@ -34,15 +34,15 @@ classpath:sql/misc/$componentCode/serv_data_production.sql
 		<environment code="test">
 			<defaultSqlResources>
 				<datasource name="portDataSource">
-#if($bean.plugin)
-classpath:sql/plugins/${bean.getPluginName()}/port_data_test.sql
+#if($bean.edoBuilder.plugin)
+classpath:sql/plugins/${bean.getEdoBuilder().getPluginName()}/port_data_test.sql
 #else
 classpath:sql/misc/$componentCode/port_data_test.sql
 #end
 				</datasource>
 				<datasource name="servDataSource">
-#if($bean.plugin)
-classpath:sql/plugins/${bean.getPluginName()}/serv_data_test.sql
+#if($bean.edoBuilder.plugin)
+classpath:sql/plugins/${bean.getEdoBuilder().getPluginName()}/serv_data_test.sql
 #else
 classpath:sql/misc/$componentCode/serv_data_test.sql
 #end

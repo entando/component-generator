@@ -30,14 +30,15 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.entando.edo.model.EdoBean;
+import org.entando.edo.model.EdoBuilder;
 
 
 public class CommandlineParser {
 
 	private static Logger _logger = LogManager.getLogger(CommandlineParser.class);
 
-	public EdoBean generate(String[] args) throws Throwable {
-		EdoBean edoBean = null;
+	public EdoBuilder generate(String[] args) throws Throwable {
+		EdoBuilder edoBuilder = null;
 		try {
 			if (null != args) {
 				ArrayList<String> rawArgs = new ArrayList<String>();
@@ -59,39 +60,42 @@ public class CommandlineParser {
 				outputCommandLineHelp(options);
 				return null;
 			}
-			edoBean = new EdoBean();
-			edoBean.setOriginalArgs(originalArgs);
+			edoBuilder = new EdoBuilder();
+			edoBuilder.setOriginalArgs(originalArgs);
 			if (null != cl) {
-				args = processCommandline(cl, edoBean, args);
+				args = processCommandline(cl, edoBuilder, args);
 			}
 			/////////
 
 			if (this.checkForPom) {	
 			_logger.trace("check for a pom.xml");
-			boolean pomExists = new File(edoBean.getBaseDir(), "pom.xml").exists();
+			boolean pomExists = new File(edoBuilder.getBaseDir(), "pom.xml").exists();
 			if (!pomExists) {
-				_logger.error("pom.xml not found in dir:'{}'", edoBean.getBaseDir());
-				throw new Exception("no pom.xml found in " + edoBean.getBaseDir());
+				_logger.error("pom.xml not found in dir:'{}'", edoBuilder.getBaseDir());
+				throw new Exception("no pom.xml found in " + edoBuilder.getBaseDir());
 			}
-			_logger.trace("found {}.pom.xml", edoBean.getBaseDir());
+			_logger.trace("found {}.pom.xml", edoBuilder.getBaseDir());
 			}
 
 
-
+			EdoBean edoBean = new EdoBean();
 			IAgrumentParser parser = new NameParser();
 			String a[] = parser.parse(edoBean, args);
 
 			parser = new FieldsParser();
 			a = parser.parse(edoBean, a);
-			_logger.warn("These parameters were skipped: " + Arrays.toString(a));
-
+			if (a.length > 0) {
+				_logger.warn("These parameters were skipped: " + Arrays.toString(a));
+			}
+			edoBuilder.addBean(edoBean);
+			
 		} catch (ParseException exp) {
 			_logger.error("Error parsing command line", exp);
 		} catch (Throwable t) {
 			_logger.error("Error parsing command line", t);
 			throw t;
 		}
-		return edoBean;
+		return edoBuilder;
 	}
 
 
@@ -119,25 +123,25 @@ public class CommandlineParser {
 	 * @return
 	 * @throws IllegalArgumentException
 	 */
-	private String[] processCommandline(CommandLine cl, EdoBean edoBean, String[] args) throws IllegalArgumentException {
+	private String[] processCommandline(CommandLine cl, EdoBuilder edoBuilder, String[] args) throws IllegalArgumentException {
 		if (cl.hasOption(OPTION_BASE_DIR)) {
 			String baseDir = cl.getOptionValue(OPTION_BASE_DIR);
 			if (StringUtils.isNotBlank(baseDir)) {
 				if (baseDir.endsWith(File.separator)) {
 					baseDir = StringUtils.removeEnd(baseDir, File.separator);
 				}
-				edoBean.setBaseDir(baseDir);
+				edoBuilder.setBaseDir(baseDir);
 			}
 		}
-		_logger.debug("baseDir is: '{}'", edoBean.getBaseDir());
+		_logger.debug("baseDir is: '{}'", edoBuilder.getBaseDir());
 
 		if (cl.hasOption(OPTION_PERMISSION)) {
 			String perm = cl.getOptionValue(OPTION_PERMISSION);
 			if (StringUtils.isNotBlank(perm)) {
-				edoBean.setPermission(perm);
+				edoBuilder.setPermission(perm);
 			}
 		}
-		_logger.debug("permission is: '{}'", edoBean.getPermission());
+		_logger.debug("permission is: '{}'", edoBuilder.getPermission());
 
 		String packageName = null;
 		if (cl.hasOption(OPTION_PACKAGE)) {
@@ -154,8 +158,8 @@ public class CommandlineParser {
 			_logger.trace("auoto generate packagename");
 			packageName = "org.entando.entando.plugins.jp" + cl.getArgs()[0].toLowerCase();
 		}
-		edoBean.setPackageName(packageName);
-		_logger.debug("packagename: is '{}'", edoBean.getPackageName());
+		edoBuilder.setPackageName(packageName);
+		_logger.debug("packagename: is '{}'", edoBuilder.getPackageName());
 
 
 		args = Arrays.copyOfRange(args, cl.getOptions().length, args.length);

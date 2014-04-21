@@ -1,3 +1,4 @@
+#set( $builder = $bean.edoBuilder)
 #set( $beanVar = $constants.getUnCapitalize($bean.name))
 #set( $beanClass = $bean.name)
 #set( $pk_type = $bean.fields[0].type.javaType)
@@ -5,9 +6,9 @@
 #set( $pk_var = $bean.fields[0].name)
 #set( $queryName = $constants.toUpperCase($beanClass))
 #set( $tableName = $bean.tableName)
-#set( $springPrep = $constants.getLowerCase($bean.springBeanPreposition))
+#set( $springPrep = $constants.getLowerCase($builder.springBeanPreposition))
 #parse("templates/common/license/java_license.vm")
-package ${bean.getPackageName()}.${constants.apsPackage}.tags;
+package ${builder.packageName}.${constants.apsPackage}.tags;
 
 import java.util.List;
 
@@ -18,7 +19,7 @@ import com.agiletec.aps.system.RequestContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.agiletec.aps.util.ApsWebApplicationUtils;
-import ${bean.getPackageName()}.${constants.servicesPackage}.${constants.getLowerCase($bean.name)}.I${beanClass}Manager;
+import ${builder.packageName}.${constants.servicesPackage}.${constants.getLowerCase($bean.name)}.I${beanClass}Manager;
 
 public class ${beanClass}ListTag extends TagSupport {
 

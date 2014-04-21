@@ -1,12 +1,12 @@
 #set( $beanVar = $constants.getUnCapitalize($bean.name))
 #set( $beanClass = $bean.name)
 #set( $pk_field = $bean.fields[0])
-#if($bean.plugin)
-#set($label_prep="${bean.pluginName}.")
+#if($bean.edoBuilder.plugin)
+#set($label_prep="${bean.edoBuilder.pluginName}.")
 #else
 #set($label_prep="")
 #end
-#set( $springPrep = $constants.getLowerCase($bean.springBeanPreposition))
+#set( $springPrep = $constants.getLowerCase($bean.edoBuilder.springBeanPreposition))
 <%@ taglib prefix="s" uri="/struts-tags" %>
 <%@ taglib prefix="wpsf" uri="/apsadmin-form" %>
 
@@ -26,7 +26,7 @@
 
 <s:action namespace="/do/Page" name="printPageDetails" executeResult="true" ignoreContextParams="true"><s:param name="selectedNode" value="pageCode"></s:param></s:action>
 
-<s:form action="saveConfig" namespace="/do/${bean.springBeanPreposition}/${beanClass}/Page/SpecialWidget/${springPrep}${beanClass}Config" cssClass="form-horizontal">
+<s:form action="saveConfig" namespace="/do/${bean.edoBuilder.springBeanPreposition}/${beanClass}/Page/SpecialWidget/${springPrep}${beanClass}Config" cssClass="form-horizontal">
 <div class="panel panel-default">
 	<div class="panel-heading">
 		<s:include value="/WEB-INF/apsadmin/jsp/portal/include/frameInfo.jsp" />

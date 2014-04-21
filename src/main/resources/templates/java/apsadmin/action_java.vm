@@ -1,11 +1,12 @@
+#set( $builder = $bean.edoBuilder)
 #set( $beanVar = $constants.getUnCapitalize($bean.name))
 #set( $beanClass = $bean.name)
 #set( $pk_var = $bean.fields[0].name)
 #parse("templates/common/license/java_license.vm")
-package ${bean.getPackageName()}.${constants.apsadminPackage}.$constants.getLowerCase($beanVar);
+package ${builder.packageName}.${constants.apsadminPackage}.$constants.getLowerCase($beanVar);
 
-import ${bean.getPackageName()}.${constants.servicesPackage}.$constants.getLowerCase($bean.name).$beanClass;
-import ${bean.getPackageName()}.${constants.servicesPackage}.${constants.getLowerCase($bean.name)}.I${beanClass}Manager;
+import ${builder.packageName}.${constants.servicesPackage}.$constants.getLowerCase($bean.name).$beanClass;
+import ${builder.packageName}.${constants.servicesPackage}.${constants.getLowerCase($bean.name)}.I${beanClass}Manager;
 
 $bean.getImports(false)
 

@@ -1,6 +1,6 @@
 #set( $beanVar = $constants.getUnCapitalize($bean.name))
 #set( $beanClass = $bean.name)
-#set( $springPrep = $constants.getLowerCase($bean.springBeanPreposition))
+#set( $springPrep = $constants.getLowerCase($bean.edoBuilder.springBeanPreposition))
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE struts PUBLIC
     "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
@@ -8,7 +8,7 @@
 
 <struts>
 
-    <package name="${springPrep}_do/${bean.springBeanPreposition}/${beanClass}/Page/SpecialWidget" namespace="/do/Page/SpecialWidget" extends="core_do/Page/SpecialWidget">
+    <package name="${springPrep}_do/${bean.edoBuilder.springBeanPreposition}/${beanClass}/Page/SpecialWidget" namespace="/do/Page/SpecialWidget" extends="core_do/Page/SpecialWidget">
 
 
     	<action name="${springPrep}${beanClass}Config" class="${springPrep}${beanClass}ConfigAction" method="init">
@@ -19,7 +19,7 @@
     </package>
 
 
-	<package name="${springPrep}_do/${bean.springBeanPreposition}/${beanClass}/Page/SpecialWidget/${springPrep}${beanClass}Config" namespace="/do/${bean.springBeanPreposition}/${beanClass}/Page/SpecialWidget/${springPrep}${beanClass}Config" extends="entando-default">
+	<package name="${springPrep}_do/${bean.edoBuilder.springBeanPreposition}/${beanClass}/Page/SpecialWidget/${springPrep}${beanClass}Config" namespace="/do/${bean.edoBuilder.springBeanPreposition}/${beanClass}/Page/SpecialWidget/${springPrep}${beanClass}Config" extends="entando-default">
 
 		<global-results>
     		<result name="pageTree" type="chain">

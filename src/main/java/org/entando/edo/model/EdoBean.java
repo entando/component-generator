@@ -16,7 +16,6 @@
 */
 package org.entando.edo.model;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -62,42 +61,11 @@ public class EdoBean {
 		
 	}
 	
-	public boolean isPlugin() {
-		return this.getPackageName().contains(".plugins.");
-	}
-
-	public String getPluginName() {
-		String name = null;
-		if (isPlugin()) {
-			name = StringUtils.substringAfter(this.getPackageName(), ".plugins.");
-		}
-		return name;
-	}
-
-	public String getProjectName() {
-		String name = StringUtils.substringAfterLast(this.getBaseDir(), File.separator);
-		name = name.replaceAll("_", "");
-		name = name.replaceAll("-", "");
-		return StringUtils.uncapitalize(name);
-	}
-	
 	public String getTableName() {
 		String name = this.getName().toLowerCase();
-		if (isPlugin()) {
-			String pname = StringUtils.substringAfter(this.getPackageName(), ".plugins.");
+		if (this.getEdoBuilder().isPlugin()) {
+			String pname = StringUtils.substringAfter(this.getEdoBuilder().getPackageName(), ".plugins.");
 			name = pname.split("\\.")[0] + "_" + name;
-		}
-		return name;
-	}
-	
-	//XXX
-	public String getSpringBeanPreposition() {
-		String name = StringUtils.substringAfterLast(this.getBaseDir(), File.separator);
-		name = name.replaceAll("_", "");
-		name = name.replaceAll("-", "");
-		if (isPlugin()) {
-			String pname = StringUtils.substringAfter(this.getPackageName(), ".plugins.");
-			name = pname.split("\\.")[0];
 		}
 		return name;
 	}
@@ -151,14 +119,6 @@ public class EdoBean {
 		return apply;
 	}
 
-
-	/**
-	 * @return
-	 */
-	public String getPackageFolder() {
-		return this.getPackageName().replaceAll("\\.", "/");
-	}
-	
 	public List<EdoField> getSearchFields() {
 		List<EdoField> searchFields = new ArrayList<EdoField>();
 		Iterator<EdoField> it = this.getFields().iterator();
@@ -192,40 +152,15 @@ public class EdoBean {
 	public void setFields(List<EdoField> fields) {
 		this._fields = fields;
 	}
-	
-	public String getPackageName() {
-		return _packageName;
-	}
-	public void setPackageName(String packageName) {
-		this._packageName = packageName;
-	}
-	
-	public String getBaseDir() {
-		return _baseDir;
-	}
-	public void setBaseDir(String baseDir) {
-		this._baseDir = baseDir;
-	}
 
-	public String getPermission() {
-		return _permission;
+	public EdoBuilder getEdoBuilder() {
+		return _edoBuilder;
 	}
-	public void setPermission(String permission) {
-		this._permission = permission;
-	}
-
-	public String getOriginalArgs() {
-		return _originalArgs;
-	}
-	public void setOriginalArgs(String originalArgs) {
-		this._originalArgs = originalArgs;
+	public void setEdoBuilder(EdoBuilder edoBuilder) {
+		this._edoBuilder = edoBuilder;
 	}
 
 	private String _name;
 	private List<EdoField> _fields = new ArrayList<EdoField>();
-	private String _packageName;
-	private String _baseDir = System.getProperty("user.dir");
-	private String _permission = "superuser";
-	private String _originalArgs = null;
-
+	private EdoBuilder _edoBuilder;
 }
