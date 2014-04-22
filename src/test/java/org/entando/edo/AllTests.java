@@ -32,14 +32,14 @@ import org.junit.runners.Suite;
 	TestBuilder.class,
 	TestBuilderNoPlugin.class,
 	
-//	TestEdoBean.class,
-//	
-//	TestCommandlineParser.class,
-//	TestFieldsParser.class,
-//	TestNameParser.class,
-//	TestPackageValidator.class,
-//	
-//	TestReport.class
+	TestEdoBean.class,
+	
+	TestCommandlineParser.class,
+	TestFieldsParser.class,
+	TestNameParser.class,
+	TestPackageValidator.class,
+	
+	TestReport.class
 	
 })
 public class AllTests {

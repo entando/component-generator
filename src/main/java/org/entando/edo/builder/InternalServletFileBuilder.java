@@ -26,7 +26,7 @@ import org.entando.edo.model.EdoBean;
 
 public class InternalServletFileBuilder {
 
-	public static Logger logger = LogManager.getLogger(ControllerFileBuilder.class);
+	public static Logger logger = LogManager.getLogger(InternalServletFileBuilder.class);
 
 
 	

@@ -65,6 +65,10 @@ public class CommandlineParser {
 			if (null != cl) {
 				args = processCommandline(cl, edoBuilder, args);
 			}
+			if (StringUtils.isBlank(edoBuilder.getPackageName())) {
+				_logger.warn("No package name!, skip");
+				return null;
+			}
 			/////////
 
 			if (this.checkForPom) {	
@@ -77,7 +81,7 @@ public class CommandlineParser {
 			_logger.trace("found {}.pom.xml", edoBuilder.getBaseDir());
 			}
 
-
+			
 			EdoBean edoBean = new EdoBean();
 			IAgrumentParser parser = new NameParser();
 			String a[] = parser.parse(edoBean, args);
@@ -155,12 +159,18 @@ public class CommandlineParser {
 				}
 			}
 		} else {
-			_logger.trace("auoto generate packagename");
-			packageName = "org.entando.entando.plugins.jp" + cl.getArgs()[0].toLowerCase();
+			_logger.trace("auto generate packagename");
+			if (!cl.getArgList().isEmpty()) {
+				packageName = "org.entando.entando.plugins.jp" + cl.getArgs()[0].toLowerCase();
+			} else {
+				_logger.warn("Unable to generate the default package name. No enough args");
+			}
 		}
+		
+		
+		
 		edoBuilder.setPackageName(packageName);
 		_logger.debug("packagename: is '{}'", edoBuilder.getPackageName());
-
 
 		args = Arrays.copyOfRange(args, cl.getOptions().length, args.length);
 		return args;

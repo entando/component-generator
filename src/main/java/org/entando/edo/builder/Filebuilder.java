@@ -31,8 +31,8 @@ public class Filebuilder {
 	public static Logger logger = LogManager.getLogger(Filebuilder.class);
 	
 	private static String getPojoDir(EdoBean edoBean) {
-		String pojoPath = edoBean.getEdoBuilder().getJavaServicesFolder() + edoBean.getName().toLowerCase() + File.separator;
-		return pojoPath;
+		String folder = edoBean.getEdoBuilder().getJavaServicesFolder() + edoBean.getName().toLowerCase() + File.separator;
+		return folder;
 	}
 
 	
@@ -88,32 +88,30 @@ public class Filebuilder {
 	
 	//API bean
 	public static String getApiBeanFilePath(EdoBean bean) {
-		//TODO test
 		String filename = "JAXB" + bean.getName() + ".java";
 		String finalfile = Filebuilder.getPojoDir(bean)  + "api" + File.separator + filename;
 		return finalfile;
 	}
+	
 	public static String getApiResponseFilePath(EdoBean bean) {
-		//TODO test
 		String filename = bean.getName() + "Response.java";
 		String finalfile = Filebuilder.getPojoDir(bean)  + "api" + File.separator + filename;
 		return finalfile;
 	}
+	
 	public static String getApiListResponseFilePath(EdoBean bean) {
-		//TODO test
 		String filename = bean.getName() + "ListResponse.java";
 		String finalfile = Filebuilder.getPojoDir(bean)  + "api" + File.separator + filename;
 		return finalfile;
 	}
 	
 	public static String getApiResponseResultFilePath(EdoBean bean) {
-		//TODO test
 		String filename = bean.getName() + "ResponseResult.java";
 		String finalfile = Filebuilder.getPojoDir(bean)  + "api" + File.separator + filename;
 		return finalfile;
 	}
+	
 	public static String getApiListResponseResultFilePath(EdoBean bean) {
-		//TODO test
 		String filename = bean.getName() + "ListResponseResult.java";
 		String finalfile = Filebuilder.getPojoDir(bean)  + "api" + File.separator + filename;
 		return finalfile;
@@ -136,9 +134,9 @@ public class Filebuilder {
 	//-------------
 	
 	public static String getSpringManagerFilePath(EdoBean bean) {
-		String apsSpringPath = bean.getEdoBuilder().getSpringManagerConfigFolder();
+		String folder = bean.getEdoBuilder().getSpringManagerConfigFolder();
 		String filename = bean.getEdoBuilder().getSpringBeanPreposition() + bean.getName() + "ManagersConfig.xml";
-		String finalfile = Filebuilder.checkAndRenameFile(bean.getEdoBuilder().getBaseDir(), apsSpringPath, filename);
+		String finalfile = Filebuilder.checkAndRenameFile(bean.getEdoBuilder().getBaseDir(), folder, filename);
 		return finalfile;
 	}
 
@@ -146,10 +144,8 @@ public class Filebuilder {
 		String folder = bean.getEdoBuilder().getResourcesConfigFolder("component", null);
 		String filename = "component.xml";
 		String finalfile = Filebuilder.checkAndRenameFile(bean.getEdoBuilder().getBaseDir(), folder, filename);
-		
 		return finalfile;
 	}
-
 	
 	public static String getEntandoComponentSqlServProductionFilePath(EdoBean bean) {
 		String folder = bean.getEdoBuilder().getEntandoComponentSqlFolder();
@@ -159,23 +155,23 @@ public class Filebuilder {
 	}
 	
 	public static String getEntandoComponentSqlPortProductionFilePath(EdoBean bean) {
-		String componentPath = bean.getEdoBuilder().getEntandoComponentSqlFolder();
+		String folder = bean.getEdoBuilder().getEntandoComponentSqlFolder();
 		String filename = "port_data_production.sql";
-		String finalfile = Filebuilder.checkAndRenameFile(bean.getEdoBuilder().getBaseDir(), componentPath, filename);
+		String finalfile = Filebuilder.checkAndRenameFile(bean.getEdoBuilder().getBaseDir(), folder, filename);
 		return finalfile;
 	}
 	
 	public static String getEntandoComponentSqlServTestFilePath(EdoBean bean) {
-		String componentPath = bean.getEdoBuilder().getEntandoComponentSqlTestFolder();
+		String folder = bean.getEdoBuilder().getEntandoComponentSqlTestFolder();
 		String filename = "serv_data_test.sql";
-		String finalfile = Filebuilder.checkAndRenameFile(bean.getEdoBuilder().getBaseDir(), componentPath, filename);
+		String finalfile = Filebuilder.checkAndRenameFile(bean.getEdoBuilder().getBaseDir(), folder, filename);
 		return finalfile;
 	}
 	
 	public static String getEntandoComponentSqlPortTestFilePath(EdoBean bean) {
-		String componentPath = bean.getEdoBuilder().getEntandoComponentSqlTestFolder();
+		String folder = bean.getEdoBuilder().getEntandoComponentSqlTestFolder();
 		String filename = "port_data_test.sql";
-		String finalfile = Filebuilder.checkAndRenameFile(bean.getEdoBuilder().getBaseDir(), componentPath, filename);
+		String finalfile = Filebuilder.checkAndRenameFile(bean.getEdoBuilder().getBaseDir(), folder, filename);
 		return finalfile;
 	}
 
@@ -189,5 +185,4 @@ public class Filebuilder {
 		return finalfile;
 	}
 
-	
 }

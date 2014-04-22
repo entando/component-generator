@@ -16,28 +16,38 @@
 */
 package org.entando.edo.report;
 
-import org.entando.edo.report.Report;
+import java.lang.reflect.Field;
 
-import junit.framework.TestCase;
+import junit.framework.Assert;
+
+import org.junit.Before;
+import org.junit.Test;
 
 
-public class TestReport extends TestCase {
+public class TestReport  {
 
+    @Before
+    public void resetSingleton() throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
+       Field instance = Report.class.getDeclaredField("obj");
+       instance.setAccessible(true);
+       instance.set(null, null);
+    }
 	
+	@Test
 	public void testReport() throws Exception {
 		Report report = Report.getInstance();
 		report.addFile("10");
 		report.addFile("20");
 		report.addFileToMerge("a");
 		Report report2 = Report.getInstance();
-		assertEquals(report, report2);
+		Assert.assertEquals(report, report2);
 		report2.addFile("30");
 		report2.addFileToMerge("b");
 		report2.addFileToMerge("c");
 		Report report3 = Report.getInstance();
-		assertEquals(report3, report2);
-		assertEquals(3, report3.getFiles().size());
-		assertEquals(3, report3.getFilesToMerge().size());
+		Assert.assertEquals(report3, report2);
+		Assert.assertEquals(3, report3.getFiles().size());
+		Assert.assertEquals(3, report3.getFilesToMerge().size());
 	}
 	
 }

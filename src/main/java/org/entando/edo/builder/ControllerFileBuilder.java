@@ -168,20 +168,10 @@ public class ControllerFileBuilder {
 	//---
 	
 	public static String getActionShortCutFilePath(EdoBean bean) {
-//		String apsSpringPath = bean.getEdoBuilder().getBaseDir() + FolderConstants.getResourcesFolder() + "shortcuts" + File.separator; 
-//		if (bean.getEdoBuilder().isPlugin()) {
-//			apsSpringPath = apsSpringPath + "plugins" + File.separator + bean.getEdoBuilder().getPluginName() + File.separator;
-//		} else {
-//			apsSpringPath = apsSpringPath ;
-//		}
-//		apsSpringPath = apsSpringPath + "apsadmin" + File.separator;
-	
-		
-		String apsSpringPath = bean.getEdoBuilder().getResourcesConfigFolder("shortcuts", "apsadmin");
+		String folder = bean.getEdoBuilder().getResourcesConfigFolder("shortcuts", "apsadmin");
 		String filename = "shortcuts.xml";
-		String finalfile = ControllerFileBuilder.checkAndRenameFile(bean.getEdoBuilder().getBaseDir(), apsSpringPath, filename);
+		String finalfile = ControllerFileBuilder.checkAndRenameFile(bean.getEdoBuilder().getBaseDir(), folder, filename);
 		return finalfile;
-		
 	}
 
 	public static String getActionStrutsPluginFilePath(EdoBean bean) {
@@ -197,8 +187,6 @@ public class ControllerFileBuilder {
 			finalfile = folder + filename;
 			logger.warn("\n\n*** Warning!\nThe file:\n\n\t" + StringUtils.substringAfter(finalfile, bean.getEdoBuilder().getBaseDir()  + File.separator) + "\n\nneeds your attention!.\nPlease merge it with your existing {} or rename it according to your web.xml cofiguration.\n", folder + "entando-struts-plugin");
 		}
-		
-
 		return finalfile;
 	}
 	

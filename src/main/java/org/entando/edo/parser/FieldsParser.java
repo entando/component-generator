@@ -108,7 +108,11 @@ public class FieldsParser implements IAgrumentParser {
 			}
 		}
 		edoBean.setFields(fieldsList);
-		return Arrays.copyOfRange(args, index+1, args.length);
+		String[] result = args;
+		if (args.length>=index+1) {
+			result = Arrays.copyOfRange(args, index+1, args.length);
+		}
+		return result;
 	}
 
 	protected void addDefaulPkFileld(List<EdoField> fieldsList,	List<String> fieldNames) {

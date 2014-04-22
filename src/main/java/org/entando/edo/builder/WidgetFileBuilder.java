@@ -24,23 +24,23 @@ import org.entando.edo.model.EdoBean;
 public class WidgetFileBuilder {
 
 	private static String getApsadminJspFolder(EdoBean bean) {
-		String result = bean.getEdoBuilder().getWebinfApsadminFolder() + "jsp" + File.separator;
-		return result;
+		String folder = bean.getEdoBuilder().getWebinfApsadminFolder() + "jsp" + File.separator;
+		return folder;
 	}
 
 	private static String getApsJspFolder(EdoBean bean) {
-		String result = bean.getEdoBuilder().getWebinfApsFolder() + "jsp" + File.separator;
-		return result;
+		String folder = bean.getEdoBuilder().getWebinfApsFolder() + "jsp" + File.separator;
+		return folder;
 	}
 	
 	private static String getSpecialWidgetActionDir(EdoBean bean) {
-		String pojoPath = bean.getEdoBuilder().getJavaControllerFolder()  + "portal" +  File.separator  + "specialwidget" + File.separator  + bean.getName().toLowerCase() + File.separator;
-		return pojoPath;
+		String folder = bean.getEdoBuilder().getJavaControllerFolder()  + "portal" +  File.separator  + "specialwidget" + File.separator  + bean.getName().toLowerCase() + File.separator;
+		return folder;
 	}
 
 	private static String getApsTagsActionDir(EdoBean bean) {
-		String pojoPath = bean.getEdoBuilder().getJavaFolder() + FolderConstants.getApsFolder() + File.separator + "tags" +  File.separator;
-		return pojoPath;
+		String folder = bean.getEdoBuilder().getJavaFolder() + FolderConstants.getApsFolder() + File.separator + "tags" +  File.separator;
+		return folder;
 	}
 
 	public static String getSpecialWidgetActionFilePath(EdoBean bean) {

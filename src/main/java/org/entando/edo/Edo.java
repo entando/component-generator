@@ -31,8 +31,9 @@ public class Edo {
 		try {
 			CommandlineParser commandlineParser = new CommandlineParser();
 			EdoBuilder edoBuilder = commandlineParser.generate(args);
+			if (null == edoBuilder) return;
 			EdoBean edoBean = edoBuilder.getBean();
-			if (null == edoBean) return; //throw new Throwable("error parsing options");
+			if (null == edoBean) return; 
 
 			logger.info("Start process...");
 			Builder b = new Builder();

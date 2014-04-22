@@ -16,48 +16,59 @@
 */
 package org.entando.edo.parser;
 
-import junit.framework.TestCase;
+import java.io.File;
 
 import org.entando.edo.Edo;
+import org.entando.edo.mock.parser.MockCommandLineParser;
 import org.entando.edo.model.EdoBean;
+import org.entando.edo.model.EdoBuilder;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 
 @RunWith(JUnit4.class)
-public class TestCommandlineParser extends TestCase {
-/*
+public class TestCommandlineParser  {
+
 	@Test
 	public void testTest1() throws Throwable {
-		CommandlineParser parser = new CommandlineParser();	
-		String args = "-package=com.entando.plugins.jpacme Person id:primary_key name:string surname:string-r20";
-		EdoBean bean = parser.generate(args.split(" "));
+		MockCommandLineParser commandline = new MockCommandLineParser();
+		commandline.setBaseDir(System.getProperty("user.dir") + File.separator + "target" + File.separator + "sandbox");
+		commandline.setBeanExpression("Person id:primary_key name:string surname:string-r20");
+		commandline.setPackageName("com.entando.plugins.jpacme");
+		EdoBuilder edoBuilder = commandline.generate();
+		EdoBean bean = edoBuilder.getBean();
 		
-		assertNotNull(bean);
-		assertEquals("Person", bean.getName());
-		assertEquals("com.entando.plugins.jpacme", bean.getPackageName());
-		assertEquals(3, bean.getFields().size());
+		Assert.assertNotNull(bean);
+		Assert.assertEquals("Person", bean.getName());
+		Assert.assertEquals("com.entando.plugins.jpacme", edoBuilder.getPackageName());
+		Assert.assertEquals(3, bean.getFields().size());
 		
-		assertTrue(bean.isPlugin());
-
-		
+		Assert.assertTrue(edoBuilder.isPlugin());
 	}
 
 	@Test
 	public void testTest2() throws Throwable {
-		CommandlineParser parser = new CommandlineParser();
-		String args = "Person name:string surname:string-r20";
-		EdoBean bean = parser.generate(args.split(" "));
-		assertNotNull(bean);
+		MockCommandLineParser commandline = new MockCommandLineParser();
+		commandline.setBaseDir(System.getProperty("user.dir") + File.separator + "target" + File.separator + "sandbox");
+		commandline.setBeanExpression("Person name:string surname:string-r20");
+		//commandline.setPackageName("com.entando.plugins.jpacme");
+		EdoBuilder edoBuilder = commandline.generate();
+		EdoBean bean = edoBuilder.getBean();
+
+		Assert.assertNotNull(bean);
 	}
 
 	@Test
 	public void testTest3() throws Throwable {
-		CommandlineParser parser = new CommandlineParser();
-		String args ="    ";
-		EdoBean bean = parser.generate(args.split(" "));
-		assertNull("should be null", bean);
+		MockCommandLineParser commandline = new MockCommandLineParser();
+		commandline.setBaseDir(System.getProperty("user.dir") + File.separator + "target" + File.separator + "sandbox");
+		//commandline.setBeanExpression("Person name:string surname:string-r20");
+		//commandline.setPackageName("com.entando.plugins.jpacme");
+		EdoBuilder edoBuilder = commandline.generate();
+		
+		Assert.assertNull("should be null", edoBuilder);
 		
 	}
 	
@@ -67,5 +78,5 @@ public class TestCommandlineParser extends TestCase {
 		Edo.main(null);
 		
 	}
-*/
+
 }

@@ -16,63 +16,102 @@
 */
 package org.entando.edo.model;
 
-import junit.framework.TestCase;
+import java.io.File;
 
-import org.entando.edo.parser.CommandlineParser;
+import org.entando.edo.mock.parser.MockCommandLineParser;
+import org.junit.Assert;
+import org.junit.Test;
 
 
-public class TestEdoBean extends TestCase {
-/*
-	public void test1() throws Throwable {
-		CommandlineParser parser = new CommandlineParser();
-
-		String args = "Person name:string surname:string-r20";
-		EdoBean bean = parser.generate(args.split(" "));
+public class TestEdoBean {
+	
+	
+	@Test
+	public void testEntandoSearcherAvailable() throws Throwable {
+		MockCommandLineParser commandline = new MockCommandLineParser();
+		commandline.setBaseDir(System.getProperty("user.dir") + File.separator + "target" + File.separator + "sandbox");
+		commandline.setBeanExpression("Person name:string surname:string-r20");
+		EdoBuilder edoBuilder = commandline.generate();
+		EdoBean bean = edoBuilder.getBean();
 		
-		assertNotNull(bean);
-		assertTrue(bean.isEntandoSearcherAvailable());
-		
-		
+		Assert.assertNotNull(bean);
+		Assert.assertTrue(bean.isEntandoSearcherAvailable());
 	}
 	
 	
-	public void testSpringPrepositionForPlugin() {
-		EdoBean scaffoldBean = new EdoBean();
-		scaffoldBean.setPackageName("com.entando.plugins.jpacme");
-		assertEquals("jpacme", scaffoldBean.getSpringBeanPreposition());
-		assertTrue(scaffoldBean.isPlugin());
-		assertEquals("jpacme", scaffoldBean.getPluginName());
+	@Test
+	public void testSpringPrepositionForPlugin() throws Throwable {
+		MockCommandLineParser commandline = new MockCommandLineParser();
+		commandline.setBaseDir(System.getProperty("user.dir") + File.separator + "target" + File.separator + "sandbox");
+		commandline.setBeanExpression("Person name:string surname:string-r20");
+		commandline.setPackageName("com.entando.plugins.jpacme");
+		EdoBuilder edoBuilder = commandline.generate();
+		
+		Assert.assertEquals("jpacme", edoBuilder.getSpringBeanPreposition());
+		Assert.assertTrue(edoBuilder.isPlugin());
+		Assert.assertEquals("jpacme", edoBuilder.getPluginName());
 	}
 
-	public void testSpringPreposition1() {
-		EdoBean scaffoldBean = new EdoBean();
-		scaffoldBean.setPackageName("com.agiletec.xxx");
-		assertEquals("edo", scaffoldBean.getSpringBeanPreposition());
-		assertFalse(scaffoldBean.isPlugin());
+	@Test
+	public void testSpringPreposition1() throws Throwable {
+		MockCommandLineParser commandline = new MockCommandLineParser();
+		commandline.setBaseDir(System.getProperty("user.dir") + File.separator + "target" + File.separator + "sandbox");
+		commandline.setBeanExpression("Person name:string surname:string-r20");
+		commandline.setPackageName("com.agiletec.xxx");
+		EdoBuilder edoBuilder = commandline.generate();
+		
+		Assert.assertEquals("sandbox", edoBuilder.getSpringBeanPreposition());
+		Assert.assertFalse(edoBuilder.isPlugin());
 	}
 
-	public void testSpringPreposition2() {
-		EdoBean scaffoldBean = new EdoBean();
-		scaffoldBean.setPackageName("org.acme");
-		assertEquals("edo", scaffoldBean.getSpringBeanPreposition());
-		assertFalse(scaffoldBean.isPlugin());
-		assertNull(scaffoldBean.getPluginName());
+	@Test
+	public void testSpringPreposition2() throws Throwable {
+		MockCommandLineParser commandline = new MockCommandLineParser();
+		commandline.setBaseDir(System.getProperty("user.dir") + File.separator + "target" + File.separator + "sandbox");
+		commandline.setBeanExpression("Person name:string surname:string-r20");
+		commandline.setPackageName("org.acme");
+		EdoBuilder edoBuilder = commandline.generate();
+		
+		Assert.assertEquals("sandbox", edoBuilder.getSpringBeanPreposition());
+		Assert.assertFalse(edoBuilder.isPlugin());
+		Assert.assertNull(edoBuilder.getPluginName());
 	}
 
-	public void testTableNameForPlugin() {
-		EdoBean scaffoldBean = new EdoBean();
-		scaffoldBean.setPackageName("com.entando.plugins.jpacme");
-		scaffoldBean.setName("Foo");
-		assertEquals("jpacme_foo", scaffoldBean.getTableName());
-		assertTrue(scaffoldBean.isPlugin());
+	@Test
+	public void testTableNameForPlugin() throws Throwable {
+		MockCommandLineParser commandline = new MockCommandLineParser();
+		commandline.setBaseDir(System.getProperty("user.dir") + File.separator + "target" + File.separator + "sandbox");
+		commandline.setBeanExpression("Foo custom_id:primary_key");
+		commandline.setPackageName("com.entando.plugins.jpacme");
+		EdoBuilder edoBuilder = commandline.generate();
+	
+		Assert.assertEquals("jpacme_foo", edoBuilder.getBean().getTableName());
+		Assert.assertTrue(edoBuilder.isPlugin());
 	}
 	
-	public void testTableName1() {
-		EdoBean scaffoldBean = new EdoBean();
-		scaffoldBean.setPackageName("com.agiletec.xxx");
-		scaffoldBean.setName("Foo");
-		assertEquals("foo", scaffoldBean.getTableName());
-		assertFalse(scaffoldBean.isPlugin());
+
+	@Test
+	public void testTableName1() throws Throwable {
+		MockCommandLineParser commandline = new MockCommandLineParser();
+		commandline.setBaseDir(System.getProperty("user.dir") + File.separator + "target" + File.separator + "sandbox");
+		commandline.setBeanExpression("Foo custom_id:primary_key");
+		commandline.setPackageName("com.agiletec.xxx");
+		EdoBuilder edoBuilder = commandline.generate();
+
+		Assert.assertEquals("foo", edoBuilder.getBean().getTableName());
+		Assert.assertFalse(edoBuilder.isPlugin());
 	}
-*/
+
+	@Test
+	public void testTableName2() throws Throwable {
+		MockCommandLineParser commandline = new MockCommandLineParser();
+		commandline.setBaseDir(System.getProperty("user.dir") + File.separator + "target" + File.separator + "sandbox");
+		commandline.setBeanExpression("Foo");
+		commandline.setPackageName("com.agiletec.xxx");
+		EdoBuilder edoBuilder = commandline.generate();
+		
+		Assert.assertEquals("foo", edoBuilder.getBean().getTableName());
+		Assert.assertFalse(edoBuilder.isPlugin());
+	}
+
 }
