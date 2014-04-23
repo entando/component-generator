@@ -72,16 +72,16 @@ public class CommandlineParser {
 			/////////
 
 			if (this.checkForPom) {	
-			_logger.trace("check for a pom.xml");
-			boolean pomExists = new File(edoBuilder.getBaseDir(), "pom.xml").exists();
-			if (!pomExists) {
-				_logger.error("pom.xml not found in dir:'{}'", edoBuilder.getBaseDir());
-				throw new Exception("no pom.xml found in " + edoBuilder.getBaseDir());
-			}
-			_logger.trace("found {}.pom.xml", edoBuilder.getBaseDir());
+				_logger.trace("check for pom.xml");
+				boolean pomExists = new File(edoBuilder.getBaseDir(), "pom.xml").exists();
+				if (!pomExists) {
+					_logger.error("no pom.xml found in dir:'{}'. skip", edoBuilder.getBaseDir());
+					return null;
+				}
+				_logger.trace("found {}.pom.xml", edoBuilder.getBaseDir());
 			}
 
-			
+
 			EdoBean edoBean = new EdoBean();
 			IAgrumentParser parser = new NameParser();
 			String a[] = parser.parse(edoBean, args);
@@ -92,7 +92,7 @@ public class CommandlineParser {
 				_logger.warn("These parameters were skipped: " + Arrays.toString(a));
 			}
 			edoBuilder.addBean(edoBean);
-			
+
 		} catch (ParseException exp) {
 			_logger.error("Error parsing command line", exp);
 		} catch (Throwable t) {
@@ -107,15 +107,15 @@ public class CommandlineParser {
 
 	private static Options createCommandLineOptions() {
 		final Options options = new Options();
-		options.addOption(OPTION_BASE_DIR, OPTION_BASE_DIR, true, OPTION_BASE_DIR);
-		options.addOption(OPTION_PERMISSION, OPTION_PERMISSION, true, OPTION_PERMISSION);
-		options.addOption(OPTION_PACKAGE, OPTION_PACKAGE, true, OPTION_PACKAGE);
+		options.addOption(OPTION_BASE_DIR, OPTION_BASE_DIR, true, "full path of edo work directory. Should be the root of an Entando project. By default is the current directory");
+		options.addOption(OPTION_PERMISSION, OPTION_PERMISSION, true, "code of the Entando permission used to protect actions. Default is 'superuser'");
+		options.addOption(OPTION_PACKAGE, OPTION_PACKAGE, true, "fully qualified package name, for example: com.mycompany");
 		return options;
 	}
 
 	private static void outputCommandLineHelp(final Options options) {
 		final HelpFormatter formater = new HelpFormatter();
-		formater.printHelp("Edo [options] [ARGS] ", options);
+		formater.printHelp("edo [options] [ARGS]", options);
 	}
 
 
@@ -166,9 +166,9 @@ public class CommandlineParser {
 				_logger.warn("Unable to generate the default package name. No enough args");
 			}
 		}
-		
-		
-		
+
+
+
 		edoBuilder.setPackageName(packageName);
 		_logger.debug("packagename: is '{}'", edoBuilder.getPackageName());
 
@@ -180,7 +180,7 @@ public class CommandlineParser {
 	protected void setCheckForPom(boolean checkForPom) {
 		this.checkForPom = checkForPom;
 	}
-	
+
 	private boolean checkForPom = true;
 
 	public static final String OPTION_BASE_DIR = "baseDir";

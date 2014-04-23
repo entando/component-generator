@@ -72,6 +72,20 @@ public class TestCommandlineParser  {
 		
 	}
 	
+
+	@Test
+	public void testPom() throws Throwable {
+		MockCommandLineParser commandline = new MockCommandLineParser();
+		commandline.setCheckForPom(true);
+		commandline.setBaseDir(System.getProperty("user.dir") + File.separator + "target" + File.separator + "sandbox");
+		commandline.setBeanExpression("Person name:string surname:string-r20");
+		//commandline.setPackageName("com.entando.plugins.jpacme");
+		EdoBuilder edoBuilder = commandline.generate();
+		
+		Assert.assertNull("should be null", edoBuilder);
+		
+	}
+	
 	@Test
 	public void testTest() throws Throwable {
 		//Edo main = new Edo();
