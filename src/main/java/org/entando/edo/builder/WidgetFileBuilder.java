@@ -39,7 +39,7 @@ public class WidgetFileBuilder {
 	}
 
 	private static String getApsTagsActionDir(EdoBean bean) {
-		String folder = bean.getEdoBuilder().getJavaFolder() + FolderConstants.getApsFolder() + File.separator + "tags" +  File.separator;
+		String folder = bean.getEdoBuilder().getJavaFolder() + "aps" + File.separator + "tags" +  File.separator;
 		return folder;
 	}
 

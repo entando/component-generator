@@ -98,7 +98,7 @@ public class EdoBuilder {
 	 * @return ...src/main/java/apsadmin/
 	 */
 	public String getJavaControllerFolder() {
-		String pojoPath = this.getJavaFolder() + FolderConstants.getApsadminFolder() + File.separator;
+		String pojoPath = this.getJavaFolder() + "apsadmin" + File.separator;
 		return pojoPath;
 	}
 
@@ -140,22 +140,6 @@ public class EdoBuilder {
 		return pojoPath;
 	}
 
-	/**
-	 * 
-	 * @return  .../src/main/resources/sql/whatever/
-	 */
-	public String getEntandoComponentSqlFolder() {
-		String componentPath = this.getBaseDir() + FolderConstants.getSqlFolder();
-
-		if (this.isPlugin()) {
-			componentPath = componentPath + "plugins" + File.separator + this.getPluginName();
-		} else {			
-			componentPath = componentPath + "misc" + File.separator + this.getProjectName();
-		}
-		componentPath = componentPath + File.separator;
-		return componentPath;
-	}
-
 	//-------------------------------------
 	/**
 	 * 
@@ -188,13 +172,19 @@ public class EdoBuilder {
 		return apsSpringPath;
 	}
 
-
 	/**
 	 * 
-	 * @return  .../src/test/resources/sql/whatever/
+	 * @param forTest
+	 * @return  .../src/main|test/resources/sql/whatever/
 	 */
-	public String getEntandoComponentSqlTestFolder() {
-		String componentPath = this.getBaseDir() + FolderConstants.getSqlTestFolder();
+	public String getEntandoComponentSqlFolder(boolean forTest) {
+		String componentPath = null;
+		if (!forTest) {
+			componentPath = this.getBaseDir() + FolderConstants.getSqlFolder();			
+		} else {
+			componentPath = this.getBaseDir() + FolderConstants.getSqlTestFolder();
+		}
+
 		if (this.isPlugin()) {
 			componentPath = componentPath + "plugins" + File.separator + this.getPluginName();
 		} else {			

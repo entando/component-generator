@@ -32,17 +32,6 @@ public class FolderConstants {
 		return EdoConstants.getServicesPackage().replaceAll("\\.", Matcher.quoteReplacement(File.separator));
 	}
 
-	/**
-	 * aps
-	 * @return
-	 */
-	public static String getApsFolder() {
-		return EdoConstants.getApsPackage().replaceAll("\\.", Matcher.quoteReplacement(File.separator));
-	}
-	
-	public static String getApsadminFolder() {
-		return EdoConstants.getApsadminPackage().replaceAll("\\.", Matcher.quoteReplacement(File.separator));
-	}
 	
 	/**
 	 * aps/system/init/servdb
@@ -101,20 +90,7 @@ public class FolderConstants {
 	public static String getSpringFolder() {
 		return (RESOURCES_FOLDER + "spring/").replaceAll("/", Matcher.quoteReplacement(File.separator));
 	}
-	/**
-	 * /src/main/resources/api/
-	 * @return
-	 */
-	public static String getApiFolder() {
-		return (RESOURCES_FOLDER + "api/").replaceAll("/", Matcher.quoteReplacement(File.separator));
-	}
-	/**
-	 * /src/main/resources/component/
-	 * @return
-	 */
-	public static String getComponentFolder() {
-		return (RESOURCES_FOLDER + "component/").replaceAll("/", Matcher.quoteReplacement(File.separator));
-	}
+
 
 	/**
 	 * /src/main/resources/sql/

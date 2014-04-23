@@ -29,12 +29,12 @@ public class TestCaseFileBuilder {
 	}
 
 	private static String getApsadminTestDir(EdoBean bean) {
-		String pojoPath = bean.getEdoBuilder().getJavaTestFolder() + FolderConstants.getApsadminFolder() + File.separator;
+		String pojoPath = bean.getEdoBuilder().getJavaTestFolder() + "apsadmin" + File.separator;
 		return pojoPath;
 	}
 
 	private static String getApsTestDir(EdoBean bean) {
-		String pojoPath = bean.getEdoBuilder().getJavaTestFolder() + FolderConstants.getApsFolder() + File.separator;
+		String pojoPath = bean.getEdoBuilder().getJavaTestFolder() + "aps" + File.separator;
 		return pojoPath;
 	}
 

@@ -148,28 +148,28 @@ public class Filebuilder {
 	}
 	
 	public static String getEntandoComponentSqlServProductionFilePath(EdoBean bean) {
-		String folder = bean.getEdoBuilder().getEntandoComponentSqlFolder();
+		String folder = bean.getEdoBuilder().getEntandoComponentSqlFolder(false);
 		String filename = "serv_data_production.sql";
 		String finalfile = Filebuilder.checkAndRenameFile(bean.getEdoBuilder().getBaseDir(), folder, filename);
 		return finalfile;
 	}
 	
 	public static String getEntandoComponentSqlPortProductionFilePath(EdoBean bean) {
-		String folder = bean.getEdoBuilder().getEntandoComponentSqlFolder();
+		String folder = bean.getEdoBuilder().getEntandoComponentSqlFolder(false);
 		String filename = "port_data_production.sql";
 		String finalfile = Filebuilder.checkAndRenameFile(bean.getEdoBuilder().getBaseDir(), folder, filename);
 		return finalfile;
 	}
 	
 	public static String getEntandoComponentSqlServTestFilePath(EdoBean bean) {
-		String folder = bean.getEdoBuilder().getEntandoComponentSqlTestFolder();
+		String folder = bean.getEdoBuilder().getEntandoComponentSqlFolder(true);
 		String filename = "serv_data_test.sql";
 		String finalfile = Filebuilder.checkAndRenameFile(bean.getEdoBuilder().getBaseDir(), folder, filename);
 		return finalfile;
 	}
 	
 	public static String getEntandoComponentSqlPortTestFilePath(EdoBean bean) {
-		String folder = bean.getEdoBuilder().getEntandoComponentSqlTestFolder();
+		String folder = bean.getEdoBuilder().getEntandoComponentSqlFolder(true);
 		String filename = "port_data_test.sql";
 		String finalfile = Filebuilder.checkAndRenameFile(bean.getEdoBuilder().getBaseDir(), folder, filename);
 		return finalfile;
