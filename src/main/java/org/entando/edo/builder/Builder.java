@@ -124,10 +124,8 @@ public class Builder {
 			String observer = render.render(Templates.EVENT_OBSERVER, contextElements);
 			this.writeFile(bean.getEdoBuilder().getBaseDir(), observerPath, observer);
 
-
 		} catch (Throwable t) {
-			logger.error("error!", t);
-			System.out.println("we");
+			logger.error("error writing files for {}", bean.getName(), t);
 		}
 	}
 
@@ -165,7 +163,6 @@ public class Builder {
 			String apiMethods = render.render(Templates.API_METHODS_XML, contextElements);
 			this.writeFile(bean.getEdoBuilder().getBaseDir(), apiMethodsPath, apiMethods);
 
-
 		} catch (Throwable t) {
 			logger.error("error!", t);
 		}
@@ -178,8 +175,7 @@ public class Builder {
 			String xmlContent = render.render(Templates.SPRING_MANAGERS_CONFIG_XML, contextElements);
 			this.writeFile(bean.getEdoBuilder().getBaseDir(), stringPath, xmlContent);
 		} catch (Throwable t) {
-			t.printStackTrace();
-			logger.error("error!", t);
+			logger.error("error writing files for {}", bean.getName(), t);
 		}
 	}
 
@@ -215,8 +211,7 @@ public class Builder {
 			this.writeFile(bean.getEdoBuilder().getBaseDir(), sqlTestPortPath, sqlTestPortContent);
 
 		} catch (Throwable t) {
-			logger.error("error!", t);
-			t.printStackTrace();
+			logger.error("error writing files for {}", bean.getName(), t);
 		}		
 	}
 
@@ -300,7 +295,7 @@ public class Builder {
 			
 			
 		} catch (Throwable t) {
-			logger.error("error!", t);
+			logger.error("error writing files for {}", bean.getName(), t);
 		}
 	}
 
@@ -357,7 +352,7 @@ public class Builder {
 			this.writeFile(bean.getEdoBuilder().getBaseDir(), widgetJspFilePath, widgetJsp);
 
 		} catch (Throwable t) {
-			logger.error("error!", t);
+			logger.error("error writing files for {}", bean.getName(), t);
 		}
 	}
 
@@ -392,7 +387,7 @@ public class Builder {
 			String internalServletJspErrorFileContent = render.render(Templates.INTERNAL_SERVLET_JSP_ERROR, contextElements);
 			this.writeFile(bean.getEdoBuilder().getBaseDir() , internalServletJspErrorFilePath, internalServletJspErrorFileContent);
 		} catch (Throwable t) {
-			logger.error("error!", t);
+			logger.error("error writing files for {}", bean.getName(), t);
 		}
 	}
 
@@ -435,7 +430,7 @@ public class Builder {
 			
 
 		} catch (Throwable t) {
-			logger.error("error!", t);
+			logger.error("error writing files for {}", bean.getName(), t);
 		}
 	}
 
@@ -479,11 +474,9 @@ public class Builder {
 			this.writeFile(bean.getEdoBuilder().getBaseDir() , finderActionFilePath, finderActionJava);
 
 		} catch (Throwable t) {
-			logger.error("error!", t);
+			logger.error("error writing files for {}", bean.getName(), t);
 		}
 	}
-
-
 
 	protected void writeFile(String baseDir, String path, String text) {
 		try {
@@ -501,8 +494,7 @@ public class Builder {
 				report.addFile(path, lines);
 			}
 		} catch (Throwable t) {
-			logger.error("error!", t);
-			t.printStackTrace();
+			logger.error("error writing file {}", path, t);
 		}
 	}
 
