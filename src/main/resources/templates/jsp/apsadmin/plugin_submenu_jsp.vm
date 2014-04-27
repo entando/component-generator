@@ -1,7 +1,3 @@
-#set( $builder = $bean.edoBuilder)
-#set( $beanVar = $constants.getUnCapitalize($bean.name))
-#set( $beanClass = $bean.name)
-#set( $pk_field = $bean.fields[0])
 #if($builder.plugin)
 #set($label_prep="${builder.pluginName}.")
 #else
@@ -10,6 +6,10 @@
 <%@ taglib prefix="s" uri="/struts-tags" %>
 <%@ taglib prefix="wp" uri="/aps-core" %>
 
+#foreach($bean in $builder.beans)
+#set( $beanVar = $constants.getUnCapitalize($bean.name))
+#set( $beanClass = $bean.name)
 <wp:ifauthorized permission="$builder.permission">
 	<li><a href="<s:url namespace="/do/${builder.springBeanPreposition}/${beanClass}" action="list" />" ><s:text name="${label_prep}title.${beanVar}Management" /></a></li>
 </wp:ifauthorized>
+#end

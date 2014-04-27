@@ -58,6 +58,8 @@ public class TestCommandlineParser  {
 		EdoBean bean = edoBuilder.getBean();
 
 		Assert.assertNotNull(bean);
+		Assert.assertTrue(edoBuilder.isPlugin());
+		Assert.assertEquals("org.entando.entando.plugins.jpperson", edoBuilder.getPackageName());
 	}
 
 	@Test
@@ -83,8 +85,76 @@ public class TestCommandlineParser  {
 		EdoBuilder edoBuilder = commandline.generate();
 		
 		Assert.assertNull("should be null", edoBuilder);
+	}
+	
+	
+	@Test
+	public void testAND_1() throws Throwable {
+		MockCommandLineParser commandline = new MockCommandLineParser();
+		commandline.setBaseDir(System.getProperty("user.dir") + File.separator + "target" + File.separator + "sandbox");
+		commandline.setBeanExpression("Cat catid:primary_key name:string surname:string-r20 AND Dog --skipAPI name:string AND Penguin --skipAPI --skipWidgets age:int");
+		commandline.setPackageName("com.entando.plugins.jppet");
+		EdoBuilder edoBuilder = commandline.generate();
+		Assert.assertEquals("com.entando.plugins.jppet", edoBuilder.getPackageName());
+		Assert.assertTrue(edoBuilder.isPlugin());
+		
+		Assert.assertEquals(3, edoBuilder.getBeans().size());
+		EdoBean cat = edoBuilder.getBean("Cat");
+		EdoBean dog = edoBuilder.getBean("Dog");
+		EdoBean penguin = edoBuilder.getBean("Penguin");
+		
+		Assert.assertNotNull(cat);
+		Assert.assertNotNull(dog);
+		Assert.assertNotNull(penguin);
+		Assert.assertEquals(3, cat.getFields().size());
+		Assert.assertEquals(2, dog.getFields().size());
+		Assert.assertEquals(2, penguin.getFields().size());
+
+		Assert.assertTrue(cat.isBuildApi());
+		Assert.assertTrue(cat.isBuildWidgets());
+
+		Assert.assertFalse(dog.isBuildApi());
+		Assert.assertTrue(dog.isBuildWidgets());
+
+		Assert.assertFalse(penguin.isBuildApi());
+		Assert.assertFalse(penguin.isBuildWidgets());
+
+	}
+
+	@Test(expected=Exception.class)
+	public void testAND_WithErrors() throws Throwable {
+		MockCommandLineParser commandline = new MockCommandLineParser();
+		commandline.setBaseDir(System.getProperty("user.dir") + File.separator + "target" + File.separator + "sandbox");
+		commandline.setBeanExpression("Cat catid:primary_key name:string surname:string-r20 AND Dog --skipAPI name:string and Penguin --skipAPI --skipWidgets age:int");
+		commandline.setPackageName("com.entando.plugins.jppet");
+		EdoBuilder edoBuilder = commandline.generate();
+		Assert.assertEquals("com.entando.plugins.jppet", edoBuilder.getPackageName());
+		Assert.assertTrue(edoBuilder.isPlugin());
+		
+		Assert.assertEquals(3, edoBuilder.getBeans().size());
+		EdoBean cat = edoBuilder.getBean("Cat");
+		EdoBean dog = edoBuilder.getBean("Dog");
+		EdoBean penguin = edoBuilder.getBean("Penguin");
+		
+		Assert.assertNotNull(cat);
+		Assert.assertNotNull(dog);
+		Assert.assertNotNull(penguin);
+		Assert.assertEquals(3, cat.getFields().size());
+		Assert.assertEquals(2, dog.getFields().size());
+		Assert.assertEquals(2, penguin.getFields().size());
+		
+		Assert.assertTrue(cat.isBuildApi());
+		Assert.assertTrue(cat.isBuildWidgets());
+		
+		Assert.assertFalse(dog.isBuildApi());
+		Assert.assertTrue(dog.isBuildWidgets());
+		
+		Assert.assertFalse(penguin.isBuildApi());
+		Assert.assertFalse(penguin.isBuildWidgets());
 		
 	}
+	
+	
 	
 	@Test
 	public void testTest() throws Throwable {

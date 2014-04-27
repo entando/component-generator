@@ -12,5 +12,5 @@
 	<include file="org/entando/entando/plugins/jppet/apsadmin/cat/cat.xml"/>
 	<include file="org/entando/entando/plugins/jppet/apsadmin/portal/specialwidget/cat/catSpecialWidget.xml"/>
 	<include file="org/entando/entando/plugins/jppet/aps/internalservlet/cat/catFront.xml"/>
- 	
+
 </struts>

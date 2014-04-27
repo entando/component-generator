@@ -1,9 +1,8 @@
-#set( $builder = $bean.edoBuilder)
-#set( $beanVar = $constants.getUnCapitalize($bean.name))
-#set( $beanClass = $bean.name)
 #set( $springPrep = $constants.getLowerCase($builder.springBeanPreposition))
+#foreach($bean in $builder.beans)
+#set( $beanClass = $bean.name)
 #set( $pk_field = $bean.fields[0])
-#if($bean.buildWidgets())
+#if($bean.buildWidgets)
 INSERT INTO widgetcatalog (code, titles, parameters, plugincode, parenttypecode, defaultconfig, locked, maingroup) VALUES ('#if($builder.plugin)$builder.pluginName#end${beanClass}', '<?xml version="1.0" encoding="UTF-8"?>
 <properties>
 <property key="en">Publish ${beanClass}</property>
@@ -21,7 +20,6 @@ INSERT INTO widgetcatalog (code, titles, parameters, plugincode, parenttypecode,
 <properties>
 <property key="actionPath">/ExtStr2/do/FrontEnd/${builder.springBeanPreposition}/${beanClass}/list.action</property>
 </properties>', 1, 'free');
-#end
 
 #set( $i18keyPrep = "")
 #if($builder.plugin)
@@ -63,3 +61,5 @@ INSERT INTO localstrings ( keycode, langcode, stringvalue ) VALUES ('${i18keyPre
 INSERT INTO localstrings ( keycode, langcode, stringvalue ) VALUES ('${i18keyPrep}${i18keyBean}_NOT_FOUND', 'it', '${bean.name} not found');
 INSERT INTO localstrings ( keycode, langcode, stringvalue ) VALUES ('${i18keyPrep}${i18keyBean}_NOT_FOUND', 'en', '${bean.name} not found');
 
+#end
+#end

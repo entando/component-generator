@@ -27,13 +27,15 @@ import org.apache.commons.lang.StringUtils;
 
 public class EdoBean {
 	
-	public boolean buildWidgets() {
-		return true;
-	}
-
-	public boolean buildApi() {
-		return true;
-	}
+//	@Deprecated
+//	public boolean buildWidgets() {
+//		return this.isBuildWidgets();
+//	}
+//
+//	@Deprecated
+//	public boolean buildApi() {
+//		return this.isBuildApi();
+//	}
 	
 	public String getImports(boolean extras) {
 		Set<String> imports = new HashSet<String>();
@@ -160,7 +162,23 @@ public class EdoBean {
 		this._edoBuilder = edoBuilder;
 	}
 
+	public boolean isBuildApi() {
+		return buildApi;
+	}
+	public void setBuildApi(boolean buildApi) {
+		this.buildApi = buildApi;
+	}
+
+	public boolean isBuildWidgets() {
+		return buildWidgets;
+	}
+	public void setBuildWidgets(boolean buildWidgets) {
+		this.buildWidgets = buildWidgets;
+	}
+
 	private String _name;
 	private List<EdoField> _fields = new ArrayList<EdoField>();
 	private EdoBuilder _edoBuilder;
+	private boolean buildApi = true;
+	private boolean buildWidgets = true;
 }

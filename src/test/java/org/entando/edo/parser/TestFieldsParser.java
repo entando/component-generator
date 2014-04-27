@@ -43,7 +43,11 @@ public class TestFieldsParser {
 		Assert.assertEquals(false, bean.getFields().get(2).isRequired());
 		Assert.assertEquals(false, bean.getFields().get(1).isRequired());
 		Assert.assertEquals(true, bean.getFields().get(0).isRequired());
+		
+		Assert.assertTrue(bean.isBuildApi());
+		Assert.assertTrue(bean.isBuildWidgets());
 	}
+	
 
  
 	@Test
@@ -164,4 +168,51 @@ public class TestFieldsParser {
 		parser.parse(bean, params.split(" "));
 	}
 
+	
+	@Test
+	public void parseWithOptions_1() throws Throwable {
+		EdoBean bean = new EdoBean();
+		String params = "--skipAPI name:string somedate:date cash:bigDecimal-1";
+		FieldsParser parser = new FieldsParser();
+		parser.parse(bean, params.split(" "));
+		Assert.assertEquals(4, bean.getFields().size());
+		
+		for (int i = 0; i < bean.getFields().size(); i++) {
+			EdoField f = bean.getFields().get(i);
+			Assert.assertNotNull(f);
+			Assert.assertNotNull(f.getType());
+		}
+		
+		Assert.assertNull(bean.getFields().get(2).getLength());
+		Assert.assertEquals(false, bean.getFields().get(2).isRequired());
+		Assert.assertEquals(false, bean.getFields().get(1).isRequired());
+		Assert.assertEquals(true, bean.getFields().get(0).isRequired());
+		
+		Assert.assertFalse(bean.isBuildApi());
+		Assert.assertTrue(bean.isBuildWidgets());
+	}
+
+	@Test
+	public void parseWithOptions_2() throws Throwable {
+		EdoBean bean = new EdoBean();
+		String params = "--skipWidgets --skipAPI name:string somedate:date cash:bigDecimal-1";
+		FieldsParser parser = new FieldsParser();
+		parser.parse(bean, params.split(" "));
+		Assert.assertEquals(4, bean.getFields().size());
+		
+		for (int i = 0; i < bean.getFields().size(); i++) {
+			EdoField f = bean.getFields().get(i);
+			Assert.assertNotNull(f);
+			Assert.assertNotNull(f.getType());
+		}
+		
+		Assert.assertNull(bean.getFields().get(2).getLength());
+		Assert.assertEquals(false, bean.getFields().get(2).isRequired());
+		Assert.assertEquals(false, bean.getFields().get(1).isRequired());
+		Assert.assertEquals(true, bean.getFields().get(0).isRequired());
+		
+		Assert.assertFalse(bean.isBuildApi());
+		Assert.assertFalse(bean.isBuildWidgets());
+	}
+	
 }

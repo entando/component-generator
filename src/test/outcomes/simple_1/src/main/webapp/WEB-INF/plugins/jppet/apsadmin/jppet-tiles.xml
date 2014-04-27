@@ -20,7 +20,6 @@
 		<put-attribute name="body" value="/WEB-INF/plugins/jppet/apsadmin/jsp/cat/cat-trash.jsp" />
 		<put-attribute name="extraResources" value="/WEB-INF/plugins/jppet/apsadmin/jsp/common/layouts/assets-more/cat-trash-extras.jsp"/>
 	</definition>
-
     <definition extends="layout.default" name="jppet.admin.page.widget.Cat.entry">
 		<put-attribute name="title" value="jppet.title.catManagement" />
 		<put-attribute name="body" value="/WEB-INF/plugins/jppet/apsadmin/jsp/portal/specialwidget/cat/cat-config.jsp" />

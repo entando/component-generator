@@ -1,6 +1,3 @@
-#set( $builder = $bean.edoBuilder)
-#set( $beanVar = $constants.getUnCapitalize($bean.name))
-#set( $beanClass = $bean.name)
 #set( $springPrep = $constants.getLowerCase($builder.springBeanPreposition))
 #if($builder.plugin)
 #set($path="plugins/${builder.pluginName}")
@@ -19,6 +16,9 @@
 
 <tiles-definitions>
 
+#foreach($bean in $builder.beans)
+#set( $beanVar = $constants.getUnCapitalize($bean.name))
+#set( $beanClass = $bean.name)
     <definition extends="layout.default" name="${springPrep}.admin.${beanClass}.list">
 		<put-attribute name="title" value="${label_prep}title.${beanVar}Management" />
 		<put-attribute name="body" value="/WEB-INF/${path}/apsadmin/jsp/$constants.getLowerCase(${beanVar})/${beanVar}-list.jsp" />
@@ -34,14 +34,14 @@
 		<put-attribute name="body" value="/WEB-INF/${path}/apsadmin/jsp/$constants.getLowerCase(${beanVar})/${beanVar}-trash.jsp" />
 		<put-attribute name="extraResources" value="/WEB-INF/${path}/apsadmin/jsp/common/layouts/assets-more/${beanVar}-trash-extras.jsp"/>
 	</definition>
-
-#if($bean.buildWidgets())
+#if($bean.buildWidgets)
     <definition extends="layout.default" name="${springPrep}.admin.page.widget.${beanClass}.entry">
 		<put-attribute name="title" value="${label_prep}title.${beanVar}Management" />
 		<put-attribute name="body" value="/WEB-INF/${path}/apsadmin/jsp/portal/specialwidget/$constants.getLowerCase(${beanVar})/${beanVar}-config.jsp" />
 	</definition>
-#end
 
+#end
+#end
 </tiles-definitions>
 
 

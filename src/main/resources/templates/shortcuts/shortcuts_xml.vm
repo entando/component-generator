@@ -1,6 +1,3 @@
-#set( $builder = $bean.edoBuilder)
-#set( $beanVar = $constants.getUnCapitalize($bean.name))
-#set( $beanClass = $bean.name)
 #set( $springPrep = $constants.getLowerCase($builder.springBeanPreposition))
 #if($builder.plugin)
 #set($menusec="plugins")
@@ -9,6 +6,8 @@
 #end
 <shortcut-def>
 	<shortcuts>
+#foreach($bean in $builder.beans)
+#set( $beanClass = $bean.name)
 		<shortcut id="${springPrep}.${beanClass}.shortCut" requiredPermission="$builder.permission" menusection="${menusec}" source="${springPrep}">
 			<description key="${springPrep}.${beanClass}.shortCut.list.shortDesc">${beanClass} list</description>
 			<longdesc key="${springPrep}.${beanClass}.shortCut.list.longDesc">
@@ -19,6 +18,6 @@
 				<param name="actionName">list</param>
 			</url>
 		</shortcut>
+#end
 	</shortcuts>
-	
 </shortcut-def>

@@ -24,7 +24,8 @@ public class TestEdo extends TestCase {
 
 
 	public void testForReal() {
-		String inString = "-baseDir=/tmp/aaaa --package=com.myportal Cat name:string-r8 age:int weight:bigdecimal createdat:date";
+		//String inString = "--baseDir=/home/spuddu/entando/github/sandbox411eedo --package=org.entando.entando.plugins.jppet Cat name:string-r8 age:int weight:bigdecimal createdat:date";
+		String inString = "--baseDir=/home/spuddu/entando/github/sandbox411eedo --package=com.entando.entando.plugins.jppet Cat catid:primary_key name:string surname:string-r20 AND Dog --skipAPI name:string birthDate:date-r AND Penguin --skipAPI --skipWidgets age:int weight:bigdecimal";
 		String[] args = inString.split(" ");
 		Edo.main(args);
 		assertTrue(true);

@@ -1,8 +1,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="wp" uri="/aps-core"%>
-<%@ taglib prefix="sandbox_cat" uri="/sandbox_cat-core"%>
+<%@ taglib prefix="sandbox" uri="/sandbox-core"%>
 
-<sandbox_cat:cat var="cat" />
+<sandbox:cat var="cat" />
 <article>
 <c:choose>
 	<c:when test="${not empty cat}">

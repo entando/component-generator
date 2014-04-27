@@ -20,6 +20,7 @@ import java.io.File;
 
 import org.apache.commons.lang.StringUtils;
 import org.entando.edo.model.EdoBean;
+import org.entando.edo.model.EdoBuilder;
 
 public class WidgetFileBuilder {
 
@@ -94,16 +95,16 @@ public class WidgetFileBuilder {
 		return finalfile;
 	}
 
-	public static String getApsTldFilePath(EdoBean bean) {
+	public static String getApsTldFilePath(EdoBuilder builder) {
 		String filename = null;
-		if (bean.getEdoBuilder().isPlugin()) {
-			filename = bean.getEdoBuilder().getPluginName();
+		if (builder.isPlugin()) {
+			filename = builder.getPluginName();
 		} else {
-			filename = bean.getEdoBuilder().getProjectName();
+			filename = builder.getProjectName();
 		}
 		filename = filename + "-core.tld";
-		String path = bean.getEdoBuilder().getTldFolder();
-		String finalfile = Filebuilder.checkAndRenameFile(bean.getEdoBuilder().getBaseDir(), path, filename);
+		String path = builder.getTldFolder();
+		String finalfile = Filebuilder.checkAndRenameFile(builder.getBaseDir(), path, filename);
 		return finalfile;
 	}
 

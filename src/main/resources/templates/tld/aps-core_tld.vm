@@ -1,22 +1,22 @@
-#set( $builder = $bean.edoBuilder)
-#set( $beanClass = $bean.name)
-#set( $beanVar = $constants.getUnCapitalize($bean.name))
-#set( $componentCode = "${builder.projectName}_${beanVar}")
 <?xml version="1.0" encoding="UTF-8" ?>
 <taglib xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.0" xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd">
-  <description><![CDATA["#if($builder.plugin)$builder.pluginName#else$componentCode#end core tag library"]]></description>
-  <display-name>"#if($builder.plugin)$builder.pluginName#else$componentCode#end core tag library"</display-name>
+  <description><![CDATA["#if($builder.plugin)$builder.pluginName#else$builder.projectName#end core tag library"]]></description>
+  <display-name>"#if($builder.plugin)$builder.pluginName#else$builder.projectName#end core tag library"</display-name>
   <tlib-version>2.2</tlib-version>
-  <short-name>#if($builder.plugin)$builder.pluginName#else$componentCode#end</short-name>
-  <uri>/#if($builder.plugin)$builder.pluginName#else$componentCode#end-core</uri>
-	
+  <short-name>#if($builder.plugin)$builder.pluginName#else$builder.projectName#end</short-name>
+  <uri>/#if($builder.plugin)$builder.pluginName#else$builder.projectName#end-core</uri>
+
+#foreach($bean in $builder.beans)
+#if($bean.buildWidgets)
+#set( $beanClass = $bean.name)
+#set( $beanVar = $constants.getUnCapitalize($bean.name))
 	<tag>
 		<description>Loads and returns the list of the ${beanClass}s available in the system.</description>
 		<name>${beanVar}s</name>
 		<tag-class>${builder.packageName}.${constants.apsPackage}.tags.${beanClass}ListTag</tag-class>
 		<body-content>empty</body-content>
 		<attribute>
-			<description>The name of the variable setted in the pagecontext.</description>
+			<description>Name used to reference the value pushed into the PageContext.</description>
 			<name>var</name>
 			<required>true</required>
 			<rtexprvalue>true</rtexprvalue>
@@ -35,11 +35,13 @@
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 		<attribute>
-			<description>The name of the variable setted in the pagecontext.</description>
+			<description>Name used to reference the value pushed into the PageContext.</description>
 			<name>var</name>
 			<required>true</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 	</tag>
-	
+
+#end
+#end
 </taglib>

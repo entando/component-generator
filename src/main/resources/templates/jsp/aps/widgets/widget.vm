@@ -1,7 +1,6 @@
 #set( $builder = $bean.edoBuilder)
 #set( $beanClass = $bean.name)
 #set( $beanVar = $constants.getUnCapitalize($bean.name))
-#set( $componentCode = "${builder.projectName}_${beanVar}")
 #set ( $d = "$")
 #set ( $br_o = "{")
 #set ( $br_c = "}")
@@ -13,9 +12,9 @@
 #set( $i18keyBean = $constants.toUpperCase($bean.name))
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="wp" uri="/aps-core"%>
-<%@ taglib prefix="#if($builder.plugin)$builder.pluginName#else$componentCode#end" uri="/#if($builder.plugin)$builder.pluginName#else$componentCode#end-core"%>
+<%@ taglib prefix="#if($builder.plugin)$builder.pluginName#else$builder.projectName#end" uri="/#if($builder.plugin)$builder.pluginName#else$builder.projectName#end-core"%>
 
-<#if($builder.plugin)$builder.pluginName#else$componentCode#end:${beanVar} var="${beanVar}" />
+<#if($builder.plugin)$builder.pluginName#else$builder.projectName#end:${beanVar} var="${beanVar}" />
 <article>
 <c:choose>
 	<c:when test="$d${br_o}not empty ${beanVar}${br_c}">

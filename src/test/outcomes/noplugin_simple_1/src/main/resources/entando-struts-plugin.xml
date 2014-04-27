@@ -12,5 +12,5 @@
 	<include file="com/myportal/apsadmin/cat/cat.xml"/>
 	<include file="com/myportal/apsadmin/portal/specialwidget/cat/catSpecialWidget.xml"/>
 	<include file="com/myportal/aps/internalservlet/cat/catFront.xml"/>
- 	
+
 </struts>

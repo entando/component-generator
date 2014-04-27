@@ -12,7 +12,9 @@ import ${builder.packageName}.${constants.servicesPackage}.${constants.getLowerC
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+#if($bean.buildApi)
 #parse("templates/java/aps/managers/inc/manager_api_imports.vm")
+#end
 $bean.getImports(false)
 #if($bean.entandoSearcherAvailable)
 import com.agiletec.aps.system.common.FieldSearchFilter;
@@ -111,7 +113,9 @@ public class ${beanClass}Manager extends AbstractService implements I${beanClass
 		}
 	}
 
+#if($bean.buildApi)
 #parse("templates/java/aps/managers/inc/manager_api_methods.vm")
+#end
 
 	private void notify${beanClass}ChangedEvent(${beanClass} ${beanVar}, int operationCode) {
 		${beanClass}ChangedEvent event = new ${beanClass}ChangedEvent();

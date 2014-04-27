@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component>
 	<code>jppet</code>
-	<description>Cat</description>
+	<description>jppet</description>
 	<installation>
 		<tableMapping>
 			<datasource name="servDataSource">

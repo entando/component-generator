@@ -5,14 +5,14 @@
   <tlib-version>2.2</tlib-version>
   <short-name>jppet</short-name>
   <uri>/jppet-core</uri>
-	
+
 	<tag>
 		<description>Loads and returns the list of the Cats available in the system.</description>
 		<name>cats</name>
 		<tag-class>org.entando.entando.plugins.jppet.aps.tags.CatListTag</tag-class>
 		<body-content>empty</body-content>
 		<attribute>
-			<description>The name of the variable setted in the pagecontext.</description>
+			<description>Name used to reference the value pushed into the PageContext.</description>
 			<name>var</name>
 			<required>true</required>
 			<rtexprvalue>true</rtexprvalue>
@@ -31,11 +31,11 @@
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 		<attribute>
-			<description>The name of the variable setted in the pagecontext.</description>
+			<description>Name used to reference the value pushed into the PageContext.</description>
 			<name>var</name>
 			<required>true</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 	</tag>
-	
+
 </taglib>

@@ -1,6 +1,3 @@
-#set( $builder = $bean.edoBuilder)
-#set( $beanVar = $constants.getUnCapitalize($bean.name))
-#set( $beanClass = $bean.name)
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE struts PUBLIC
     "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
@@ -11,11 +8,14 @@
 	<!-- include this snippet into your struts-plugin.xml file or rename this file 
 		edit also this file: /src/test/java/apsadmin/${constants.getCapitalize($builder.springBeanPreposition)}ApsAdminBaseTestCase.java
 	-->
+#foreach($bean in $builder.beans)
+#set( $beanVar = $constants.getUnCapitalize($bean.name))
 
 	<include file="${builder.packageFolder}/${constants.apsadminPackage}/$constants.getLowerCase($beanVar)/${beanVar}.xml"/>
-#if($bean.buildWidgets())
+#if($bean.buildWidgets)
 	<include file="${builder.packageFolder}/${constants.apsadminPackage}/portal/specialwidget/$constants.getLowerCase($beanVar)/${beanVar}SpecialWidget.xml"/>
 	<include file="${builder.packageFolder}/aps/internalservlet/$constants.getLowerCase($beanVar)/${beanVar}Front.xml"/>
 #end
- 	
+#end
+
 </struts>

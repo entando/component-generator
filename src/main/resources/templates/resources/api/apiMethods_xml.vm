@@ -1,10 +1,11 @@
-#set( $builder = $bean.edoBuilder)
-#set( $beanClass = $bean.name)
-#set( $beanVar = $constants.getUnCapitalize($bean.name))
-#set( $pk_var = $bean.fields[0].name)
 #set( $springPrep = $constants.getLowerCase($builder.springBeanPreposition))
 <apiMethodDefinitions>
 
+#foreach($bean in $builder.beans)
+#if($bean.buildApi)
+#set( $beanClass = $bean.name)
+#set( $beanVar = $constants.getUnCapitalize($bean.name))
+#set( $pk_var = $bean.fields[0].name)
 	<resource name="${beanVar}s">
         <description>Return the ${beanVar} list</description>
 #if($builder.plugin)
@@ -60,5 +61,6 @@
             </parameters>
         </method>
     </resource>
-	
+#end
+#end
 </apiMethodDefinitions>

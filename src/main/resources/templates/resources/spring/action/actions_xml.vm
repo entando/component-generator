@@ -14,7 +14,7 @@
 		xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
 				http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd" >
 
-#if($builder.plugin)
+#if($builder.plugin && $builder.getBeans().get(0).name == $bean.name)
 	<bean id="${springPrep}${beanClass}PluginSubMenu" class="com.agiletec.apsadmin.system.plugin.PluginSubMenuContainer" >
 		<property name="subMenuFilePath"><value>/WEB-INF/${path}/apsadmin/jsp/common/layouts/subMenu.jsp</value></property>
 	</bean>
@@ -33,7 +33,7 @@
 	</bean>
 
 
-#if($bean.buildWidgets())
+#if($bean.buildWidgets)
 	<bean id="${springPrep}${beanClass}ConfigAction" class="${builder.packageName}.${constants.apsadminPackage}.portal.specialwidget.$constants.getLowerCase($beanVar).${beanClass}ConfigAction"
 		parent="simpleWidgetAction" scope="prototype">
 		<property name="$constants.getUnCapitalize($beanClass)Manager" ref="${springPrep}${beanClass}Manager" />

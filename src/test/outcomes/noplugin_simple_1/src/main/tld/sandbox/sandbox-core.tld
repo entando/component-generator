@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <taglib xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.0" xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd">
-  <description><![CDATA["sandbox_cat core tag library"]]></description>
-  <display-name>"sandbox_cat core tag library"</display-name>
+  <description><![CDATA["sandbox core tag library"]]></description>
+  <display-name>"sandbox core tag library"</display-name>
   <tlib-version>2.2</tlib-version>
-  <short-name>sandbox_cat</short-name>
-  <uri>/sandbox_cat-core</uri>
-	
+  <short-name>sandbox</short-name>
+  <uri>/sandbox-core</uri>
+
 	<tag>
 		<description>Loads and returns the list of the Cats available in the system.</description>
 		<name>cats</name>
 		<tag-class>com.myportal.aps.tags.CatListTag</tag-class>
 		<body-content>empty</body-content>
 		<attribute>
-			<description>The name of the variable setted in the pagecontext.</description>
+			<description>Name used to reference the value pushed into the PageContext.</description>
 			<name>var</name>
 			<required>true</required>
 			<rtexprvalue>true</rtexprvalue>
@@ -31,11 +31,11 @@
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 		<attribute>
-			<description>The name of the variable setted in the pagecontext.</description>
+			<description>Name used to reference the value pushed into the PageContext.</description>
 			<name>var</name>
 			<required>true</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 	</tag>
-	
+
 </taglib>

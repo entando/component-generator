@@ -22,6 +22,10 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.GnuParser;
+import org.apache.commons.cli.Options;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -34,8 +38,18 @@ public class FieldsParser implements IAgrumentParser {
 
 	private static Logger _logger = LogManager.getLogger(FieldsParser.class);
 
-	public String[] parse(EdoBean edoBean, String[] args) throws Exception {
-		_logger.trace("input params: {}", Arrays.toString(args));
+	public String[] parse(EdoBean edoBean, String[] fullArgs) throws Exception {
+		_logger.debug("input params: {}", Arrays.toString(fullArgs));
+	
+		CommandLineParser commandlineparser = new GnuParser();
+		Options options = createCommandLineOptions();
+		CommandLine cl = null;
+		cl = commandlineparser.parse(options, fullArgs);
+		this.processBeanOptions(cl, edoBean, fullArgs);
+		String[] args = cl.getArgs();
+		 
+		_logger.debug("input params after cl: {}", Arrays.toString(args));
+	
 		List<EdoField> fieldsList = new ArrayList<EdoField>();
 		List<String> fieldNames = new ArrayList<String>();
 		int index = 0;
@@ -102,7 +116,7 @@ public class FieldsParser implements IAgrumentParser {
 					throw new Exception("error parsing fields");
 				}
 			} else {
-				_logger.debug("the param '{}' is not valid", param);
+				_logger.error("the param '{}' in {} is not valid", param, edoBean.getName());
 				throw new Exception("invalid param: " + param);
 				//break;
 			}
@@ -147,5 +161,60 @@ public class FieldsParser implements IAgrumentParser {
 		return DataTypeManager.getInstance().getDataTypes().containsKey(fieldDataType);
 	}
 	
+	
+/*
+	protected String[] processBeanSpcificOptions(EdoBean edoBean, String[] args) throws ParseException {
+		CommandLineParser commandlineparser = new GnuParser();
+		Options options = createCommandLineOptions();
+		CommandLine cl = null;
+		cl = commandlineparser.parse(options, args);
 
+		if (null != cl) {
+			args = processCommandline(cl, edoBean, args);
+		}
+		return args;
+	}
+	
+	private String[] processCommandline(CommandLine cl, EdoBean bean, String[] args) throws IllegalArgumentException {
+		if (cl.hasOption(OPTION_SKIP_API)) {
+			bean.setBuildApi(false);
+		}
+		if (cl.hasOption(OPTION_SKIP_WIDGETS)) {
+			bean.setBuildWidgets(false);
+		}
+		
+		_logger.debug("{} build api: {}", bean.getName(), bean.isBuildApi());
+		_logger.debug("{} build widgets: {}", bean.getName(), bean.isBuildWidgets());
+
+		args = Arrays.copyOfRange(args, cl.getOptions().length, args.length);
+		return args;
+	}
+	
+*/
+	private void processBeanOptions(CommandLine cl, EdoBean bean, String[] args) throws IllegalArgumentException {
+		if (cl.hasOption(OPTION_SKIP_API)) {
+			bean.setBuildApi(false);
+		}
+		if (cl.hasOption(OPTION_SKIP_WIDGETS)) {
+			bean.setBuildWidgets(false);
+		}
+		
+		_logger.debug("{} build api: {}", bean.getName(), bean.isBuildApi());
+		_logger.debug("{} build widgets: {}", bean.getName(), bean.isBuildWidgets());
+
+//		args = Arrays.copyOfRange(args, cl.getOptions().length, args.length);
+//		return args;
+	}
+	
+	private static Options createCommandLineOptions() {
+		final Options options = new Options();
+		options.addOption(OPTION_SKIP_API, OPTION_SKIP_API, false, "do not create API related artifacts");
+		options.addOption(OPTION_SKIP_WIDGETS, OPTION_SKIP_WIDGETS, false, "do not create Widget related artifacts");
+
+		return options;
+	}
+
+	
+	public static final String OPTION_SKIP_API = "skipAPI";
+	public static final String OPTION_SKIP_WIDGETS = "skipWidgets";
 }

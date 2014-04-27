@@ -22,6 +22,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.entando.edo.model.EdoBean;
+import org.entando.edo.model.EdoBuilder;
 import org.entando.edo.model.EdoConstants;
 
 
@@ -34,8 +35,8 @@ public class ControllerFileBuilder {
 		return pojoPath;
 	}
 
-	private static String getApsAdminJspFolder(EdoBean bean) {
-		String result = bean.getEdoBuilder().getWebinfApsadminFolder() + "jsp" + File.separator;
+	private static String getApsAdminJspFolder(EdoBuilder builder) {
+		String result = builder.getWebinfApsadminFolder() + "jsp" + File.separator;
 		return result;
 	}
 
@@ -89,24 +90,24 @@ public class ControllerFileBuilder {
 		return finalfile;
 	}
 	
-	public static String getGlobalMessagesPropertiesFilePath(EdoBean bean,	String lang) {
+	public static String getGlobalMessagesPropertiesFilePath(EdoBuilder builder, String lang) {
 		String filename = "global-messages_" + lang + ".properties";
-		String finalfile = bean.getEdoBuilder().getJavaControllerFolder() + filename;
+		String finalfile = builder.getJavaControllerFolder() + filename;
 		return finalfile;
 	}
 	
 
-	public static String getActionTilesFilePath(EdoBean bean) {
-		String folder  = bean.getEdoBuilder().getWebinfApsadminFolder();
+	public static String getActionTilesFilePath(EdoBuilder builder) {
+		String folder  = builder.getWebinfApsadminFolder();
 
 		String name = null;
-		if (bean.getEdoBuilder().isPlugin()) {
-			name = bean.getEdoBuilder().getPluginName();
+		if (builder.isPlugin()) {
+			name = builder.getPluginName();
 		} else {
-			name = bean.getEdoBuilder().getProjectName();
+			name = builder.getProjectName();
 		}
 		String filename = name + "-tiles.xml";
-		return checkAndRenameFile(bean.getEdoBuilder().getBaseDir(), folder, filename);
+		return checkAndRenameFile(builder.getBaseDir(), folder, filename);
 	}
 
 	//--- spring
@@ -122,40 +123,40 @@ public class ControllerFileBuilder {
 	
 	public static String getJspListFilePath(EdoBean bean) {
 		String filename = StringUtils.uncapitalize(bean.getName()) + "-list.jsp";
-		String finalfile = getApsAdminJspFolder(bean) +  bean.getName().toLowerCase() + File.separator +  filename;
+		String finalfile = getApsAdminJspFolder(bean.getEdoBuilder()) +  bean.getName().toLowerCase() + File.separator +  filename;
 		return finalfile;
 	}
 	public static String getJspEntryFilePath(EdoBean bean) {
 		String filename = StringUtils.uncapitalize(bean.getName()) + "-entry.jsp";
-		String finalfile = getApsAdminJspFolder(bean) + bean.getName().toLowerCase() + File.separator +  filename;
+		String finalfile = getApsAdminJspFolder(bean.getEdoBuilder()) + bean.getName().toLowerCase() + File.separator +  filename;
 		return finalfile;
 	}
 	public static String getJspTrashFilePath(EdoBean bean) {
 		String filename = StringUtils.uncapitalize(bean.getName()) + "-trash.jsp";
-		String finalfile = getApsAdminJspFolder(bean) + bean.getName().toLowerCase() + File.separator +  filename;
+		String finalfile = getApsAdminJspFolder(bean.getEdoBuilder()) + bean.getName().toLowerCase() + File.separator +  filename;
 		return finalfile;
 	}
 
 	public static String getJspExtraResourcesListFilePath(EdoBean bean) {
 		String filename = StringUtils.uncapitalize(bean.getName()) + "-list-extras.jsp";
-		String finalfile = getApsAdminJspFolder(bean) + "common" + File.separator + "layouts" + File.separator + "assets-more"  + File.separator +  filename;
+		String finalfile = getApsAdminJspFolder(bean.getEdoBuilder()) + "common" + File.separator + "layouts" + File.separator + "assets-more"  + File.separator +  filename;
 		return finalfile;
 	}
 	public static String getJspExtraResourcesEntryFilePath(EdoBean bean) {
 		String filename = StringUtils.uncapitalize(bean.getName()) + "-entry-extras.jsp";
-		String finalfile = getApsAdminJspFolder(bean) + "common" + File.separator + "layouts" + File.separator + "assets-more"  + File.separator +  filename;
+		String finalfile = getApsAdminJspFolder(bean.getEdoBuilder()) + "common" + File.separator + "layouts" + File.separator + "assets-more"  + File.separator +  filename;
 		return finalfile;
 	}
 	public static String getJspExtraResourcesTrashFilePath(EdoBean bean) {
 		String filename = StringUtils.uncapitalize(bean.getName()) + "-trash-extras.jsp";
-		String finalfile = getApsAdminJspFolder(bean) + "common" + File.separator + "layouts" + File.separator + "assets-more"  + File.separator +  filename;
+		String finalfile = getApsAdminJspFolder(bean.getEdoBuilder()) + "common" + File.separator + "layouts" + File.separator + "assets-more"  + File.separator +  filename;
 		return finalfile;
 	}
 
-	public static String getJspSubMenuFilePath(EdoBean bean) {
+	public static String getJspSubMenuFilePath(EdoBuilder builder) {
 		String filename = "subMenu.jsp";
-		String path = getApsAdminJspFolder(bean) + "common" + File.separator + "layouts"  + File.separator;
-		String finalfile = checkAndRenameFile(bean.getEdoBuilder().getBaseDir(), path, filename);
+		String path = getApsAdminJspFolder(builder) + "common" + File.separator + "layouts"  + File.separator;
+		String finalfile = checkAndRenameFile(builder.getBaseDir(), path, filename);
 		return finalfile;
 	}
 
@@ -167,15 +168,15 @@ public class ControllerFileBuilder {
 	
 	//---
 	
-	public static String getActionShortCutFilePath(EdoBean bean) {
-		String folder = bean.getEdoBuilder().getResourcesConfigFolder("shortcuts", "apsadmin");
+	public static String getActionShortCutFilePath(EdoBuilder builder) {
+		String folder = builder.getResourcesConfigFolder("shortcuts", "apsadmin");
 		String filename = "shortcuts.xml";
-		String finalfile = ControllerFileBuilder.checkAndRenameFile(bean.getEdoBuilder().getBaseDir(), folder, filename);
+		String finalfile = ControllerFileBuilder.checkAndRenameFile(builder.getBaseDir(), folder, filename);
 		return finalfile;
 	}
 
-	public static String getActionStrutsPluginFilePath(EdoBean bean) {
-		String folder = bean.getEdoBuilder().getBaseDir() + FolderConstants.getResourcesFolder();
+	public static String getActionStrutsPluginFilePath(EdoBuilder builder) {
+		String folder = builder.getBaseDir() + FolderConstants.getResourcesFolder();
 		boolean exists = new File(folder, "entando-struts-plugin.xml").exists();
 		String filename = null;
 		String finalfile = null;
@@ -183,9 +184,9 @@ public class ControllerFileBuilder {
 			filename = "entando-struts-plugin.xml";
 			finalfile = folder + filename;
 		} else {
-			filename = EdoConstants.FILE_NO_OVERRIDE_PREFIX + bean.getEdoBuilder().getSpringBeanPreposition() + "-" + bean.getName().toLowerCase() + "-struts-plugin.xml";
+			filename = EdoConstants.FILE_NO_OVERRIDE_PREFIX + builder.getSpringBeanPreposition()  + "-struts-plugin.xml";
 			finalfile = folder + filename;
-			logger.warn("\n\n*** Warning!\nThe file:\n\n\t" + StringUtils.substringAfter(finalfile, bean.getEdoBuilder().getBaseDir()  + File.separator) + "\n\nneeds your attention!.\nPlease merge it with your existing {} or rename it according to your web.xml cofiguration.\n", folder + "entando-struts-plugin");
+			logger.warn("\n\n*** Warning!\nThe file:\n\n\t" + StringUtils.substringAfter(finalfile, builder.getBaseDir()  + File.separator) + "\n\nneeds your attention!.\nPlease merge it with your existing {} or rename it according to your web.xml cofiguration.\n", folder + "entando-struts-plugin");
 		}
 		return finalfile;
 	}

@@ -1,25 +1,26 @@
 /*
-*
-* Copyright 2013 Entando S.r.l. (http://www.entando.com) All rights reserved.
-*
-* This file is part of Entando Enterprise Edition software.
-* You can redistribute it and/or modify it
-* under the terms of the Entando's EULA
-* 
-* See the file License for the specific language governing permissions   
-* and limitations under the License
-* 
-* 
-* 
-* Copyright 2013 Entando S.r.l. (http://www.entando.com) All rights reserved.
-*
-*/
+ *
+ * Copyright 2013 Entando S.r.l. (http://www.entando.com) All rights reserved.
+ *
+ * This file is part of Entando Enterprise Edition software.
+ * You can redistribute it and/or modify it
+ * under the terms of the Entando's EULA
+ * 
+ * See the file License for the specific language governing permissions   
+ * and limitations under the License
+ * 
+ * 
+ * 
+ * Copyright 2013 Entando S.r.l. (http://www.entando.com) All rights reserved.
+ *
+ */
 package org.entando.edo.builder;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
@@ -40,26 +41,53 @@ public class Builder {
 	public static Logger logger = LogManager.getLogger(Builder.class);
 
 	public void build(EdoBuilder builder) throws Throwable {
-		EdoBean bean = builder.getBean();
+		//EdoBean bean = builder.getBean();
 		Render render = new Render();
 		Map<String, Object> contextElements = new HashMap<String, Object>();
-		contextElements.put("bean", bean);
 		contextElements.put("constants", new EdoConstants());
-
-		this.writeJavaModel(render, contextElements, bean);
-		this.writeSpringModelXml(render,contextElements, bean);
-		this.writeEntantoInit(render, contextElements, bean);
-		this.writeAPI(render, contextElements, bean);
-
-		this.writeAction(render, contextElements, bean);
-		this.writeJspAction(render, contextElements, bean);
-
-		this.writeWidgets(render, contextElements, bean);
-
-		this.writeTestService(render, contextElements, bean);
-		this.writeTestAction(render, contextElements, bean);
-
-		this.saveReport(render, contextElements, bean);
+		contextElements.put("builder", builder);
+		Iterator<EdoBean> it = builder.getBeans().iterator();
+		while (it.hasNext()) {
+			EdoBean bean = it.next();
+			contextElements.put("bean", bean);
+			this.writeJavaModel(render, contextElements, bean);
+			this.writeSpringModelXml(render,contextElements, bean);
+			this.writeEntantoInit(render, contextElements, bean);
+			
+			if (bean.isBuildApi()) {
+				this.writeAPI(render, contextElements, bean);
+			} else {
+				logger.info("skypping API artifacts for {}", bean.getName());
+			}
+			
+			this.writeAction(render, contextElements, bean);
+			this.writeJspAction(render, contextElements, bean);
+			
+			if (bean.isBuildWidgets()) {
+				this.writeWidgets(render, contextElements, bean);
+			} else {
+				logger.info("skypping Widgets artifacts for {}", bean.getName());			
+			}
+			
+			this.writeTestService(render, contextElements, bean);
+			this.writeTestAction(render, contextElements, bean);
+		}
+		
+		if (builder.hasCommonFlesApi()) {
+			this.writeCommonsFilesAPI(render, contextElements, builder);			
+		}
+		
+		if (builder.hasCommonFlesWidgets()) {			
+			this.writeCommonsFilesWidgets(render, contextElements, builder);
+		}
+		
+		this.writeCommonsFilesEntandoInit(render, contextElements, builder);
+		this.writeCommonsFilesActions(render, contextElements, builder);
+		this.writeCommonsFilesJspActions(render, contextElements, builder);
+		
+		this.saveReport(render, contextElements, builder);
+		
+		//this.saveReport(render, contextElements, bean);
 
 	}
 
@@ -69,17 +97,17 @@ public class Builder {
 	 * @param contextElements
 	 * @param bean
 	 */
-	private void saveReport(Render render, Map<String, Object> contextElements, EdoBean bean) {
+	private void saveReport(Render render, Map<String, Object> contextElements, EdoBuilder builder) {
 		File file = null;
 		try {
 			Calendar cal = Calendar.getInstance();
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
 			String nowString = sdf.format(cal.getTime());
-			
+
 			contextElements.put("report", Report.getInstance());
 			String text = render.render(Templates.EDO_REPORT, contextElements);
-			String filename = "edo_" + nowString + "_" + bean.getName() + "-report.txt";
-			file = new File(bean.getEdoBuilder().getBaseDir() + File.separator + filename);
+			String filename = "edo_" + nowString + "_" + StringUtils.join(builder.getBeansMap().keySet(), "-") + "-report.txt";
+			file = new File(builder.getBaseDir() + File.separator + filename);
 
 			FileUtils.writeStringToFile(file, text, "UTF-8");
 		} catch (Throwable t) {
@@ -151,24 +179,31 @@ public class Builder {
 			String apiListResponsePath = Filebuilder.getApiListResponseFilePath(bean);
 			String apiListResponse = render.render(Templates.API_LIST_RESPONSE, contextElements);
 			this.writeFile(bean.getEdoBuilder().getBaseDir(), apiListResponsePath, apiListResponse);
-			
+
 			//api LIST response result
 			String apiListResponseResultPath = Filebuilder.getApiListResponseResultFilePath(bean);
 			String apiListResponseResult = render.render(Templates.API_LIST_RESPONSE_RESULT, contextElements);
 			this.writeFile(bean.getEdoBuilder().getBaseDir(), apiListResponseResultPath, apiListResponseResult);
 
-
-			//api methods
-			String apiMethodsPath = Filebuilder.getApiMethodsFilePath(bean);
-			String apiMethods = render.render(Templates.API_METHODS_XML, contextElements);
-			this.writeFile(bean.getEdoBuilder().getBaseDir(), apiMethodsPath, apiMethods);
-
 		} catch (Throwable t) {
-			logger.error("error!", t);
+			logger.error("error writing files for {}", bean.getName(), t);
 		}
-
 	}
 
+	private void writeCommonsFilesAPI(Render render, Map<String, Object> contextElements, EdoBuilder builder) {
+		try {	
+			//api methods
+			String apiMethodsPath = Filebuilder.getApiMethodsFilePath(builder);
+			String apiMethods = render.render(Templates.API_METHODS_XML, contextElements);
+			this.writeFile(builder.getBaseDir(), apiMethodsPath, apiMethods);
+			
+		} catch (Throwable t) {
+			logger.error("error writing api common files ",t);
+		}
+	}
+
+	
+	
 	private void writeSpringModelXml(Render render, Map<String, Object> contextElements, EdoBean bean) {
 		try {
 			String stringPath = Filebuilder.getSpringManagerFilePath(bean);
@@ -187,31 +222,38 @@ public class Builder {
 			String javaContent = render.render(Templates.ENTANDO_INIT_POJO, contextElements);
 			this.writeFile(bean.getEdoBuilder().getBaseDir(), pojoPath, javaContent);
 
-			//COMPONENT
-			String componentPath = Filebuilder.getEntandoComponentFilePath(bean);
-			String xmlContent = render.render(Templates.ENTANDO_INIT_COMPONENT_XML, contextElements);
-			this.writeFile(bean.getEdoBuilder().getBaseDir(), componentPath, xmlContent);
-
-			//PROD SQL SERV
-			String sqlServPath = Filebuilder.getEntandoComponentSqlServProductionFilePath(bean);
-			String sqlServContent = render.render(Templates.ENTANDO_INIT_SERV_DATA_PRODUCTION_SQL, contextElements);
-			this.writeFile(bean.getEdoBuilder().getBaseDir(), sqlServPath, sqlServContent);
-			//PROD SQL PORT
-			String sqlPortPath = Filebuilder.getEntandoComponentSqlPortProductionFilePath(bean);
-			String sqlPortContent = render.render(Templates.ENTANDO_INIT_PORT_DATA_PRODUCTION_SQL, contextElements);
-			this.writeFile(bean.getEdoBuilder().getBaseDir(), sqlPortPath, sqlPortContent);
-
-			//TEST SQL SERV
-			String sqlTestServPath = Filebuilder.getEntandoComponentSqlServTestFilePath(bean);
-			String sqlTestServContent = render.render(Templates.ENTANDO_INIT_SERV_DATA_TEST_SQL, contextElements);
-			this.writeFile(bean.getEdoBuilder().getBaseDir(), sqlTestServPath, sqlTestServContent);
-			//TEST SQL PORT
-			String sqlTestPortPath = Filebuilder.getEntandoComponentSqlPortTestFilePath(bean);
-			String sqlTestPortContent = render.render(Templates.ENTANDO_INIT_PORT_DATA_TEST_SQL, contextElements);
-			this.writeFile(bean.getEdoBuilder().getBaseDir(), sqlTestPortPath, sqlTestPortContent);
-
 		} catch (Throwable t) {
 			logger.error("error writing files for {}", bean.getName(), t);
+		}		
+	}
+
+	private void writeCommonsFilesEntandoInit(Render render, Map<String, Object> contextElements, EdoBuilder builder) {
+		try {
+			//COMPONENT
+			String componentPath = Filebuilder.getEntandoComponentFilePath(builder);
+			String xmlContent = render.render(Templates.ENTANDO_INIT_COMPONENT_XML, contextElements);
+			this.writeFile(builder.getBaseDir(), componentPath, xmlContent);
+			
+			//PROD SQL SERV
+			String sqlServPath = Filebuilder.getEntandoComponentSqlServProductionFilePath(builder);
+			String sqlServContent = render.render(Templates.ENTANDO_INIT_SERV_DATA_PRODUCTION_SQL, contextElements);
+			this.writeFile(builder.getBaseDir(), sqlServPath, sqlServContent);
+			//PROD SQL PORT
+			String sqlPortPath = Filebuilder.getEntandoComponentSqlPortProductionFilePath(builder);
+			String sqlPortContent = render.render(Templates.ENTANDO_INIT_PORT_DATA_PRODUCTION_SQL, contextElements);
+			this.writeFile(builder.getBaseDir(), sqlPortPath, sqlPortContent);
+			
+			//TEST SQL SERV
+			String sqlTestServPath = Filebuilder.getEntandoComponentSqlServTestFilePath(builder);
+			String sqlTestServContent = render.render(Templates.ENTANDO_INIT_SERV_DATA_TEST_SQL, contextElements);
+			this.writeFile(builder.getBaseDir(), sqlTestServPath, sqlTestServContent);
+			//TEST SQL PORT
+			String sqlTestPortPath = Filebuilder.getEntandoComponentSqlPortTestFilePath(builder);
+			String sqlTestPortContent = render.render(Templates.ENTANDO_INIT_PORT_DATA_TEST_SQL, contextElements);
+			this.writeFile(builder.getBaseDir(), sqlTestPortPath, sqlTestPortContent);
+			
+		} catch (Throwable t) {
+			logger.error("error writing common files for entando init", t);
 		}		
 	}
 
@@ -260,6 +302,7 @@ public class Builder {
 			String actionPropertiesEnContent = render.render(Templates.ACTION_PACKAGE_PROPERTIES, contextElements);
 			this.writeFile(bean.getEdoBuilder().getBaseDir() , actionPropertiesEnFilePath, actionPropertiesEnContent);
 
+			/*
 			//STRUTS_PLUGIN
 			String strutsPluginFilePath = ControllerFileBuilder.getActionStrutsPluginFilePath(bean);
 			String actionStrutsPluginContent = render.render(Templates.ACTION_STRUTS_PLUGIN, contextElements);
@@ -274,13 +317,14 @@ public class Builder {
 			String tilesFilePath = ControllerFileBuilder.getActionTilesFilePath(bean);
 			String actionTilesContent = render.render(Templates.ACTION_TILES, contextElements);
 			this.writeFile(bean.getEdoBuilder().getBaseDir() , tilesFilePath, actionTilesContent);
-
+			*/
+			
 			//SPRING
 			String springFilePath = ControllerFileBuilder.getActionSpringFilePath(bean);
 			String actionSpringContent = render.render(Templates.ACTION_SPRING, contextElements);
 			this.writeFile(bean.getEdoBuilder().getBaseDir() , springFilePath, actionSpringContent);
 
-			
+			/*
 			if (bean.getEdoBuilder().isPlugin()) {
 				//GLOBALMESSAGES.PROPERTIES
 				String globalMessagesPropertiesFilePath = ControllerFileBuilder.getGlobalMessagesPropertiesFilePath(bean, "it");
@@ -292,19 +336,64 @@ public class Builder {
 				globalMessagesPropertiesContent = render.render(Templates.ACTION_PLUGIN_GLOBAL_MESSAGES_PROPERTIES, contextElements);
 				this.writeFile(bean.getEdoBuilder().getBaseDir() , globalMessagesPropertiesFilePath, globalMessagesPropertiesContent);
 			}
-			
-			
+			*/
+
 		} catch (Throwable t) {
 			logger.error("error writing files for {}", bean.getName(), t);
 		}
 	}
-
-	private void writeWidgets(Render render,	Map<String, Object> contextElements, EdoBean bean) {
-		if (bean.buildWidgets()) {
-			this.writeWidget(render, contextElements, bean);
-			this.writeInternalServlet(render, contextElements, bean);
+	
+	private void writeCommonsFilesActions(Render render, Map<String, Object> contextElements, EdoBuilder builder) {
+		try {
+			//STRUTS_PLUGIN
+			String strutsPluginFilePath = ControllerFileBuilder.getActionStrutsPluginFilePath(builder);
+			String actionStrutsPluginContent = render.render(Templates.ACTION_STRUTS_PLUGIN, contextElements);
+			this.writeFile(builder.getBaseDir() , strutsPluginFilePath, actionStrutsPluginContent);
+			
+			//SHORTCUTS
+			String shortcutFilePath = ControllerFileBuilder.getActionShortCutFilePath(builder);
+			String shortcutContent = render.render(Templates.SHORTCUT, contextElements);
+			this.writeFile(builder.getBaseDir() , shortcutFilePath, shortcutContent);
+			
+			//TILES
+			String tilesFilePath = ControllerFileBuilder.getActionTilesFilePath(builder);
+			String actionTilesContent = render.render(Templates.ACTION_TILES, contextElements);
+			this.writeFile(builder.getBaseDir() , tilesFilePath, actionTilesContent);
+			
+			if (builder.isPlugin()) {
+				//GLOBALMESSAGES.PROPERTIES
+				String globalMessagesPropertiesFilePath = ControllerFileBuilder.getGlobalMessagesPropertiesFilePath(builder, "it");
+				String globalMessagesPropertiesContent = render.render(Templates.ACTION_PLUGIN_GLOBAL_MESSAGES_PROPERTIES, contextElements);
+				this.writeFile(builder.getBaseDir() , globalMessagesPropertiesFilePath, globalMessagesPropertiesContent);
+				
+				//GLOBALMESSAGES.PROPERTIES
+				globalMessagesPropertiesFilePath = ControllerFileBuilder.getGlobalMessagesPropertiesFilePath(builder, "en");
+				globalMessagesPropertiesContent = render.render(Templates.ACTION_PLUGIN_GLOBAL_MESSAGES_PROPERTIES, contextElements);
+				this.writeFile(builder.getBaseDir() , globalMessagesPropertiesFilePath, globalMessagesPropertiesContent);
+			}
+			
+			
+		} catch (Throwable t) {
+			logger.error("error writing common files for actions", t);
 		}
 	}
+
+	private void writeWidgets(Render render,	Map<String, Object> contextElements, EdoBean bean) {
+		this.writeWidget(render, contextElements, bean);
+		this.writeInternalServlet(render, contextElements, bean);
+	}
+
+	private void writeCommonsFilesWidgets(Render render, Map<String, Object> contextElements, EdoBuilder builder) {
+		try {
+			//TLD
+			String apsTldFilePath = WidgetFileBuilder.getApsTldFilePath(builder);
+			String apsTld = render.render(Templates.TLD_APS, contextElements);
+			this.writeFile(builder.getBaseDir(), apsTldFilePath, apsTld);
+		} catch (Throwable t) {
+			logger.error("error writing commons filse for widgets", t);
+		}
+	}
+	
 
 	private void writeWidget(Render render,	Map<String, Object> contextElements, EdoBean bean) {
 		try {
@@ -340,11 +429,6 @@ public class Builder {
 			String singleTagFilePath = WidgetFileBuilder.getTagSingleFilePath(bean);
 			String singleTagJava = render.render(Templates.TAG_SINGLE_JAVA, contextElements);
 			this.writeFile(bean.getEdoBuilder().getBaseDir(), singleTagFilePath, singleTagJava);
-
-			//TLD
-			String apsTldFilePath = WidgetFileBuilder.getApsTldFilePath(bean);
-			String apsTld = render.render(Templates.TLD_APS, contextElements);
-			this.writeFile(bean.getEdoBuilder().getBaseDir(), apsTldFilePath, apsTld);
 
 			//WIDGET_JSP
 			String widgetJspFilePath = WidgetFileBuilder.getJspWidgetFilePath(bean);
@@ -420,17 +504,24 @@ public class Builder {
 			String trashExtrasFilePath = ControllerFileBuilder.getJspExtraResourcesTrashFilePath(bean);
 			String trashExtrasJsp = render.render(Templates.JSP_APSADMIN_TRASH_EXTRA_RESOURCES, contextElements);
 			this.writeFile(bean.getEdoBuilder().getBaseDir(), trashExtrasFilePath, trashExtrasJsp);
-			
-			if (bean.getEdoBuilder().isPlugin()) {
-				//jsp submenu
-				String submenuFilePath = ControllerFileBuilder.getJspSubMenuFilePath(bean);
-				String submenuJsp = render.render(Templates.JSP_APSADMIN_PLUGINSUBMENU, contextElements);
-				this.writeFile(bean.getEdoBuilder().getBaseDir(), submenuFilePath, submenuJsp);
-			}
-			
+
 
 		} catch (Throwable t) {
 			logger.error("error writing files for {}", bean.getName(), t);
+		}
+	}
+
+	private void writeCommonsFilesJspActions(Render render,	Map<String, Object> contextElements, EdoBuilder builder) {
+		try {
+			if (builder.isPlugin()) {
+				//jsp submenu
+				String submenuFilePath = ControllerFileBuilder.getJspSubMenuFilePath(builder);
+				String submenuJsp = render.render(Templates.JSP_APSADMIN_PLUGINSUBMENU, contextElements);
+				this.writeFile(builder.getBaseDir(), submenuFilePath, submenuJsp);
+			}
+			
+		} catch (Throwable t) {
+			logger.error("error writing files jsp ",t);
 		}
 	}
 

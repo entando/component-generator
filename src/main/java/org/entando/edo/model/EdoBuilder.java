@@ -18,7 +18,10 @@ package org.entando.edo.model;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 
 import org.apache.commons.lang.StringUtils;
@@ -26,11 +29,32 @@ import org.entando.edo.builder.FolderConstants;
 
 public class EdoBuilder {
 
+
+	public EdoBuilder(String[] args, String baseDir, String packageName, String permission, List<EdoBean> beans) {
+		this.setOriginalArgs(StringUtils.join(args, " "));
+		if (StringUtils.isNotBlank(baseDir)) this.setBaseDir(baseDir);
+		if (StringUtils.isNotBlank(permission)) this.setPermission(permission);
+		if (StringUtils.isNotBlank(packageName)) this.setPackageName(packageName);
+		for (int i = 0; i < beans.size(); i++) {
+			this.addBean(beans.get(i));
+		}
+		if (StringUtils.isBlank(this.getPackageName())) {
+			String autoPackageName = "org.entando.entando.plugins.jp" +this.getBeans().get(0).getName().toLowerCase();
+			this.setPackageName(autoPackageName);
+		}
+		
+	}
+
 	public void addBean (EdoBean edoBean) {
 		edoBean.setEdoBuilder(this);
 		this.getBeans().add(edoBean);
+		this.getBeansMap().put(edoBean.getName(), edoBean);
 	}
 
+	public EdoBean getBean(String name) {
+		return this.getBeansMap().get(name);
+	}
+	
 	public EdoBean getBean() {
 		return this.getBeans().get(0);
 	}
@@ -39,6 +63,33 @@ public class EdoBuilder {
 		return this.getPackageName().contains(".plugins.");
 	}
 
+
+	public boolean hasCommonFlesApi() {
+		boolean retval = false;
+		Iterator<EdoBean> it = this._beans.iterator();
+		while (it.hasNext()) {
+			EdoBean bean = it.next();
+			if (bean.isBuildApi()) {
+				retval = true;
+				break;
+			}
+		}
+		return retval;
+	}
+
+	public boolean hasCommonFlesWidgets() {
+		boolean retval = false;
+		Iterator<EdoBean> it = this._beans.iterator();
+		while (it.hasNext()) {
+			EdoBean bean = it.next();
+			if (bean.isBuildWidgets()) {
+				retval = true;
+				break;
+			}
+		}
+		return retval;
+	}
+	
 	public String getPluginName() {
 		String name = null;
 		if (isPlugin()) {
@@ -53,7 +104,7 @@ public class EdoBuilder {
 		name = name.replaceAll("-", "");
 		return StringUtils.uncapitalize(name);
 	}
-
+	
 	/**
 	 * @return
 	 */
@@ -258,9 +309,15 @@ public class EdoBuilder {
 		this._beans = beans;
 	}
 
+	public Map<String, EdoBean> getBeansMap() {
+		return _beansMap;
+	}
+
+
 	private String _packageName;
 	private String _baseDir = System.getProperty("user.dir");
 	private String _permission = "superuser";
 	private String _originalArgs = null;
 	private List<EdoBean> _beans = new ArrayList<EdoBean>();
+	private Map<String, EdoBean> _beansMap = new HashMap<String, EdoBean>();
 }

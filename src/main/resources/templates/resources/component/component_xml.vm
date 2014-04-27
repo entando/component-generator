@@ -1,16 +1,15 @@
-#set( $builder = $bean.edoBuilder)
-#set( $beanVar = $constants.getLowerCase($bean.name))
-#set( $beanClass = $bean.name)
 #set( $springPrep = $constants.getLowerCase($builder.springBeanPreposition))
-#set( $tableName = $bean.tableName)
 <?xml version="1.0" encoding="UTF-8"?>
 <component>
 	<code>#if($builder.plugin)$builder.pluginName#else${builder.projectName}#end</code>
-	<description>${beanClass}</description>
+	<description>#if($builder.plugin)$builder.pluginName#else${builder.projectName}#end</description>
 	<installation>
 		<tableMapping>
 			<datasource name="servDataSource">
-				<class>${builder.packageName}.${constants.initPackage}.$beanClass</class>
+#foreach($bean in $builder.beans)
+#set( $beanClass = $bean.name)
+				<class>${builder.packageName}.${constants.initPackage}.$bean.name</class>
+#end
 			</datasource>
 		</tableMapping>
 		<environment code="production">
