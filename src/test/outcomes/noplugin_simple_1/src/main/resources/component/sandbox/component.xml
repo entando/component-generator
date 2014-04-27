@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component>
+	<code>sandbox</code>
+	<description>Cat</description>
+	<installation>
+		<tableMapping>
+			<datasource name="servDataSource">
+				<class>com.myportal.aps.system.init.servdb.Cat</class>
+			</datasource>
+		</tableMapping>
+		<environment code="production">
+			<defaultSqlResources>
+				<datasource name="portDataSource">
+classpath:sql/misc/sandbox/port_data_production.sql
+				</datasource>
+				<datasource name="servDataSource">
+classpath:sql/misc/sandbox/serv_data_production.sql
+				</datasource>
+			</defaultSqlResources>
+		</environment>
+		<environment code="test">
+			<defaultSqlResources>
+				<datasource name="portDataSource">
+classpath:sql/misc/sandbox/port_data_test.sql
+				</datasource>
+				<datasource name="servDataSource">
+classpath:sql/misc/sandbox/serv_data_test.sql
+				</datasource>
+			</defaultSqlResources>
+		</environment>
+	</installation>
+</component>

@@ -1,0 +1,109 @@
+****************************************************************
+
+						Edo Report		
+								
+****************************************************************
+
+=== Command Line
+
+[--package=com.myportal, Cat, name:string-r8, age:int, weight:bigdecimal, createdat:date]
+
+
+
+=== List of geneated files that MUST be merged:
+----------------------------------------------------------------
+Total files: 0
+Total lines: 0
+
+
+=== List of geneated files:
+src/main/java/com/myportal/aps/internalservlet/cat/CatFinderFrontEndAction.java
+src/main/java/com/myportal/aps/internalservlet/cat/CatFrontEndAction.java
+src/main/java/com/myportal/aps/internalservlet/cat/catFront.xml
+src/main/java/com/myportal/aps/system/init/servdb/Cat.java
+src/main/java/com/myportal/aps/system/services/cat/Cat.java
+src/main/java/com/myportal/aps/system/services/cat/CatDAO.java
+src/main/java/com/myportal/aps/system/services/cat/CatManager.java
+src/main/java/com/myportal/aps/system/services/cat/ICatDAO.java
+src/main/java/com/myportal/aps/system/services/cat/ICatManager.java
+src/main/java/com/myportal/aps/system/services/cat/api/CatListResponse.java
+src/main/java/com/myportal/aps/system/services/cat/api/CatListResponseResult.java
+src/main/java/com/myportal/aps/system/services/cat/api/CatResponse.java
+src/main/java/com/myportal/aps/system/services/cat/api/CatResponseResult.java
+src/main/java/com/myportal/aps/system/services/cat/api/JAXBCat.java
+src/main/java/com/myportal/aps/system/services/cat/event/CatChangedEvent.java
+src/main/java/com/myportal/aps/system/services/cat/event/CatChangedObserver.java
+src/main/java/com/myportal/aps/tags/CatListTag.java
+src/main/java/com/myportal/aps/tags/CatTag.java
+src/main/java/com/myportal/apsadmin/cat/CatAction-conversion.properties
+src/main/java/com/myportal/apsadmin/cat/CatAction-validation.xml
+src/main/java/com/myportal/apsadmin/cat/CatAction.java
+src/main/java/com/myportal/apsadmin/cat/CatFinderAction-conversion.properties
+src/main/java/com/myportal/apsadmin/cat/CatFinderAction.java
+src/main/java/com/myportal/apsadmin/cat/cat.xml
+src/main/java/com/myportal/apsadmin/cat/package_en.properties
+src/main/java/com/myportal/apsadmin/cat/package_it.properties
+src/main/java/com/myportal/apsadmin/portal/specialwidget/cat/CatConfigAction.java
+src/main/java/com/myportal/apsadmin/portal/specialwidget/cat/catSpecialWidget.xml
+src/main/java/com/myportal/apsadmin/portal/specialwidget/cat/package_en.properties
+src/main/java/com/myportal/apsadmin/portal/specialwidget/cat/package_it.properties
+src/main/resources/api/sandbox/aps/apiMethods.xml
+src/main/resources/component/sandbox/component.xml
+src/main/resources/entando-struts-plugin.xml
+src/main/resources/shortcuts/apsadmin/shortcuts.xml
+src/main/resources/spring/sandbox/aps/managers/sandboxCatManagersConfig.xml
+src/main/resources/spring/sandbox/apsadmin/sandboxCatActionsConfig.xml
+src/main/resources/sql/misc/sandbox_cat/port_data_production.sql
+src/main/resources/sql/misc/sandbox_cat/serv_data_production.sql
+src/main/tld/sandbox/sandbox-core.tld
+src/main/webapp/WEB-INF//aps/jsp/internalservlet/cat/frontend-cat-entry.jsp
+src/main/webapp/WEB-INF//aps/jsp/internalservlet/cat/frontend-cat-error.jsp
+src/main/webapp/WEB-INF//aps/jsp/internalservlet/cat/frontend-cat-list.jsp
+src/main/webapp/WEB-INF//aps/jsp/internalservlet/cat/frontend-cat-trash.jsp
+src/main/webapp/WEB-INF//aps/jsp/widgets/Cat.jsp
+src/main/webapp/WEB-INF/sandbox/apsadmin/jsp/cat/cat-entry.jsp
+src/main/webapp/WEB-INF/sandbox/apsadmin/jsp/cat/cat-list.jsp
+src/main/webapp/WEB-INF/sandbox/apsadmin/jsp/cat/cat-trash.jsp
+src/main/webapp/WEB-INF/sandbox/apsadmin/jsp/common/layouts/assets-more/cat-entry-extras.jsp
+src/main/webapp/WEB-INF/sandbox/apsadmin/jsp/common/layouts/assets-more/cat-list-extras.jsp
+src/main/webapp/WEB-INF/sandbox/apsadmin/jsp/common/layouts/assets-more/cat-trash-extras.jsp
+src/main/webapp/WEB-INF/sandbox/apsadmin/jsp/portal/specialwidget/cat/cat-config.jsp
+src/main/webapp/WEB-INF/sandbox/apsadmin/sandbox-tiles.xml
+src/test/java/com/myportal/SandboxConfigTestUtils.java
+src/test/java/com/myportal/aps/SandboxBaseTestCase.java
+src/test/java/com/myportal/aps/system/services/TestCatManager.java
+src/test/java/com/myportal/apsadmin/SandboxApsAdminBaseTestCase.java
+src/test/java/com/myportal/apsadmin/cat/TestCatAction.java
+src/test/java/com/myportal/apsadmin/cat/TestCatFinderAction.java
+src/test/resources/sql/misc/sandbox_cat/port_data_test.sql
+src/test/resources/sql/misc/sandbox_cat/serv_data_test.sql
+----------------------------------------------------------------
+Total files: 60
+Total lines: 3024
+
+
+
+
+
+=== Revert *port inserts
+
+DELETE FROM localstrings where keycode = 'CAT_ID'; 
+DELETE FROM localstrings where keycode = 'CAT_NAME'; 
+DELETE FROM localstrings where keycode = 'CAT_AGE'; 
+DELETE FROM localstrings where keycode = 'CAT_WEIGHT'; 
+DELETE FROM localstrings where keycode = 'CAT_CREATEDAT_START'; 
+DELETE FROM localstrings where keycode = 'CAT_CREATEDAT_END'; 
+DELETE FROM localstrings where keycode = 'CAT_CREATEDAT'; 
+DELETE FROM localstrings where keycode = 'CAT_ACTIONS'; 
+DELETE FROM localstrings where keycode = 'CAT_NEW'; 
+DELETE FROM localstrings where keycode = 'CAT_EDIT'; 
+DELETE FROM localstrings where keycode = 'CAT_TRASH'; 
+DELETE FROM localstrings where keycode = 'CAT_TRASH_CONFIRM'; 
+DELETE FROM localstrings where keycode = 'CAT_SEARCH_CAT'; 
+
+
+DELETE FROM widgetcatalog where code = 'Cat_list_form';
+DELETE FROM widgetcatalog where code = 'Cat';
+
+
+

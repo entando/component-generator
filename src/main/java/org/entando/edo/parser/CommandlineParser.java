@@ -30,14 +30,15 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.entando.edo.model.EdoBean;
+import org.entando.edo.model.EdoBuilder;
 
 
 public class CommandlineParser {
 
 	private static Logger _logger = LogManager.getLogger(CommandlineParser.class);
 
-	public EdoBean generate(String[] args) throws Throwable {
-		EdoBean edoBean = null;
+	public EdoBuilder generate(String[] args) throws Throwable {
+		EdoBuilder edoBuilder = null;
 		try {
 			if (null != args) {
 				ArrayList<String> rawArgs = new ArrayList<String>();
@@ -59,29 +60,38 @@ public class CommandlineParser {
 				outputCommandLineHelp(options);
 				return null;
 			}
-			edoBean = new EdoBean();
-			edoBean.setOriginalArgs(originalArgs);
+			edoBuilder = new EdoBuilder();
+			edoBuilder.setOriginalArgs(originalArgs);
 			if (null != cl) {
-				args = processCommandline(cl, edoBean, args);
+				args = processCommandline(cl, edoBuilder, args);
+			}
+			if (StringUtils.isBlank(edoBuilder.getPackageName())) {
+				_logger.warn("No package name!, skip");
+				return null;
 			}
 			/////////
 
-			_logger.trace("check for a pom.xml");
-			boolean pomExists = new File(edoBean.getBaseDir(), "pom.xml").exists();
-			if (!pomExists) {
-				_logger.error("pom.xml not found in dir:'{}'", edoBean.getBaseDir());
-				throw new Exception("no pom.xml found in " + edoBean.getBaseDir());
+			if (this.checkForPom) {	
+				_logger.trace("check for pom.xml");
+				boolean pomExists = new File(edoBuilder.getBaseDir(), "pom.xml").exists();
+				if (!pomExists) {
+					_logger.error("no pom.xml found in dir:'{}'. skip", edoBuilder.getBaseDir());
+					return null;
+				}
+				_logger.trace("found {}.pom.xml", edoBuilder.getBaseDir());
 			}
-			_logger.trace("found {}.pom.xml", edoBean.getBaseDir());
 
 
-
+			EdoBean edoBean = new EdoBean();
 			IAgrumentParser parser = new NameParser();
 			String a[] = parser.parse(edoBean, args);
 
 			parser = new FieldsParser();
 			a = parser.parse(edoBean, a);
-			_logger.warn("These parameters were skipped: " + Arrays.toString(a));
+			if (a.length > 0) {
+				_logger.warn("These parameters were skipped: " + Arrays.toString(a));
+			}
+			edoBuilder.addBean(edoBean);
 
 		} catch (ParseException exp) {
 			_logger.error("Error parsing command line", exp);
@@ -89,7 +99,7 @@ public class CommandlineParser {
 			_logger.error("Error parsing command line", t);
 			throw t;
 		}
-		return edoBean;
+		return edoBuilder;
 	}
 
 
@@ -97,15 +107,15 @@ public class CommandlineParser {
 
 	private static Options createCommandLineOptions() {
 		final Options options = new Options();
-		options.addOption(OPTION_BASE_DIR, OPTION_BASE_DIR, true, OPTION_BASE_DIR);
-		options.addOption(OPTION_PERMISSION, OPTION_PERMISSION, true, OPTION_PERMISSION);
-		options.addOption(OPTION_PACKAGE, OPTION_PACKAGE, true, OPTION_PACKAGE);
+		options.addOption(OPTION_BASE_DIR, OPTION_BASE_DIR, true, "full path of edo work directory. Should be the root of an Entando project. By default is the current directory");
+		options.addOption(OPTION_PERMISSION, OPTION_PERMISSION, true, "code of the Entando permission used to protect actions. Default is 'superuser'");
+		options.addOption(OPTION_PACKAGE, OPTION_PACKAGE, true, "fully qualified package name, for example: com.mycompany");
 		return options;
 	}
 
 	private static void outputCommandLineHelp(final Options options) {
 		final HelpFormatter formater = new HelpFormatter();
-		formater.printHelp("Edo [options] [ARGS] ", options);
+		formater.printHelp("edo [options] [ARGS]", options);
 	}
 
 
@@ -117,25 +127,25 @@ public class CommandlineParser {
 	 * @return
 	 * @throws IllegalArgumentException
 	 */
-	private String[] processCommandline(CommandLine cl, EdoBean edoBean, String[] args) throws IllegalArgumentException {
+	private String[] processCommandline(CommandLine cl, EdoBuilder edoBuilder, String[] args) throws IllegalArgumentException {
 		if (cl.hasOption(OPTION_BASE_DIR)) {
 			String baseDir = cl.getOptionValue(OPTION_BASE_DIR);
 			if (StringUtils.isNotBlank(baseDir)) {
 				if (baseDir.endsWith(File.separator)) {
 					baseDir = StringUtils.removeEnd(baseDir, File.separator);
 				}
-				edoBean.setBaseDir(baseDir);
+				edoBuilder.setBaseDir(baseDir);
 			}
 		}
-		_logger.info("baseDir is: '{}'", edoBean.getBaseDir());
+		_logger.debug("baseDir is: '{}'", edoBuilder.getBaseDir());
 
 		if (cl.hasOption(OPTION_PERMISSION)) {
 			String perm = cl.getOptionValue(OPTION_PERMISSION);
 			if (StringUtils.isNotBlank(perm)) {
-				edoBean.setPermission(perm);
+				edoBuilder.setPermission(perm);
 			}
 		}
-		_logger.info("permission is: '{}'", edoBean.getPermission());
+		_logger.debug("permission is: '{}'", edoBuilder.getPermission());
 
 		String packageName = null;
 		if (cl.hasOption(OPTION_PACKAGE)) {
@@ -149,16 +159,29 @@ public class CommandlineParser {
 				}
 			}
 		} else {
-			_logger.trace("auoto generate packagename");
-			packageName = "org.entando.entando.plugins.jp" + cl.getArgs()[0].toLowerCase();
+			_logger.trace("auto generate packagename");
+			if (!cl.getArgList().isEmpty()) {
+				packageName = "org.entando.entando.plugins.jp" + cl.getArgs()[0].toLowerCase();
+			} else {
+				_logger.warn("Unable to generate the default package name. No enough args");
+			}
 		}
-		edoBean.setPackageName(packageName);
-		_logger.info("packagename: is '{}'", edoBean.getPackageName());
 
+
+
+		edoBuilder.setPackageName(packageName);
+		_logger.debug("packagename: is '{}'", edoBuilder.getPackageName());
 
 		args = Arrays.copyOfRange(args, cl.getOptions().length, args.length);
 		return args;
 	}
+
+
+	protected void setCheckForPom(boolean checkForPom) {
+		this.checkForPom = checkForPom;
+	}
+
+	private boolean checkForPom = true;
 
 	public static final String OPTION_BASE_DIR = "baseDir";
 	public static final String OPTION_PERMISSION = "permission";

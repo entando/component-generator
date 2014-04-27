@@ -1,20 +1,21 @@
+#set( $builder = $bean.edoBuilder)
 #set( $beanVar = $constants.getUnCapitalize($bean.name))
 #set( $beanClass = $bean.name)
-#set( $springPrep = $constants.getLowerCase($bean.springBeanPreposition))
-#if($bean.plugin)
+#set( $springPrep = $constants.getLowerCase($builder.springBeanPreposition))
+#if($builder.plugin)
 #set($menusec="plugins")
 #else
 #set($menusec="components")
 #end
 <shortcut-def>
 	<shortcuts>
-		<shortcut id="${springPrep}.${beanClass}.shortCut" requiredPermission="$bean.permission" menusection="${menusec}" source="${springPrep}">
+		<shortcut id="${springPrep}.${beanClass}.shortCut" requiredPermission="$builder.permission" menusection="${menusec}" source="${springPrep}">
 			<description key="${springPrep}.${beanClass}.shortCut.list.shortDesc">${beanClass} list</description>
 			<longdesc key="${springPrep}.${beanClass}.shortCut.list.longDesc">
 				<![CDATA[${beanClass} shortCut longDesc ]]>
 			</longdesc>
 			<url>
-				<param name="namespace">/do/${bean.springBeanPreposition}/${beanClass}</param>
+				<param name="namespace">/do/${builder.springBeanPreposition}/${beanClass}</param>
 				<param name="actionName">list</param>
 			</url>
 		</shortcut>

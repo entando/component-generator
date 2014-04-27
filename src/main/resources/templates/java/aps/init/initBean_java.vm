@@ -1,3 +1,4 @@
+#set( $builder = $bean.edoBuilder)
 #set( $daovar = "${constants.getUnCapitalize($bean.name)}DAO")
 #set( $beanVar = $constants.getLowerCase($bean.name))
 #set( $beanClass = $bean.name)
@@ -6,7 +7,7 @@
 #set( $pk_var = $bean.fields[0].name)
 #set( $tableName = $bean.tableName)
 #parse("templates/common/license/java_license.vm")
-package ${bean.getPackageName()}.${constants.initPackage};
+package ${builder.packageName}.${constants.initPackage};
 import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;

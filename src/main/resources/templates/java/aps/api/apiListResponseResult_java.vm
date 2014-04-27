@@ -1,7 +1,8 @@
+#set( $builder = $bean.edoBuilder)
 #set( $beanClass = $bean.name)
 #set( $beanVar = $constants.getUnCapitalize($bean.name))
 #parse("templates/common/license/java_license.vm")
-package ${bean.getPackageName()}.${constants.servicesPackage}.${constants.getLowerCase($bean.name)}.api;
+package ${builder.packageName}.${constants.servicesPackage}.${constants.getLowerCase($bean.name)}.api;
 
 import java.util.ArrayList;
 import java.util.Collection;

@@ -1,15 +1,16 @@
+#set( $builder = $bean.edoBuilder)
 #set( $beanVar = $constants.getUnCapitalize($bean.name))
 #set( $beanClass = $bean.name)
-#set( $springPrep = $constants.getLowerCase($bean.springBeanPreposition))
+#set( $springPrep = $constants.getLowerCase($builder.springBeanPreposition))
 #parse("templates/common/license/java_license.vm")
-package ${bean.getPackageName()}.${constants.apsadminPackage}.$constants.getLowerCase($beanVar);
+package ${builder.packageName}.${constants.apsadminPackage}.$constants.getLowerCase($beanVar);
 
 import java.util.HashMap;
 import java.util.Map;
-import ${bean.getPackageName()}.${constants.apsadminPackage}.${constants.getCapitalize($bean.springBeanPreposition)}ApsAdminBaseTestCase;
+import ${builder.packageName}.${constants.apsadminPackage}.${constants.getCapitalize($builder.springBeanPreposition)}ApsAdminBaseTestCase;
 import com.opensymphony.xwork2.Action;
 
-public class Test${beanClass}Action extends ${constants.getCapitalize($bean.springBeanPreposition)}ApsAdminBaseTestCase {
+public class Test${beanClass}Action extends ${constants.getCapitalize($builder.springBeanPreposition)}ApsAdminBaseTestCase {
 
 	public void testNew() throws Throwable {
 		//TODO complete test
@@ -57,6 +58,6 @@ public class Test${beanClass}Action extends ${constants.getCapitalize($bean.spri
 		return result;
 	}
 
-	private static final String NS = "/do/${bean.springBeanPreposition}/${beanClass}";
+	private static final String NS = "/do/${builder.springBeanPreposition}/${beanClass}";
 
 }

@@ -1,0 +1,15 @@
+<shortcut-def>
+	<shortcuts>
+		<shortcut id="sandbox.Cat.shortCut" requiredPermission="superuser" menusection="components" source="sandbox">
+			<description key="sandbox.Cat.shortCut.list.shortDesc">Cat list</description>
+			<longdesc key="sandbox.Cat.shortCut.list.longDesc">
+				<![CDATA[Cat shortCut longDesc ]]>
+			</longdesc>
+			<url>
+				<param name="namespace">/do/sandbox/Cat</param>
+				<param name="actionName">list</param>
+			</url>
+		</shortcut>
+	</shortcuts>
+	
+</shortcut-def>

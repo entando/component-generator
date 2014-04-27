@@ -1,0 +1,15 @@
+<shortcut-def>
+	<shortcuts>
+		<shortcut id="jppet.Cat.shortCut" requiredPermission="superuser" menusection="plugins" source="jppet">
+			<description key="jppet.Cat.shortCut.list.shortDesc">Cat list</description>
+			<longdesc key="jppet.Cat.shortCut.list.longDesc">
+				<![CDATA[Cat shortCut longDesc ]]>
+			</longdesc>
+			<url>
+				<param name="namespace">/do/jppet/Cat</param>
+				<param name="actionName">list</param>
+			</url>
+		</shortcut>
+	</shortcuts>
+	
+</shortcut-def>

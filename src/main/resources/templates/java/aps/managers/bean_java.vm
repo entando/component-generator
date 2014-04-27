@@ -1,5 +1,6 @@
+#set( $builder = $bean.edoBuilder)
 #parse("templates/common/license/java_license.vm")
-package ${bean.getPackageName()}.${constants.servicesPackage}.$constants.getLowerCase($bean.name);
+package ${builder.packageName}.${constants.servicesPackage}.$constants.getLowerCase($bean.name);
 
 $bean.getImports(false)
 

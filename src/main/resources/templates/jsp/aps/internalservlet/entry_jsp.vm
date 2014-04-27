@@ -1,12 +1,14 @@
+#set( $builder = $bean.edoBuilder)
 #set( $beanVar = $constants.getUnCapitalize($bean.name))
 #set( $beanClass = $bean.name)
-#set( $springPrep = $constants.getLowerCase($bean.springBeanPreposition))
+#set( $springPrep = $constants.getLowerCase($builder.springBeanPreposition))
 #set( $i18keyPrep = "")
-#if($bean.plugin)
-#set( $i18keyPrep = ${bean.pluginName}+"_")
+#if($builder.plugin)
+#set( $i18keyPrep = ${builder.pluginName}+"_")
 #end
 #set( $i18keyBean = $constants.toUpperCase($bean.name))
 #set( $pk_field = $bean.fields[0])
+#set ( $d = "$")
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
 <%@ taglib prefix="wp" uri="/aps-core"%>
@@ -19,8 +21,8 @@
 <c:set var="js_for_datepicker">
 /* Italian initialisation for the jQuery UI date picker plugin. */
 /* Written by Antonello Pasella (antonello.pasella@gmail.com). */
-jQuery(function($){
-$.datepicker.regional['it'] = {
+jQuery(function(${d}){
+${d}.datepicker.regional['it'] = {
 closeText: 'Chiudi',
 prevText: '&#x3c;Prec',
 nextText: 'Succ&#x3e;',
@@ -40,14 +42,14 @@ showMonthAfterYear: false,
 yearSuffix: ''};
 });
 
-jQuery(function($){
+jQuery(function(${d}){
 if (Modernizr.touch && Modernizr.inputtypes.date) {
-$.each( $("input[data-isdate=true]"), function(index, item) {
+${d}.each( ${d}("input[data-isdate=true]"), function(index, item) {
 item.type = 'date';
 });
 } else {
-$.datepicker.setDefaults( $.datepicker.regional[ "<c:out value="${currentLang}" />" ] );
-$("input[data-isdate=true]").datepicker({
+${d}.datepicker.setDefaults( ${d}.datepicker.regional[ "<c:out value="${d}{currentLang}" />" ] );
+${d}("input[data-isdate=true]").datepicker({
        changeMonth: true,
        changeYear: true,
        dateFormat: "dd/mm/yy"
@@ -70,7 +72,7 @@ $("input[data-isdate=true]").datepicker({
 	<h1><wp:i18n key="${i18keyPrep}${i18keyBean}_EDIT" /></h1>
 </s:elseif>
 
-<form action="<wp:action path="/ExtStr2/do/FrontEnd/${bean.springBeanPreposition}/${beanClass}/save.action" />" method="post">
+<form action="<wp:action path="/ExtStr2/do/FrontEnd/${builder.springBeanPreposition}/${beanClass}/save.action" />" method="post">
 	<s:if test="hasFieldErrors()">
 		<div class="alert alert-error">
 			<h2><s:text name="message.title.FieldErrors" /></h2>

@@ -34,8 +34,6 @@ public class Report implements Serializable  {
 			System.out.println("\nObject already created....");
 			throw new InstanceAlreadyExistsException();
 		}
-		//System.out.println("Inside Constructor..");
-		//val = new Random().nextInt();
 	}
 
 	public static Report getInstance() throws InstanceAlreadyExistsException {
@@ -48,7 +46,6 @@ public class Report implements Serializable  {
 		}
 		return obj;
 	}
-
 
 	@Override
 	protected Report clone() throws CloneNotSupportedException {

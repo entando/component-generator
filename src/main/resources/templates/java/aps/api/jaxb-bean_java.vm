@@ -1,7 +1,8 @@
+#set( $builder = $bean.edoBuilder)
 #set( $beanClass = $bean.name)
 #set( $beanVar = $constants.getUnCapitalize($bean.name))
 #parse("templates/common/license/java_license.vm")
-package ${bean.getPackageName()}.${constants.servicesPackage}.${constants.getLowerCase($bean.name)}.api;
+package ${builder.packageName}.${constants.servicesPackage}.${constants.getLowerCase($bean.name)}.api;
 
 $bean.getImports(false)
 
@@ -9,7 +10,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import ${bean.getPackageName()}.${constants.servicesPackage}.${constants.getLowerCase($bean.name)}.$beanClass;
+import ${builder.packageName}.${constants.servicesPackage}.${constants.getLowerCase($bean.name)}.$beanClass;
 
 @XmlRootElement(name = "${beanVar}")
 @XmlType(propOrder = {#foreach ($f in $bean.fields)"${f.name}"#if(!$foreach.last), #end#end})

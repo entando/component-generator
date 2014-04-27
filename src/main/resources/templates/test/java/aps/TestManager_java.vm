@@ -1,13 +1,14 @@
+#set( $builder = $bean.edoBuilder)
 #set( $beanVar = $constants.getUnCapitalize($bean.name))
 #set( $beanClass = $bean.name)
-#set( $springPrep = $constants.getLowerCase($bean.springBeanPreposition))
+#set( $springPrep = $constants.getLowerCase($builder.springBeanPreposition))
 #parse("templates/common/license/java_license.vm")
-package ${bean.getPackageName()}.${constants.servicesPackage};
+package ${builder.packageName}.${constants.servicesPackage};
 
-import ${bean.getPackageName()}.${constants.apsPackage}.${constants.getCapitalize($bean.springBeanPreposition)}BaseTestCase;
-import ${bean.getPackageName()}.${constants.servicesPackage}.${constants.getLowerCase($bean.name)}.I${beanClass}Manager;
+import ${builder.packageName}.${constants.apsPackage}.${constants.getCapitalize($builder.springBeanPreposition)}BaseTestCase;
+import ${builder.packageName}.${constants.servicesPackage}.${constants.getLowerCase($bean.name)}.I${beanClass}Manager;
 
-public class Test${beanClass}Manager extends ${constants.getCapitalize($bean.springBeanPreposition)}BaseTestCase {
+public class Test${beanClass}Manager extends ${constants.getCapitalize($builder.springBeanPreposition)}BaseTestCase {
 
 	@Override
 	protected void setUp() throws Exception {

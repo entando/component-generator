@@ -26,7 +26,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.entando.edo.datatype.DataTypeManager;
-import org.entando.edo.datatype.PrimaryKeyDataType;
 import org.entando.edo.model.EdoBean;
 import org.entando.edo.model.EdoField;
 
@@ -90,7 +89,7 @@ public class FieldsParser implements IAgrumentParser {
 					if (!fieldNames.contains(edoField.getName())) {
 						fieldsList.add(edoField);
 						fieldNames.add(edoField.getName());
-						_logger.info("added field with name '{}' and type {} ", edoField.getName(), edoField.getType().getJavaType());
+						_logger.debug("added field with name '{}' and type {} ", edoField.getName(), edoField.getType().getJavaType());
 					} else {
 						_logger.error("field '{}' is already present", edoField.getName());
 						if (edoField.getName().equalsIgnoreCase("id") && fieldsList.get(0).getType().equals(DataTypeManager.getInstance().getDataTypes().get("primary_key"))) {
@@ -109,7 +108,11 @@ public class FieldsParser implements IAgrumentParser {
 			}
 		}
 		edoBean.setFields(fieldsList);
-		return Arrays.copyOfRange(args, index+1, args.length);
+		String[] result = args;
+		if (args.length>=index+1) {
+			result = Arrays.copyOfRange(args, index+1, args.length);
+		}
+		return result;
 	}
 
 	protected void addDefaulPkFileld(List<EdoField> fieldsList,	List<String> fieldNames) {

@@ -1,11 +1,12 @@
+#set( $builder = $bean.edoBuilder)
 #set( $beanVar = $constants.getUnCapitalize($bean.name))
 #set( $beanClass = $bean.name)
 #parse("templates/common/license/java_license.vm")
-package ${bean.getPackageName()}.${constants.servicesPackage}.${constants.getLowerCase($bean.name)}.event;
+package ${builder.packageName}.${constants.servicesPackage}.${constants.getLowerCase($bean.name)}.event;
 
 import com.agiletec.aps.system.common.IManager;
 import com.agiletec.aps.system.common.notify.ApsEvent;
-import ${bean.getPackageName()}.${constants.servicesPackage}.${constants.getLowerCase($bean.name)}.${beanClass};
+import ${builder.packageName}.${constants.servicesPackage}.${constants.getLowerCase($bean.name)}.${beanClass};
 
 
 public class ${beanClass}ChangedEvent extends ApsEvent {

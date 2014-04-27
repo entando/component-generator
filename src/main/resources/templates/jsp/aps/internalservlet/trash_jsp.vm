@@ -1,9 +1,10 @@
+#set( $builder = $bean.edoBuilder)
 #set( $beanVar = $constants.getUnCapitalize($bean.name))
 #set( $beanClass = $bean.name)
-#set( $springPrep = $constants.getLowerCase($bean.springBeanPreposition))
+#set( $springPrep = $constants.getLowerCase($builder.springBeanPreposition))
 #set( $i18keyPrep = "")
-#if($bean.plugin)
-#set( $i18keyPrep = ${bean.pluginName}+"_")
+#if($builder.plugin)
+#set( $i18keyPrep = ${builder.pluginName}+"_")
 #end
 #set( $i18keyBean = $constants.toUpperCase($bean.name))
 #set( $pk_field = $bean.fields[0])
@@ -15,7 +16,7 @@
 <section>
 	<h1><wp:i18n key="${i18keyPrep}${i18keyBean}_TRASH" /></h1>
 
-	<form action="<wp:action path="/ExtStr2/do/FrontEnd/${bean.springBeanPreposition}/${beanClass}/delete.action" />" method="post">
+	<form action="<wp:action path="/ExtStr2/do/FrontEnd/${builder.springBeanPreposition}/${beanClass}/delete.action" />" method="post">
 		<s:if test="hasFieldErrors()">
 			<div class="alert alert-error">
 				<h2><s:text name="message.title.FieldErrors" /></h2>

@@ -1,0 +1,51 @@
+<apiMethodDefinitions>
+
+	<resource name="cats">
+        <description>Return the cat list</description>
+        <source>sandbox</source>
+		<method httpMethod="GET" active="true" canSpawnOthers="true">
+			<description>Return the cats list</description>
+			<springBean name="sandboxCatManager" method="getCatsForApi" />
+			<responseClass>com.myportal.aps.system.services.cat.api.CatListResponse</responseClass>
+			<!-- 
+			<parameters>
+			</parameters>
+			-->
+		</method>
+	</resource>
+  
+    <resource name="cat">
+        <description>The cat</description>
+        <source>sandbox</source>
+        <method httpMethod="GET" active="true" canSpawnOthers="true">
+            <description>Return a cat by id</description>
+            <springBean name="sandboxCatManager" method="getCatForApi" />
+            <responseClass>com.myportal.aps.system.services.cat.api.CatResponse</responseClass>
+            <parameters>
+                <parameter key="id" required="true">
+                    <description>The id of the cat to return</description>
+                </parameter>
+            </parameters>
+        </method>
+        <method httpMethod="POST" active="true" requiredAuth="true" requiredPermission="superuser">
+            <description>Add a cat</description>
+            <springBean name="sandboxCatManager" method="addCatForApi" />
+            <expectedType>com.myportal.aps.system.services.cat.api.JAXBCat</expectedType>
+        </method>
+        <method httpMethod="PUT" active="true" requiredAuth="true" requiredPermission="superuser">
+            <description>Update a cat</description>
+            <springBean name="sandboxCatManager" method="updateCatForApi" />
+            <expectedType>com.myportal.aps.system.services.cat.api.JAXBCat</expectedType>
+        </method>
+        <method httpMethod="DELETE" active="true" requiredAuth="true" requiredPermission="superuser">
+            <description>Delete a cat by id</description>
+            <springBean name="sandboxCatManager" method="deleteCatForApi" />
+            <parameters>
+                <parameter key="id" required="true">
+                    <description>The id of the cat to delete</description>
+                </parameter>
+            </parameters>
+        </method>
+    </resource>
+	
+</apiMethodDefinitions>
