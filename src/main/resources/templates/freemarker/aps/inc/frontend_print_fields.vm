@@ -1,0 +1,3 @@
+#if($f.type.javaType == "Date")
+<code><@s.date name="#${beanVar}.${f.name}" format="dd/MM/yyyy" /></code>#else
+<@s.property value="#${beanVar}.${f.name}" />#end

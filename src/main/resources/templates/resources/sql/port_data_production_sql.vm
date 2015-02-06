@@ -2,7 +2,13 @@
 #set( $beanVar = $constants.getUnCapitalize($bean.name))
 #set( $beanClass = $bean.name)
 #set( $springPrep = $constants.getLowerCase($builder.springBeanPreposition))
+#set( $i18keyPrep = "")
+#if($builder.plugin)
+#set( $i18keyPrep = ${builder.pluginName}+"_")
+#end
+#set( $i18keyBean = $constants.toUpperCase($bean.name))
 #set( $pk_field = $bean.fields[0])
+#set ( $d = "$")
 #if($bean.buildWidgets())
 INSERT INTO widgetcatalog (code, titles, parameters, plugincode, parenttypecode, defaultconfig, locked, maingroup) VALUES ('#if($builder.plugin)$builder.pluginName#end${beanClass}', '<?xml version="1.0" encoding="UTF-8"?>
 <properties>
@@ -63,3 +69,254 @@ INSERT INTO localstrings ( keycode, langcode, stringvalue ) VALUES ('${i18keyPre
 INSERT INTO localstrings ( keycode, langcode, stringvalue ) VALUES ('${i18keyPrep}${i18keyBean}_NOT_FOUND', 'it', '${bean.name} not found');
 INSERT INTO localstrings ( keycode, langcode, stringvalue ) VALUES ('${i18keyPrep}${i18keyBean}_NOT_FOUND', 'en', '${bean.name} not found');
 
+
+#if($bean.buildWidgets())
+INSERT INTO guifragment (code, widgettypecode, plugincode, gui, defaultgui, locked) VALUES ('${i18keyPrep}is_front_${beanClass}_entry', '#if($builder.plugin)$builder.pluginName#end${beanClass}_list_form', '${builder.pluginName}', NULL, '<#assign c=JspTaglibs["http://java.sun.com/jsp/jstl/core"]>
+<#assign s=JspTaglibs["/struts-tags"]>
+<#assign wp=JspTaglibs["/aps-core"]>
+<#assign wpsf=JspTaglibs["/apsadmin-form"]>
+
+<@wp.info key="currentLang" var="currentLang" />
+
+<#assign js_for_datepicker="jQuery(function($){
+$.datepicker.regional[''''''''it''''''''] = {
+closeText: ''''''''Chiudi'''''''',
+prevText: ''''''''&#x3c;Prec'''''''',
+nextText: ''''''''Succ&#x3e;'''''''',
+currentText: ''''''''Oggi'''''''',
+monthNames: [''''''''Gennaio'''''''',''''''''Febbraio'''''''',''''''''Marzo'''''''',''''''''Aprile'''''''',''''''''Maggio'''''''',''''''''Giugno'''''''',
+''''''''Luglio'''''''',''''''''Agosto'''''''',''''''''Settembre'''''''',''''''''Ottobre'''''''',''''''''Novembre'''''''',''''''''Dicembre''''''''],
+monthNamesShort:  [''''''''Gen'''''''',''''''''Feb'''''''',''''''''Mar'''''''',''''''''Apr'''''''',''''''''Mag'''''''',''''''''Giu'''''''',
+''''''''Lug'''''''',''''''''Ago'''''''',''''''''Set'''''''',''''''''Ott'''''''',''''''''Nov'''''''',''''''''Dic''''''''],
+dayNames: [''''''''Domenica'''''''',''''''''Luned&#236'''''''',''''''''Marted&#236'''''''',''''''''Mercoled&#236'''''''',''''''''Gioved&#236'''''''',''''''''Venerd&#236'''''''',''''''''Sabato''''''''],
+dayNamesShort: [''''''''Dom'''''''',''''''''Lun'''''''',''''''''Mar'''''''',''''''''Mer'''''''',''''''''Gio'''''''',''''''''Ven'''''''',''''''''Sab''''''''],
+dayNamesMin: [''''''''Do'''''''',''''''''Lu'''''''',''''''''Ma'''''''',''''''''Me'''''''',''''''''Gi'''''''',''''''''Ve'''''''',''''''''Sa''''''''],
+weekHeader: ''''''''Sm'''''''',
+dateFormat: ''''''''dd/mm/yy'''''''',
+firstDay: 1,
+isRTL: false,
+showMonthAfterYear: false,
+yearSuffix: ''''''''''''''''};
+});
+
+jQuery(function($) {
+ if (Modernizr.touch && Modernizr.inputtypes.date) {
+  ${d}.each( ${d}("input[data-isdate=true]"), function(index, item) {
+   item.type = ''''''''date'''''''';
+  });
+ } else {
+  ${d}.datepicker.setDefaults( ${d}.datepicker.regional[ \"${d}{currentLangVar}\" ] );
+  ${d}("input[data-isdate=true]").datepicker({
+	changeMonth: true,
+	changeYear: true,
+	dateFormat: \"dd/mm/yy\"
+   });
+ }
+});
+">
+<@wp.headInfo type="JS" info="entando-misc-html5-essentials/modernizr-2.5.3-full.js" />
+<@wp.headInfo type="JS_EXT" info="http://code.jquery.com/ui/1.10.1/jquery-ui.js" />
+<@wp.headInfo type="CSS_EXT" info="http://code.jquery.com/ui/1.10.1/themes/base/jquery-ui.css" />
+<@wp.headInfo type="JS_RAW" info="${js_for_datepicker}" />
+<section>
+<@s.if test="strutsAction==1">
+	<h1><@wp.i18n key="${i18keyPrep}${i18keyBean}_NEW" /></h1>
+</s:if>
+<@s.elseif test="strutsAction==2">
+	<h1><@wp.i18n key="${i18keyPrep}${i18keyBean}_EDIT" /></h1>
+</@s.elseif>
+<form action="<@wp.action path="/ExtStr2/do/FrontEnd/${builder.springBeanPreposition}/${beanClass}/save.action" />" method="post">
+	<@s.if test="hasFieldErrors()">
+		<div class="alert alert-error">
+			<h2><@s.text name="message.title.FieldErrors" /></h2>
+			<ul>
+				<@s.iterator value="fieldErrors">
+					<@s.iterator value="value">
+				<li><@s.property/></li>
+					</@s.iterator>
+				</@s.iterator>
+			</ul>
+		</div>
+	</@s.if>
+	<@s.if test="hasActionErrors()">
+		<div class="alert alert-error">
+			<h2><@s.text name="message.title.ActionErrors" /></h2>
+			<ul>
+				<@s.iterator value="actionErrors">
+				<li><@s.property/></li>
+				</@s.iterator>
+			</ul>
+		</div>
+	</@s.if>
+	<p class="sr-only">
+		<@wpsf.hidden name="strutsAction" />
+		<@wpsf.hidden name="id" />
+	</p>
+	<fieldset>
+#foreach($f in $bean.fields)
+#if($foreach.first)
+#else
+#parse("templates/freemarker/aps/inc/frontend_input_fields.vm")
+#end
+#end
+	</fieldset>
+	<@wpsf.submit type="button" cssClass="btn btn-primary">
+		<@wp.i18n key="SAVE" />
+	</@wpsf.submit>
+</form>
+</section>', 1);
+INSERT INTO guifragment (code, widgettypecode, plugincode, gui, defaultgui, locked) VALUES ('${i18keyPrep}is_front_${beanClass}_error', '#if($builder.plugin)$builder.pluginName#end${beanClass}_list_form', '${builder.pluginName}', NULL, '<pre>
+   __   _ __   _ __   ___   _ __  
+ /''__`\/\`''__\/\`''__\/ __`\/\`''__\
+/\  __/\ \ \/ \ \ \//\ \L\ \ \ \/ 
+\ \____\\ \_\  \ \_\\ \____/\ \_\ 
+ \/____/ \/_/   \/_/ \/___/  \/_/ 
+                                  
+</pre>', 1);
+
+
+
+
+INSERT INTO guifragment (code, widgettypecode, plugincode, gui, defaultgui, locked) VALUES ('${i18keyPrep}is_front_${beanClass}_list', '#if($builder.plugin)$builder.pluginName#end${beanClass}_list_form', '${builder.pluginName}', NULL, '<#assign c=JspTaglibs["http://java.sun.com/jsp/jstl/core"]>
+<#assign s=JspTaglibs["/struts-tags"]>
+<#assign wp=JspTaglibs["/aps-core"]>
+<#assign wpsa=JspTaglibs["/apsadmin-core"]>
+
+<@wp.info key="currentLang" var="currentLang" />
+
+<#assign js_for_datepicker="jQuery(function($){
+$.datepicker.regional[''''''''it''''''''] = {
+closeText: ''''''''Chiudi'''''''',
+prevText: ''''''''&#x3c;Prec'''''''',
+nextText: ''''''''Succ&#x3e;'''''''',
+currentText: ''''''''Oggi'''''''',
+monthNames: [''''''''Gennaio'''''''',''''''''Febbraio'''''''',''''''''Marzo'''''''',''''''''Aprile'''''''',''''''''Maggio'''''''',''''''''Giugno'''''''',
+''''''''Luglio'''''''',''''''''Agosto'''''''',''''''''Settembre'''''''',''''''''Ottobre'''''''',''''''''Novembre'''''''',''''''''Dicembre''''''''],
+monthNamesShort:  [''''''''Gen'''''''',''''''''Feb'''''''',''''''''Mar'''''''',''''''''Apr'''''''',''''''''Mag'''''''',''''''''Giu'''''''',
+''''''''Lug'''''''',''''''''Ago'''''''',''''''''Set'''''''',''''''''Ott'''''''',''''''''Nov'''''''',''''''''Dic''''''''],
+dayNames: [''''''''Domenica'''''''',''''''''Luned&#236'''''''',''''''''Marted&#236'''''''',''''''''Mercoled&#236'''''''',''''''''Gioved&#236'''''''',''''''''Venerd&#236'''''''',''''''''Sabato''''''''],
+dayNamesShort: [''''''''Dom'''''''',''''''''Lun'''''''',''''''''Mar'''''''',''''''''Mer'''''''',''''''''Gio'''''''',''''''''Ven'''''''',''''''''Sab''''''''],
+dayNamesMin: [''''''''Do'''''''',''''''''Lu'''''''',''''''''Ma'''''''',''''''''Me'''''''',''''''''Gi'''''''',''''''''Ve'''''''',''''''''Sa''''''''],
+weekHeader: ''''''''Sm'''''''',
+dateFormat: ''''''''dd/mm/yy'''''''',
+firstDay: 1,
+isRTL: false,
+showMonthAfterYear: false,
+yearSuffix: ''''''''''''''''};
+});
+
+jQuery(function($) {
+ if (Modernizr.touch && Modernizr.inputtypes.date) {
+  ${d}.each( ${d}("input[data-isdate=true]"), function(index, item) {
+   item.type = ''''''''date'''''''';
+  });
+ } else {
+  ${d}.datepicker.setDefaults( ${d}.datepicker.regional[ \"${d}{currentLangVar}\" ] );
+  ${d}("input[data-isdate=true]").datepicker({
+	changeMonth: true,
+	changeYear: true,
+	dateFormat: \"dd/mm/yy\"
+   });
+ }
+});
+">
+<@wp.headInfo type="JS" info="entando-misc-html5-essentials/modernizr-2.5.3-full.js" />
+<@wp.headInfo type="JS_EXT" info="http://code.jquery.com/ui/1.10.1/jquery-ui.js" />
+<@wp.headInfo type="CSS_EXT" info="http://code.jquery.com/ui/1.10.1/themes/base/jquery-ui.css" />
+<@wp.headInfo type="JS_RAW" info="${js_for_datepicker}" />
+
+<section class="${beanVar}_list">
+
+<h1><@wp.i18n key="${i18keyPrep}${i18keyBean}_SEARCH_${i18keyBean}" /></h1>
+
+<form action="<@wp.action path="/ExtStr2/do/FrontEnd/${builder.springBeanPreposition}/${beanClass}/search.action" />" method="post" >
+
+  <fieldset>
+#foreach($f in $bean.searchFields)
+#parse("templates/freemarker/aps/inc/frontend_input_fields.vm")
+#end
+  </fieldset>
+
+  <button type="submit" class="btn btn-primary">
+    <@wp.i18n key="SEARCH" />
+  </button>
+
+<@wpsa.subset source="${beanVar}sId" count="10" objectName="group${beanClass}" advanced="true" offset="5">
+<@wp.freemarkerTemplateParameter var="group" valueName="group${beanClass}" removeOnEndTag=true >
+<div class="margin-medium-vertical text-center">
+	<@wp.fragment code="default_pagerInfo_is" escapeXml=false />
+	<@wp.fragment code="default_pagerFormBlock_is" escapeXml=false />
+</div>
+<p>
+  <a href="<@wp.action path="/ExtStr2/do/FrontEnd/${builder.springBeanPreposition}/${beanClass}/new.action"></@wp.action>" title="<@wp.i18n key="NEW" />" class="btn btn-info">
+    <span class="icon-plus-sign icon-white"></span>&#32;
+    <@wp.i18n key="NEW" />
+  </a>
+</p>
+<table class="table table-bordered table-condensed table-striped">
+<thead>
+<tr>
+#foreach ($f in $bean.fields)
+#if($foreach.first)
+  <th class="text-right">
+    <@wp.i18n key="${i18keyPrep}${i18keyBean}_$constants.toUpperCase($f.name)" />
+  </th>
+#else
+	<th
+    #if($f.type.javaType == "Date") class="text-center"#end
+    #if($f.type.javaType == "int") class="text-right"#end
+    #if($f.type.javaType == "BigDecimal") class="text-right"#end
+    #if($f.type.javaType == "String") class="text-left"#end><@wp.i18n key="${i18keyPrep}${i18keyBean}_$constants.toUpperCase($f.name)" /></th>
+#end
+#end
+	<th>
+    <@wp.i18n key="${i18keyPrep}${i18keyBean}_ACTIONS" />
+  </th>
+</tr>
+</thead>
+<tbody>
+<@s.iterator id="${beanVar}$constants.getCapitalize($pk_field.name)">
+<tr>
+	<@s.set var="${beanVar}" value="%{get${beanClass}(#${beanVar}$constants.getCapitalize($pk_field.name))}" />
+#foreach ($f in $bean.fields)
+#if($foreach.first)
+	<td class="text-right">
+    <a
+      href="<@wp.action path="/ExtStr2/do/FrontEnd/${builder.springBeanPreposition}/${beanClass}/edit.action"><@wp.parameter name="${pk_field.name}"><@s.property value="#${beanVar}.${pk_field.name}" /></@wp.parameter></@wp.action>"
+      title="<@wp.i18n key="EDIT" />: <@s.property value="#${beanVar}.${pk_field.name}" />"
+      class="label label-info display-block">
+    <@s.property value="#${beanVar}.${pk_field.name}" />&#32;
+    <span class="icon-edit icon-white"></span>
+    </a>
+  </td>
+#else
+	<td
+    #if($f.type.javaType == "Date") class="text-center"#end
+    #if($f.type.javaType == "int") class="text-right"#end
+    #if($f.type.javaType == "BigDecimal") class="text-right"#end>
+    #parse("templates/freemarker/aps/inc/frontend_print_fields.vm")
+  </td>
+#end
+#end
+	<td class="text-center">
+    <a
+      href="<@wp.action path="/ExtStr2/do/FrontEnd/${builder.springBeanPreposition}/${beanClass}/trash.action"><@wp.parameter name="${pk_field.name}"><@s.property value="#${beanVar}.${pk_field.name}" /></@wp.parameter></@wp.action>"
+      title="<@wp.i18n key="TRASH" />: <@s.property value="#${beanVar}.${pk_field.name}" />"
+      class="btn btn-warning btn-small">
+      <span class="icon-trash icon-white"></span>&#32;
+      <@wp.i18n key="TRASH" />
+    </a>
+  </td>
+</tr>
+</@s.iterator>
+</tbody>
+</table>
+<div class="margin-medium-vertical text-center">
+	<@wp.fragment code="default_pagerFormBlock_is" escapeXml=false />
+</div>
+</@wp.freemarkerTemplateParameter>
+</@wpsa.subset>
+</form>
+</section>', 1);
+
+#end

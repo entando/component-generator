@@ -1,0 +1,13 @@
+#if($f.type.javaType == "Date")
+		<label for="${beanVar}_${f.name}_cal"><@wp.i18n key="${i18keyPrep}${i18keyBean}_$constants.toUpperCase($f.name)" /></label>
+		<input type="text" name="${f.name}" id="${beanVar}_${f.name}_cal" data-isdate="true" value="<@s.property value="${f.name}" />" />
+#elseif($f.type.javaType == "String")
+		<label for="${beanVar}_$f.name"><@wp.i18n key="${i18keyPrep}${i18keyBean}_$constants.toUpperCase($f.name)" /></label>
+		<input type="text" name="$f.name" id="${beanVar}_$f.name" value="<@s.property value="${f.name}" />" />
+#elseif($f.type.javaType == "int")
+		<label for="${beanVar}_$f.name"><@wp.i18n key="${i18keyPrep}${i18keyBean}_$constants.toUpperCase($f.name)" /></label>
+		<input type="text" name="$f.name" id="${beanVar}_$f.name" value="<@s.property value="${f.name}" />" />
+#elseif($f.type.javaType == "BigDecimal")
+		<label for="${beanVar}_$f.name"><@wp.i18n key="${i18keyPrep}${i18keyBean}_$constants.toUpperCase($f.name)" /></label>
+		<input type="text" name="$f.name" id="${beanVar}_$f.name" value="<@s.property value="${f.name}" />" />
+#end
