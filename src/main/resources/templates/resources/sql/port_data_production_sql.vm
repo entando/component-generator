@@ -71,42 +71,42 @@ INSERT INTO localstrings ( keycode, langcode, stringvalue ) VALUES ('${i18keyPre
 
 
 #if($bean.buildWidgets())
-INSERT INTO guifragment (code, widgettypecode, plugincode, gui, defaultgui, locked) VALUES ('${i18keyPrep}is_front_${beanClass}_entry', '#if($builder.plugin)$builder.pluginName#end${beanClass}_list_form', '${builder.pluginName}', NULL, '<#assign c=JspTaglibs["http://java.sun.com/jsp/jstl/core"]>
+INSERT INTO guifragment (code, widgettypecode, plugincode, gui, defaultgui, locked) VALUES ('${builder.pluginName}_is_front_${beanClass}_entry', '#if($builder.plugin)$builder.pluginName#end${beanClass}_list_form', '${builder.pluginName}', NULL, '<#assign c=JspTaglibs["http://java.sun.com/jsp/jstl/core"]>
 <#assign s=JspTaglibs["/struts-tags"]>
 <#assign wp=JspTaglibs["/aps-core"]>
 <#assign wpsf=JspTaglibs["/apsadmin-form"]>
 
-<@wp.info key="currentLang" var="currentLang" />
+<@wp.info key="currentLang" var="currentLangVar" />
 
 <#assign js_for_datepicker="jQuery(function($){
-$.datepicker.regional[''''''''it''''''''] = {
-closeText: ''''''''Chiudi'''''''',
-prevText: ''''''''&#x3c;Prec'''''''',
-nextText: ''''''''Succ&#x3e;'''''''',
-currentText: ''''''''Oggi'''''''',
-monthNames: [''''''''Gennaio'''''''',''''''''Febbraio'''''''',''''''''Marzo'''''''',''''''''Aprile'''''''',''''''''Maggio'''''''',''''''''Giugno'''''''',
-''''''''Luglio'''''''',''''''''Agosto'''''''',''''''''Settembre'''''''',''''''''Ottobre'''''''',''''''''Novembre'''''''',''''''''Dicembre''''''''],
-monthNamesShort:  [''''''''Gen'''''''',''''''''Feb'''''''',''''''''Mar'''''''',''''''''Apr'''''''',''''''''Mag'''''''',''''''''Giu'''''''',
-''''''''Lug'''''''',''''''''Ago'''''''',''''''''Set'''''''',''''''''Ott'''''''',''''''''Nov'''''''',''''''''Dic''''''''],
-dayNames: [''''''''Domenica'''''''',''''''''Luned&#236'''''''',''''''''Marted&#236'''''''',''''''''Mercoled&#236'''''''',''''''''Gioved&#236'''''''',''''''''Venerd&#236'''''''',''''''''Sabato''''''''],
-dayNamesShort: [''''''''Dom'''''''',''''''''Lun'''''''',''''''''Mar'''''''',''''''''Mer'''''''',''''''''Gio'''''''',''''''''Ven'''''''',''''''''Sab''''''''],
-dayNamesMin: [''''''''Do'''''''',''''''''Lu'''''''',''''''''Ma'''''''',''''''''Me'''''''',''''''''Gi'''''''',''''''''Ve'''''''',''''''''Sa''''''''],
-weekHeader: ''''''''Sm'''''''',
-dateFormat: ''''''''dd/mm/yy'''''''',
-firstDay: 1,
-isRTL: false,
-showMonthAfterYear: false,
-yearSuffix: ''''''''''''''''};
-});
+  $.datepicker.regional[''''it''''] = {
+   closeText: ''''Chiudi'''',
+   prevText: ''''&#x3c;Prec'''',
+   nextText: ''''Succ&#x3e;'''',
+   currentText: ''''Oggi'''',
+   monthNames: [''''Gennaio'''',''''Febbraio'''',''''Marzo'''',''''Aprile'''',''''Maggio'''',''''Giugno'''',
+  ''''Luglio'''',''''Agosto'''',''''Settembre'''',''''Ottobre'''',''''Novembre'''',''''Dicembre''''],
+   monthNamesShort:  [''''Gen'''',''''Feb'''',''''Mar'''',''''Apr'''',''''Mag'''',''''Giu'''',
+  ''''Lug'''',''''Ago'''',''''Set'''',''''Ott'''',''''Nov'''',''''Dic''''],
+   dayNames: [''''Domenica'''',''''Luned&#236'''',''''Marted&#236'''',''''Mercoled&#236'''',''''Gioved&#236'''',''''Venerd&#236'''',''''Sabato''''],
+   dayNamesShort: [''''Dom'''',''''Lun'''',''''Mar'''',''''Mer'''',''''Gio'''',''''Ven'''',''''Sab''''],
+   dayNamesMin: [''''Do'''',''''Lu'''',''''Ma'''',''''Me'''',''''Gi'''',''''Ve'''',''''Sa''''],
+   weekHeader: ''''Sm'''',
+   dateFormat: ''''dd/mm/yy'''',
+   firstDay: 1,
+   isRTL: false,
+   showMonthAfterYear: false,
+   yearSuffix: ''''''''};
+ });
 
 jQuery(function($) {
  if (Modernizr.touch && Modernizr.inputtypes.date) {
-  ${d}.each( ${d}("input[data-isdate=true]"), function(index, item) {
-   item.type = ''''''''date'''''''';
+  ${d}.each( ${d}(\"input[data-isdate=true]\"), function(index, item) {
+   item.type = ''''date'''';
   });
  } else {
   ${d}.datepicker.setDefaults( ${d}.datepicker.regional[ \"${d}{currentLangVar}\" ] );
-  ${d}("input[data-isdate=true]").datepicker({
+  ${d}(\"input[data-isdate=true]\").datepicker({
 	changeMonth: true,
 	changeYear: true,
 	dateFormat: \"dd/mm/yy\"
@@ -121,7 +121,7 @@ jQuery(function($) {
 <section>
 <@s.if test="strutsAction==1">
 	<h1><@wp.i18n key="${i18keyPrep}${i18keyBean}_NEW" /></h1>
-</s:if>
+</@s.if>
 <@s.elseif test="strutsAction==2">
 	<h1><@wp.i18n key="${i18keyPrep}${i18keyBean}_EDIT" /></h1>
 </@s.elseif>
@@ -165,7 +165,7 @@ jQuery(function($) {
 	</@wpsf.submit>
 </form>
 </section>', 1);
-INSERT INTO guifragment (code, widgettypecode, plugincode, gui, defaultgui, locked) VALUES ('${i18keyPrep}is_front_${beanClass}_error', '#if($builder.plugin)$builder.pluginName#end${beanClass}_list_form', '${builder.pluginName}', NULL, '<pre>
+INSERT INTO guifragment (code, widgettypecode, plugincode, gui, defaultgui, locked) VALUES ('${builder.pluginName}_is_front_${beanClass}_error', '#if($builder.plugin)$builder.pluginName#end${beanClass}_list_form', '${builder.pluginName}', NULL, '<pre>
    __   _ __   _ __   ___   _ __  
  /''__`\/\`''__\/\`''__\/ __`\/\`''__\
 /\  __/\ \ \/ \ \ \//\ \L\ \ \ \/ 
@@ -177,42 +177,42 @@ INSERT INTO guifragment (code, widgettypecode, plugincode, gui, defaultgui, lock
 
 
 
-INSERT INTO guifragment (code, widgettypecode, plugincode, gui, defaultgui, locked) VALUES ('${i18keyPrep}is_front_${beanClass}_list', '#if($builder.plugin)$builder.pluginName#end${beanClass}_list_form', '${builder.pluginName}', NULL, '<#assign c=JspTaglibs["http://java.sun.com/jsp/jstl/core"]>
+INSERT INTO guifragment (code, widgettypecode, plugincode, gui, defaultgui, locked) VALUES ('${builder.pluginName}_is_front_${beanClass}_list', '#if($builder.plugin)$builder.pluginName#end${beanClass}_list_form', '${builder.pluginName}', NULL, '<#assign c=JspTaglibs["http://java.sun.com/jsp/jstl/core"]>
 <#assign s=JspTaglibs["/struts-tags"]>
 <#assign wp=JspTaglibs["/aps-core"]>
 <#assign wpsa=JspTaglibs["/apsadmin-core"]>
 
-<@wp.info key="currentLang" var="currentLang" />
+<@wp.info key="currentLang" var="currentLangVar" />
 
 <#assign js_for_datepicker="jQuery(function($){
-$.datepicker.regional[''''''''it''''''''] = {
-closeText: ''''''''Chiudi'''''''',
-prevText: ''''''''&#x3c;Prec'''''''',
-nextText: ''''''''Succ&#x3e;'''''''',
-currentText: ''''''''Oggi'''''''',
-monthNames: [''''''''Gennaio'''''''',''''''''Febbraio'''''''',''''''''Marzo'''''''',''''''''Aprile'''''''',''''''''Maggio'''''''',''''''''Giugno'''''''',
-''''''''Luglio'''''''',''''''''Agosto'''''''',''''''''Settembre'''''''',''''''''Ottobre'''''''',''''''''Novembre'''''''',''''''''Dicembre''''''''],
-monthNamesShort:  [''''''''Gen'''''''',''''''''Feb'''''''',''''''''Mar'''''''',''''''''Apr'''''''',''''''''Mag'''''''',''''''''Giu'''''''',
-''''''''Lug'''''''',''''''''Ago'''''''',''''''''Set'''''''',''''''''Ott'''''''',''''''''Nov'''''''',''''''''Dic''''''''],
-dayNames: [''''''''Domenica'''''''',''''''''Luned&#236'''''''',''''''''Marted&#236'''''''',''''''''Mercoled&#236'''''''',''''''''Gioved&#236'''''''',''''''''Venerd&#236'''''''',''''''''Sabato''''''''],
-dayNamesShort: [''''''''Dom'''''''',''''''''Lun'''''''',''''''''Mar'''''''',''''''''Mer'''''''',''''''''Gio'''''''',''''''''Ven'''''''',''''''''Sab''''''''],
-dayNamesMin: [''''''''Do'''''''',''''''''Lu'''''''',''''''''Ma'''''''',''''''''Me'''''''',''''''''Gi'''''''',''''''''Ve'''''''',''''''''Sa''''''''],
-weekHeader: ''''''''Sm'''''''',
-dateFormat: ''''''''dd/mm/yy'''''''',
-firstDay: 1,
-isRTL: false,
-showMonthAfterYear: false,
-yearSuffix: ''''''''''''''''};
-});
+  $.datepicker.regional[''''it''''] = {
+   closeText: ''''Chiudi'''',
+   prevText: ''''&#x3c;Prec'''',
+   nextText: ''''Succ&#x3e;'''',
+   currentText: ''''Oggi'''',
+   monthNames: [''''Gennaio'''',''''Febbraio'''',''''Marzo'''',''''Aprile'''',''''Maggio'''',''''Giugno'''',
+  ''''Luglio'''',''''Agosto'''',''''Settembre'''',''''Ottobre'''',''''Novembre'''',''''Dicembre''''],
+   monthNamesShort:  [''''Gen'''',''''Feb'''',''''Mar'''',''''Apr'''',''''Mag'''',''''Giu'''',
+  ''''Lug'''',''''Ago'''',''''Set'''',''''Ott'''',''''Nov'''',''''Dic''''],
+   dayNames: [''''Domenica'''',''''Luned&#236'''',''''Marted&#236'''',''''Mercoled&#236'''',''''Gioved&#236'''',''''Venerd&#236'''',''''Sabato''''],
+   dayNamesShort: [''''Dom'''',''''Lun'''',''''Mar'''',''''Mer'''',''''Gio'''',''''Ven'''',''''Sab''''],
+   dayNamesMin: [''''Do'''',''''Lu'''',''''Ma'''',''''Me'''',''''Gi'''',''''Ve'''',''''Sa''''],
+   weekHeader: ''''Sm'''',
+   dateFormat: ''''dd/mm/yy'''',
+   firstDay: 1,
+   isRTL: false,
+   showMonthAfterYear: false,
+   yearSuffix: ''''''''};
+ });
 
 jQuery(function($) {
  if (Modernizr.touch && Modernizr.inputtypes.date) {
-  ${d}.each( ${d}("input[data-isdate=true]"), function(index, item) {
-   item.type = ''''''''date'''''''';
+  ${d}.each( ${d}(\"input[data-isdate=true]\"), function(index, item) {
+   item.type = ''''date'''';
   });
  } else {
   ${d}.datepicker.setDefaults( ${d}.datepicker.regional[ \"${d}{currentLangVar}\" ] );
-  ${d}("input[data-isdate=true]").datepicker({
+  ${d}(\"input[data-isdate=true]\").datepicker({
 	changeMonth: true,
 	changeYear: true,
 	dateFormat: \"dd/mm/yy\"
@@ -241,11 +241,16 @@ jQuery(function($) {
     <@wp.i18n key="SEARCH" />
   </button>
 
-<@wpsa.subset source="${beanVar}sId" count="10" objectName="group${beanClass}" advanced="true" offset="5">
+<@wpsa.subset source="${beanVar}sId" count=10 objectName="group${beanClass}" advanced=true offset=5>
+<@s.set name="group" value="#group${beanClass}" />
 <@wp.freemarkerTemplateParameter var="group" valueName="group${beanClass}" removeOnEndTag=true >
 <div class="margin-medium-vertical text-center">
+	<@s.include value="/WEB-INF/apsadmin/jsp/common/inc/pagerInfo.jsp" />
+	<@s.include value="/WEB-INF/apsadmin/jsp/common/inc/pager_formBlock.jsp" />
+	<#--
 	<@wp.fragment code="default_pagerInfo_is" escapeXml=false />
 	<@wp.fragment code="default_pagerFormBlock_is" escapeXml=false />
+	-->
 </div>
 <p>
   <a href="<@wp.action path="/ExtStr2/do/FrontEnd/${builder.springBeanPreposition}/${beanClass}/new.action"></@wp.action>" title="<@wp.i18n key="NEW" />" class="btn btn-info">
@@ -312,14 +317,17 @@ jQuery(function($) {
 </tbody>
 </table>
 <div class="margin-medium-vertical text-center">
+	<@s.include value="/WEB-INF/apsadmin/jsp/common/inc/pager_formBlock.jsp" />
+	<#--
 	<@wp.fragment code="default_pagerFormBlock_is" escapeXml=false />
+	-->
 </div>
 </@wp.freemarkerTemplateParameter>
 </@wpsa.subset>
 </form>
 </section>', 1);
 
-INSERT INTO guifragment (code, widgettypecode, plugincode, gui, defaultgui, locked) VALUES ('${i18keyPrep}is_front_${beanClass}_trash', '#if($builder.plugin)$builder.pluginName#end${beanClass}_list_form', '${builder.pluginName}', NULL, '<#assign c=JspTaglibs["http://java.sun.com/jsp/jstl/core"]>
+INSERT INTO guifragment (code, widgettypecode, plugincode, gui, defaultgui, locked) VALUES ('${builder.pluginName}_is_front_${beanClass}_trash', '#if($builder.plugin)$builder.pluginName#end${beanClass}_list_form', '${builder.pluginName}', NULL, '<#assign c=JspTaglibs["http://java.sun.com/jsp/jstl/core"]>
 <#assign s=JspTaglibs["/struts-tags"]>
 <#assign wp=JspTaglibs["/aps-core"]>
 <#assign wpsf=JspTaglibs["/apsadmin-form"]>

@@ -15,45 +15,66 @@
 <struts>
 
     <package name="${springPrep}_do/FrontEnd/${builder.springBeanPreposition}/${beanClass}" namespace="/do/FrontEnd/${builder.springBeanPreposition}/${beanClass}" extends="entando-front-default">
-
-    	<global-results>
-            <result name="failure">/WEB-INF/${path}/aps/jsp/internalservlet/$constants.getLowerCase($beanVar)/frontend-${beanVar}-error.jsp</result>
+		
+		<global-results>
+			<result name="failure" type="guiFragment">
+				<param name="code">${builder.pluginName}_is_front_${beanClass}_error</param>
+				<param name="jspLocation">/WEB-INF/${path}/aps/jsp/internalservlet/$constants.getLowerCase($beanVar)/frontend-${beanVar}-error.jsp</param>
+			</result>
     	</global-results>
-
+		
     	<action name="list" class="${springPrep}${beanClass}FinderFrontEndAction">
-    		<result type="dispatcher">/WEB-INF/${path}/aps/jsp/internalservlet/$constants.getLowerCase($beanVar)/frontend-${beanVar}-list.jsp</result>
+    		<result type="guiFragment">
+				<param name="code">${builder.pluginName}_is_front_${beanClass}_list</param>
+				<param name="jspLocation">/WEB-INF/${path}/aps/jsp/internalservlet/$constants.getLowerCase($beanVar)/frontend-${beanVar}-list.jsp</param>
+			</result>
 			<interceptor-ref name="entandoFrontEndFreeStack"></interceptor-ref>
         </action>
         
-        <action name="search" class="${springPrep}${beanClass}FinderFrontEndAction">
-            <result type="dispatcher">/WEB-INF/${path}/aps/jsp/internalservlet/$constants.getLowerCase($beanVar)/frontend-${beanVar}-list.jsp</result>
-        	<interceptor-ref name="entandoFrontEndFreeStack"></interceptor-ref>
+    	<action name="search" class="${springPrep}${beanClass}FinderFrontEndAction">
+            <result type="guiFragment">
+				<param name="code">${builder.pluginName}_is_front_${beanClass}_list</param>
+				<param name="jspLocation">/WEB-INF/${path}/aps/jsp/internalservlet/$constants.getLowerCase($beanVar)/frontend-${beanVar}-list.jsp</param>
+			</result>
+			<interceptor-ref name="entandoFrontEndFreeStack"></interceptor-ref>
         </action>
     	
         <action name="new" class="${springPrep}${beanClass}FrontEndAction" method="new${beanClass}">
-            <result type="dispatcher">/WEB-INF/${path}/aps/jsp/internalservlet/$constants.getLowerCase($beanVar)/frontend-${beanVar}-entry.jsp</result>
-        	<interceptor-ref name="entandoFrontEndFreeStack"></interceptor-ref>
+            <result type="guiFragment">
+				<param name="code">${builder.pluginName}_is_front_${beanClass}_entry</param>
+				<param name="jspLocation">/WEB-INF/${path}/aps/jsp/internalservlet/$constants.getLowerCase($beanVar)/frontend-${beanVar}-entry.jsp</param>
+			</result>
+			<interceptor-ref name="entandoFrontEndFreeStack"></interceptor-ref>
         </action>
     	
-    	<action name="edit" class="${springPrep}${beanClass}FrontEndAction" method="edit">
-            <result type="dispatcher">/WEB-INF/${path}/aps/jsp/internalservlet/$constants.getLowerCase($beanVar)/frontend-${beanVar}-entry.jsp</result>
-        	<result name="input" type="frontRedirectAction">
+        <action name="edit" class="${springPrep}${beanClass}FrontEndAction" method="edit">
+            <result type="guiFragment">
+				<param name="code">${builder.pluginName}_is_front_${beanClass}_entry</param>
+				<param name="jspLocation">/WEB-INF/${path}/aps/jsp/internalservlet/$constants.getLowerCase($beanVar)/frontend-${beanVar}-entry.jsp</param>
+			</result>
+			<result name="input" type="frontRedirectAction">
 				<param name="actionName">list</param>
 			</result>
         	<interceptor-ref name="entandoFrontEndFreeStack"></interceptor-ref>
         </action>
         
-    	<action name="save" class="${springPrep}${beanClass}FrontEndAction" method="save">
-        	<result name="input" type="dispatcher">/WEB-INF/${path}/aps/jsp/internalservlet/$constants.getLowerCase($beanVar)/frontend-${beanVar}-entry.jsp</result>
-        	<result type="frontRedirectAction">
+        <action name="save" class="${springPrep}${beanClass}FrontEndAction" method="save">
+        	<result name="input" type="guiFragment">
+				<param name="code">${builder.pluginName}_is_front_${beanClass}_entry</param>
+				<param name="jspLocation">/WEB-INF/${path}/aps/jsp/internalservlet/$constants.getLowerCase($beanVar)/frontend-${beanVar}-entry.jsp</param>
+			</result>
+			<result type="frontRedirectAction">
 				<param name="actionName">list</param>
 			</result>
         	<interceptor-ref name="entandoFrontEndFreeValidationStack"></interceptor-ref>
         </action>
-        
+		
     	<action name="trash" class="${springPrep}${beanClass}FrontEndAction" method="trash">
-            <result type="dispatcher">/WEB-INF/${path}/aps/jsp/internalservlet/$constants.getLowerCase($beanVar)/frontend-${beanVar}-trash.jsp</result>
-        	<result name="input" type="frontRedirectAction">
+            <result type="guiFragment">
+				<param name="code">${builder.pluginName}_is_front_${beanClass}_trash</param>
+				<param name="jspLocation">/WEB-INF/${path}/aps/jsp/internalservlet/$constants.getLowerCase($beanVar)/frontend-${beanVar}-trash.jsp</param>
+			</result>
+			<result name="input" type="frontRedirectAction">
 				<param name="actionName">list</param>
 			</result>
         	<interceptor-ref name="entandoFrontEndFreeStack"></interceptor-ref>
