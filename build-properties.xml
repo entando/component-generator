@@ -1,6 +1,6 @@
 <project>
 
-  <property name="edo.baseName" value="edo-4.1.0-SNAPSHOT" />
+  <property name="edo.baseName" value="edo-4.2.0-SNAPSHOT" />
 
   <property name="default.path.build" location="target" />
   <property name="default.path.dist" location="${default.path.build}/dist" />
