@@ -1,9 +1,9 @@
 <project>
-
-  <property name="edo.baseName" value="edo-4.2.0-SNAPSHOT" />
-
-  <property name="default.path.build" location="target" />
-  <property name="default.path.dist" location="${default.path.build}/dist" />
-  <property name="default.path.installation.base" location="/usr/local" />
-
+    
+    <property name="edo.baseName" value="edo-4.2.0-TP1" />
+    
+    <property name="default.path.build" location="target" />
+    <property name="default.path.dist" location="${default.path.build}/dist" />
+    <property name="default.path.installation.base" location="/usr/local" />
+    
 </project>
