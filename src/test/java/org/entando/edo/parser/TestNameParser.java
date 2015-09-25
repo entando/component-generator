@@ -13,8 +13,6 @@
  */
 package org.entando.edo.parser;
 
-import org.entando.edo.parser.NameParser;
-
 import junit.framework.TestCase;
 
 public class TestNameParser extends TestCase {
