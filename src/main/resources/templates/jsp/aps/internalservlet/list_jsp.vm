@@ -86,7 +86,7 @@ optional CSS
   </button>
 
 <wpsa:subset source="${beanVar}sId" count="10" objectName="group${beanClass}" advanced="true" offset="5">
-<s:set name="group" value="#group${beanClass}" />
+<s:set var="group" value="#group${beanClass}" />
 
 <div class="margin-medium-vertical text-center">
 	<s:include value="/WEB-INF/apsadmin/jsp/common/inc/pagerInfo.jsp" />
@@ -122,7 +122,7 @@ optional CSS
 </tr>
 </thead>
 <tbody>
-<s:iterator id="${beanVar}$constants.getCapitalize($pk_field.name)">
+<s:iterator var="${beanVar}$constants.getCapitalize($pk_field.name)">
 <tr>
 	<s:set var="${beanVar}" value="%{get${beanClass}(#${beanVar}$constants.getCapitalize($pk_field.name))}" />
 #foreach ($f in $bean.fields)
