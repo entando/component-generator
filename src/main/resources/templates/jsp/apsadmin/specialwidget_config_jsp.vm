@@ -65,7 +65,7 @@
 			<div class="col-xs-12">
 				<label for="<s:property value="${pk_field.name}" />"><s:text name="label.${pk_field.name}"/></label>
 				<div class="input-group">
-					<wpsf:select cssClass="form-control" list="${beanVar}sId" name="${pk_field.name}" id="${pk_field.name}" cssClass="form-control" />
+					<wpsf:select list="${beanVar}sId" name="${pk_field.name}" id="${pk_field.name}" cssClass="form-control" />
 					<span class="input-group-btn">
 						<wpsf:submit type="button" cssClass="btn btn-success">
 							<span class="icon fa fa-check"></span>&#32;
