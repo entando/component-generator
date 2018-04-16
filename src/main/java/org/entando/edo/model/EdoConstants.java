@@ -52,6 +52,10 @@ public  class EdoConstants {
 	public static String getServicesPackage() {
 		return "aps.system.services";
 	}
+
+    public static String getRestPackage() {
+        return "web";
+    }
 	
 	public static String getApsadminPackage() {
 		 return "apsadmin";

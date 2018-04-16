@@ -36,6 +36,16 @@ public interface Templates {
 	 */
 	public static final String MANAGER_INTERFACE = "templates/java/aps/managers/ManagerInterface_java.vm";
 	
+    //--------------------
+
+    public static final String SERVICE_INTERFACE_JAVA = "templates/java/aps/services/ServiceInterface_java.vm";
+
+    public static final String BEAN_DTO = "templates/java/aps/services/dto_java.vm";
+
+    public static final String BEAN_DTO_REQUEST = "templates/java/aps/web/dto_request_java.vm";
+
+    //-------------------------------
+
 	/**
 	 * The path of the service implementation template
 	 */
@@ -128,6 +138,9 @@ public interface Templates {
 
 	
 	// - - START CONTROLLER LAYER JAVA
+
+    public static final String CONTROLLER_JAVA = "templates/java/web/controller_java.vm";
+
 	/**
 	 * The path of the action template
 	 */
@@ -359,6 +372,8 @@ public interface Templates {
 	public static final String SHORTCUT= "templates/shortcuts/shortcuts_xml.vm";
 	
 	public static final String EDO_REPORT = "templates/common/report_txt.vm";
+
+
 
 
 

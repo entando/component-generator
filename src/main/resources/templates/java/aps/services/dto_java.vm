@@ -1,0 +1,23 @@
+#set( $builder = $bean.edoBuilder)
+#parse("templates/common/license/java_license.vm")
+package ${builder.packageName}.${constants.servicesPackage}.${constants.getLowerCase($bean.name)}.model;
+
+$bean.getImports(false)
+
+public class ${bean.name}Dto {
+
+#foreach ($f in $bean.fields)	
+	private $f.type.getJavaType() $f.getName();
+#end
+
+#foreach ($f in $bean.fields)
+	public $f.type.getJavaType() get${constants.getCapitalize($f.name)}() {
+		return $f.getName();
+	}
+	public void set${constants.getCapitalize($f.name)}($f.type.getJavaType() $f.getName()) {
+		this.$f.getName() = $f.getName();
+	}
+
+#end
+
+}

@@ -1,0 +1,35 @@
+#set( $builder = $bean.edoBuilder)
+#set( $beanVar = $constants.getUnCapitalize($bean.name))
+#parse("templates/common/license/java_license.vm")
+package ${builder.packageName}.${constants.restPackage}.${constants.getLowerCase($bean.name)}.model;
+
+$bean.getImports(false)
+import javax.validation.constraints.*;
+import org.hibernate.validator.constraints.NotBlank;
+
+public class ${bean.name}Request {
+
+#foreach ($f in $bean.fields)
+#if ($f.required)
+#if($f.type.javaType == 'String')
+	@Size(max = ${f.length}, message = "string.size.invalid")
+	@NotBlank(message = "$beanVar.${f.name}.notBlank")
+#elseif($f.type.javaType == 'int')
+    @NotNull(message = "$beanVar.${f.name}.notBlank")	
+#end
+#end
+	private $f.type.getJavaTypeGeneric() $f.getName();
+	
+#end
+
+#foreach ($f in $bean.fields)
+	public $f.type.getJavaType() get${constants.getCapitalize($f.name)}() {
+		return $f.getName();
+	}
+	public void set${constants.getCapitalize($f.name)}($f.type.getJavaType() $f.getName()) {
+		this.$f.getName() = $f.getName();
+	}
+
+#end
+
+}

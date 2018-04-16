@@ -43,20 +43,23 @@ public class Builder {
 		contextElements.put("bean", bean);
 		contextElements.put("constants", new EdoConstants());
 
-		this.writeJavaModel(render, contextElements, bean);
-		this.writeSpringModelXml(render,contextElements, bean);
-		this.writeEntantoInit(render, contextElements, bean);
-		this.writeAPI(render, contextElements, bean);
+        this.writeService(render, contextElements, bean);
+        this.writeController(render, contextElements, bean);
 
-		this.writeAction(render, contextElements, bean);
-		this.writeJspAction(render, contextElements, bean);
+        //		this.writeJavaModel(render, contextElements, bean);
+        //		this.writeSpringModelXml(render,contextElements, bean);
+        //		this.writeEntantoInit(render, contextElements, bean);
+        //		this.writeAPI(render, contextElements, bean);
+        //
+        //		this.writeAction(render, contextElements, bean);
+        //		this.writeJspAction(render, contextElements, bean);
+        //
+        //		this.writeWidgets(render, contextElements, bean);
+        //
+        //		this.writeTestService(render, contextElements, bean);
+        //		this.writeTestAction(render, contextElements, bean);
 
-		this.writeWidgets(render, contextElements, bean);
-
-		this.writeTestService(render, contextElements, bean);
-		this.writeTestAction(render, contextElements, bean);
-
-		this.saveReport(render, contextElements, bean);
+        //this.saveReport(render, contextElements, bean);
 
 	}
 
@@ -211,6 +214,32 @@ public class Builder {
 			logger.error("error writing files for {}", bean.getName(), t);
 		}		
 	}
+
+    private void writeController(Render render, Map<String, Object> contextElements, EdoBean bean) throws Throwable {
+        //dtorequest
+        String pojoPath = ServiceFileBuilder.getDtoRequestFilePath(bean);
+        String javaContent = render.render(Templates.BEAN_DTO_REQUEST, contextElements);
+        this.writeFile(bean.getEdoBuilder().getBaseDir(), pojoPath, javaContent);
+
+    }
+
+    private void writeService(Render render, Map<String, Object> contextElements, EdoBean bean) {
+        try {
+
+            //dto
+            String pojoPath = ServiceFileBuilder.getDtoFilePath(bean);
+            String javaContent = render.render(Templates.BEAN_DTO, contextElements);
+            this.writeFile(bean.getEdoBuilder().getBaseDir(), pojoPath, javaContent);
+
+            //service interface
+            String serviceInterfaceFilePath = ServiceFileBuilder.getServiceInterfaceFilePath(bean);
+            String serviceInterfaceJava = render.render(Templates.SERVICE_INTERFACE_JAVA, contextElements);
+            this.writeFile(bean.getEdoBuilder().getBaseDir(), serviceInterfaceFilePath, serviceInterfaceJava);
+
+        } catch (Throwable t) {
+            logger.error("error writing files for {}", bean.getName(), t);
+        }
+    }
 
 
 	private void writeAction(Render render,	Map<String, Object> contextElements, EdoBean bean) {
