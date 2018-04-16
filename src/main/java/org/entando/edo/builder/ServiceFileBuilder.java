@@ -26,7 +26,13 @@ public class ServiceFileBuilder {
 
 
     public static String getServiceInterfaceFilePath(EdoBean bean) {
-        String filename = String.format("I%sService.java", bean.getName());// bean.getName() + "Action.java";
+        String filename = String.format("I%sService.java", bean.getName());
+        String finalfile = ServiceFileBuilder.getServiceFolder(bean) + filename;
+        return finalfile;
+    }
+
+    public static String getServiceFilePath(EdoBean bean) {
+        String filename = String.format("%sService.java", bean.getName());
         String finalfile = ServiceFileBuilder.getServiceFolder(bean) + filename;
         return finalfile;
     }

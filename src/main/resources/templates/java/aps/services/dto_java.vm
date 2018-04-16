@@ -20,4 +20,8 @@ public class ${bean.name}Dto {
 
 #end
 
+    public static String getEntityFieldName(String dtoFieldName) {
+		return dtoFieldName;
+    }
+    
 }

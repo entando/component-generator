@@ -40,6 +40,8 @@ public interface Templates {
 
     public static final String SERVICE_INTERFACE_JAVA = "templates/java/aps/services/ServiceInterface_java.vm";
 
+    public static final String SERVICE_JAVA = "templates/java/aps/services/Service_java.vm";
+
     public static final String BEAN_DTO = "templates/java/aps/services/dto_java.vm";
 
     public static final String BEAN_DTO_REQUEST = "templates/java/aps/web/dto_request_java.vm";

@@ -1,0 +1,113 @@
+#set( $builder = $bean.edoBuilder)
+#set( $beanVar = $constants.getUnCapitalize($bean.name))
+#set( $beanClass = $bean.name)
+#set( $pk_type = $bean.fields[0].type.javaType)
+#set( $pk_type_gen = $bean.fields[0].type.javaTypeGeneric)
+#set( $pk_var = $bean.fields[0].name)
+#parse("templates/common/license/java_license.vm")
+package ${builder.packageName}.${constants.servicesPackage}.$constants.getLowerCase($bean.name);
+
+import  ${builder.packageName}.${constants.servicesPackage}.${constants.getLowerCase($bean.name)}.model.${beanClass}Dto;
+import org.entando.entando.web.common.model.PagedMetadata;
+import org.entando.entando.web.common.model.RestListRequest;
+import ${builder.packageName}.${constants.restPackage}.${constants.getLowerCase($bean.name)}.model.${beanClass}Request;
+import java.util.ArrayList;
+import java.util.List;
+import javax.annotation.PostConstruct;
+import com.agiletec.aps.system.common.FieldSearchFilter;
+import com.agiletec.aps.system.common.model.dao.SearcherDaoPaginatedResult;
+import org.entando.entando.aps.system.exception.RestServerError;
+import org.entando.entando.aps.system.services.DtoBuilder;
+import org.entando.entando.aps.system.services.IDtoBuilder;
+import org.entando.entando.web.common.model.PagedMetadata;
+import org.entando.entando.web.common.model.RestListRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+
+public class ${beanClass}Service implements I${beanClass}Service {
+
+    private final Logger logger = LoggerFactory.getLogger(getClass());
+
+    @Autowired
+    private I${beanClass}Manager catManager;
+    private IDtoBuilder<${beanClass}, ${beanClass}Dto> dtoBuilder;
+
+
+    protected I${beanClass}Manager get${beanClass}Manager() {
+        return ${beanVar}Manager;
+    }
+
+    public void set${beanClass}Manager(I${beanClass}Manager ${beanVar}Manager) {
+        this.${beanVar}Manager = ${beanVar}Manager;
+    }
+
+    protected IDtoBuilder<${beanClass}, ${beanClass}Dto> getDtoBuilder() {
+        return dtoBuilder;
+    }
+
+    public void setDtoBuilder(IDtoBuilder<${beanClass}, ${beanClass}Dto> dtoBuilder) {
+        this.dtoBuilder = dtoBuilder;
+    }
+
+    @PostConstruct
+    public void onInit() {
+        this.setDtoBuilder(new DtoBuilder<${beanClass}, ${beanClass}Dto>() {
+
+            @Override
+            protected ${beanClass}Dto toDto(${beanClass} src) {
+                ${beanClass}Dto dto = new ${beanClass}Dto();
+                BeanUtils.copyProperties(src, dto);
+                return dto;
+            }
+        });
+    }
+
+    @Override
+    public PagedMetadata<${beanClass}Dto> get${beanClass}s(RestListRequest requestList) {
+        try {
+            List<FieldSearchFilter> filters = new ArrayList<FieldSearchFilter>(requestList.buildFieldSearchFilters());
+            filters
+                   .stream()
+                   .filter(i -> i.getKey() != null)
+                   .forEach(i -> i.setKey(${beanClass}Dto.getEntityFieldName(i.getKey())));
+
+            SearcherDaoPaginatedResult<${beanClass}> ${beanVar}s = this.get${beanClass}Manager().get${beanClass}s(filters);
+            List<${beanClass}Dto> dtoList = dtoBuilder.convert(${beanVar}s.getList());
+
+            PagedMetadata<${beanClass}Dto> pagedMetadata = new PagedMetadata<>(requestList, ${beanVar}s);
+            pagedMetadata.setBody(dtoList);
+
+            return pagedMetadata;
+        } catch (Throwable t) {
+            logger.error("error in search ${beanVar}s", t);
+            throw new RestServerError("error in search ${beanVar}s", t);
+        }
+    }
+
+    @Override
+    public ${beanClass}Dto update${beanClass}(${beanClass}Request ${beanVar}Request) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public ${beanClass}Dto add${beanClass}(${beanClass}Request ${beanVar}Request) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public void remove${beanClass}(int id) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public ${beanClass}Dto get${beanClass}(int id) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+}

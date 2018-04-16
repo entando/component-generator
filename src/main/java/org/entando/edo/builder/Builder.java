@@ -46,10 +46,10 @@ public class Builder {
         this.writeService(render, contextElements, bean);
         this.writeController(render, contextElements, bean);
 
-        //		this.writeJavaModel(render, contextElements, bean);
-        //		this.writeSpringModelXml(render,contextElements, bean);
-        //		this.writeEntantoInit(render, contextElements, bean);
-        //		this.writeAPI(render, contextElements, bean);
+        this.writeJavaModel(render, contextElements, bean);
+        this.writeSpringModelXml(render, contextElements, bean);
+        this.writeEntantoInit(render, contextElements, bean);
+        this.writeAPI(render, contextElements, bean);
         //
         //		this.writeAction(render, contextElements, bean);
         //		this.writeJspAction(render, contextElements, bean);
@@ -225,16 +225,20 @@ public class Builder {
 
     private void writeService(Render render, Map<String, Object> contextElements, EdoBean bean) {
         try {
-
             //dto
             String pojoPath = ServiceFileBuilder.getDtoFilePath(bean);
             String javaContent = render.render(Templates.BEAN_DTO, contextElements);
             this.writeFile(bean.getEdoBuilder().getBaseDir(), pojoPath, javaContent);
-
+            
             //service interface
             String serviceInterfaceFilePath = ServiceFileBuilder.getServiceInterfaceFilePath(bean);
             String serviceInterfaceJava = render.render(Templates.SERVICE_INTERFACE_JAVA, contextElements);
             this.writeFile(bean.getEdoBuilder().getBaseDir(), serviceInterfaceFilePath, serviceInterfaceJava);
+
+            //service 
+            String serviceFilePath = ServiceFileBuilder.getServiceFilePath(bean);
+            String serviceJava = render.render(Templates.SERVICE_JAVA, contextElements);
+            this.writeFile(bean.getEdoBuilder().getBaseDir(), serviceFilePath, serviceJava);
 
         } catch (Throwable t) {
             logger.error("error writing files for {}", bean.getName(), t);

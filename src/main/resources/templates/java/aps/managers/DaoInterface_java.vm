@@ -28,6 +28,6 @@ public interface I${beanClass}DAO {
 	public void update${beanClass}(${beanClass} $beanVar);
 
 	public void insert${beanClass}(${beanClass} $beanVar);
-	
 
+    public int count${beanClass}s(FieldSearchFilter[] filters);
 }
