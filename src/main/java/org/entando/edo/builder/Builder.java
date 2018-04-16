@@ -221,6 +221,16 @@ public class Builder {
         String javaContent = render.render(Templates.BEAN_DTO_REQUEST, contextElements);
         this.writeFile(bean.getEdoBuilder().getBaseDir(), pojoPath, javaContent);
 
+        //validator
+        String validatorPath = ServiceFileBuilder.getControllerValidatorFilePath(bean);
+        String validatorContent = render.render(Templates.BEAN_CONTROLLER_VALIDATOR, contextElements);
+        this.writeFile(bean.getEdoBuilder().getBaseDir(), validatorPath, validatorContent);
+
+        //Controller
+        String controllerPath = ServiceFileBuilder.getControllerFilePath(bean);
+        String controllerContent = render.render(Templates.BEAN_CONTROLLER, contextElements);
+        this.writeFile(bean.getEdoBuilder().getBaseDir(), controllerPath, controllerContent);
+
     }
 
     private void writeService(Render render, Map<String, Object> contextElements, EdoBean bean) {

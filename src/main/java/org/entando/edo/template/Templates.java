@@ -46,6 +46,10 @@ public interface Templates {
 
     public static final String BEAN_DTO_REQUEST = "templates/java/aps/web/dto_request_java.vm";
 
+    public static final String BEAN_CONTROLLER_VALIDATOR = "templates/java/aps/web/controller_validator_java.vm";
+
+    public static final String BEAN_CONTROLLER = "templates/java/aps/web/controller_java.vm";
+
     //-------------------------------
 
 	/**

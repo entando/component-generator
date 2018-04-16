@@ -45,12 +45,24 @@ public class ServiceFileBuilder {
 
     public static String getDtoRequestFilePath(EdoBean bean) {
         String filename = bean.getName() + "Request.java";
+        String finalfile = ServiceFileBuilder.getJavaRestFolder(bean) + "model" + File.separator + filename;
+        return finalfile;
+    }
+
+    public static String getControllerValidatorFilePath(EdoBean bean) {
+        String filename = bean.getName() + "Validator.java";
+        String finalfile = ServiceFileBuilder.getJavaRestFolder(bean) + "validator" + File.separator + filename;
+        return finalfile;
+    }
+
+    public static String getControllerFilePath(EdoBean bean) {
+        String filename = bean.getName() + "Controller.java";
         String finalfile = ServiceFileBuilder.getJavaRestFolder(bean) + filename;
         return finalfile;
     }
 
-    private static String getJavaRestFolder(EdoBean bean) {
-        return bean.getEdoBuilder().getJavaFolder() + "web" + File.separator + bean.getName().toLowerCase() + File.separator + "model" + File.separator;
+    protected static String getJavaRestFolder(EdoBean bean) {
+        return bean.getEdoBuilder().getJavaFolder() + "web" + File.separator + bean.getName().toLowerCase() + File.separator;
     }
 
     protected static String getServiceFolder(EdoBean bean) {
@@ -63,5 +75,4 @@ public class ServiceFileBuilder {
         return folder;
     }
 
-	
 }
