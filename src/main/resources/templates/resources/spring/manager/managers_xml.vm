@@ -4,6 +4,7 @@
 #set( $package = "${builder.packageName}.${constants.servicesPackage}.${beanVar}")
 #set( $springPrep = $constants.getLowerCase($builder.springBeanPreposition))
 #set( $daoName = "$constants.getUnCapitalize($beanClass)DAO")
+#set( $managerName = "$constants.getUnCapitalize($beanClass)Manager")
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
@@ -21,5 +22,9 @@
 		<property name="keyGeneratorManager" ref="KeyGeneratorManager" />
 		<property name="${daoName}" ref="${springPrep}${beanClass}DAO" />
 	</bean>
+
+    <bean id="${springPrep}${beanClass}Service" class="${package}.${beanClass}Service" >
+        <property name="$managerName" ref="${springPrep}${beanClass}Manager" />
+    </bean>
 
 </beans>
