@@ -20,10 +20,9 @@ import ${builder.packageName}.${constants.restPackage}.${constants.getLowerCase(
 public class ${beanClass}Validator extends AbstractPaginationValidator {
 
     public static final String ERRCODE_URINAME_MISMATCH = "1";
-    //    public static final String ERRCODE_GROUP_NOT_FOUND = "1";
-    //    public static final String ERRCODE_GROUP_ALREADY_EXISTS = "2";
-    //    public static final String ERRCODE_CANNOT_DELETE_RESERVED_GROUP = "4";
-    //    public static final String ERRCODE_GROUP_REFERENCES = "5";
+    public static final String ERRCODE_${constants.toUpperCase($bean.name)}_NOT_FOUND = "2" ;
+    public static final String ERRCODE_${constants.toUpperCase($bean.name)}_ALREADY_EXISTS = "3";
+
 
     @Override
     public boolean supports(Class<?> paramClass) {

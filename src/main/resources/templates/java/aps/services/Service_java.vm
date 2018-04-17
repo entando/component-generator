@@ -4,6 +4,7 @@
 #set( $pk_type = $bean.fields[0].type.javaType)
 #set( $pk_type_gen = $bean.fields[0].type.javaTypeGeneric)
 #set( $pk_var = $bean.fields[0].name)
+#set( $pk_varName = ${constants.getCapitalize($bean.fields[0].name)})
 #parse("templates/common/license/java_license.vm")
 package ${builder.packageName}.${constants.servicesPackage}.$constants.getLowerCase($bean.name);
 
@@ -11,16 +12,22 @@ import  ${builder.packageName}.${constants.servicesPackage}.${constants.getLower
 import org.entando.entando.web.common.model.PagedMetadata;
 import org.entando.entando.web.common.model.RestListRequest;
 import ${builder.packageName}.${constants.restPackage}.${constants.getLowerCase($bean.name)}.model.${beanClass}Request;
+import ${builder.packageName}.${constants.restPackage}.${constants.getLowerCase($bean.name)}.validator.${beanClass}Validator;
+
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import com.agiletec.aps.system.common.FieldSearchFilter;
+import com.agiletec.aps.system.exception.ApsSystemException;
 import com.agiletec.aps.system.common.model.dao.SearcherDaoPaginatedResult;
 import org.entando.entando.aps.system.exception.RestServerError;
+import org.entando.entando.web.common.exceptions.ValidationGenericException;
 import org.entando.entando.aps.system.services.DtoBuilder;
 import org.entando.entando.aps.system.services.IDtoBuilder;
 import org.entando.entando.web.common.model.PagedMetadata;
 import org.entando.entando.web.common.model.RestListRequest;
+import org.entando.entando.aps.system.exception.RestRourceNotFoundException;
+import org.springframework.validation.BeanPropertyBindingResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -88,26 +95,97 @@ public class ${beanClass}Service implements I${beanClass}Service {
 
     @Override
     public ${beanClass}Dto update${beanClass}(${beanClass}Request ${beanVar}Request) {
-        // TODO Auto-generated method stub
-        return null;
+        try {
+	        ${beanClass} ${beanVar} = this.get${beanClass}Manager().get${beanClass}(${beanVar}Request.get${pk_varName}());
+	        if (null == ${beanVar}) {
+	            throw new RestRourceNotFoundException(${beanClass}Validator.ERRCODE_${constants.toUpperCase($bean.name)}_NOT_FOUND, "${beanVar}", String.valueOf(${beanVar}Request.get${pk_varName}()));
+	        }
+        	BeanUtils.copyProperties(${beanVar}Request, ${beanVar});
+            BeanPropertyBindingResult validationResult = this.validateForUpdate(${beanVar});
+            if (validationResult.hasErrors()) {
+                throw new ValidationGenericException(validationResult);
+            }
+            this.get${beanClass}Manager().update${beanClass}(${beanVar});
+            return this.getDtoBuilder().convert(${beanVar});
+        } catch (ApsSystemException e) {
+            logger.error("Error updating ${beanVar} {}", ${beanVar}Request.get${pk_varName}(), e);
+            throw new RestServerError("error in update ${beanVar}", e);
+        }
     }
 
     @Override
     public ${beanClass}Dto add${beanClass}(${beanClass}Request ${beanVar}Request) {
-        // TODO Auto-generated method stub
-        return null;
+        try {
+            ${beanClass} ${beanVar} = this.create${beanClass}(${beanVar}Request);
+            BeanPropertyBindingResult validationResult = this.validateForAdd(${beanVar});
+            if (validationResult.hasErrors()) {
+                throw new ValidationGenericException(validationResult);
+            }
+            this.get${beanClass}Manager().add${beanClass}(${beanVar});
+            ${beanClass}Dto dto = this.getDtoBuilder().convert(${beanVar});
+            return dto;
+        } catch (ApsSystemException e) {
+            logger.error("Error adding a ${beanVar}", e);
+            throw new RestServerError("error in add ${beanVar}", e);
+        }
     }
 
     @Override
-    public void remove${beanClass}(int id) {
-        // TODO Auto-generated method stub
-
+    public void remove${beanClass}($pk_type  $pk_var) {
+        try {
+            ${beanClass} ${beanVar} = this.get${beanClass}Manager().get${beanClass}($pk_var);
+            if (null == ${beanVar}) {
+                logger.info("${beanVar} {} does not exists", $pk_var);
+                return;
+            }
+            BeanPropertyBindingResult validationResult = this.validateForDelete(${beanVar});
+            if (validationResult.hasErrors()) {
+                throw new ValidationGenericException(validationResult);
+            }
+            this.get${beanClass}Manager().delete${beanClass}($pk_var);
+        } catch (ApsSystemException e) {
+            logger.error("Error in delete ${beanVar} {}", $pk_var, e);
+            throw new RestServerError("error in delete ${beanVar}", e);
+        }
     }
 
     @Override
-    public ${beanClass}Dto get${beanClass}(int id) {
-        // TODO Auto-generated method stub
-        return null;
+    public ${beanClass}Dto get${beanClass}($pk_type  $pk_var) {
+        try {
+	        ${beanClass} ${beanVar} = this.get${beanClass}Manager().get${beanClass}($pk_var);
+	        if (null == ${beanVar}) {
+	            logger.warn("no ${beanVar} found with code {}", $pk_var);
+	            throw new RestRourceNotFoundException(${beanClass}Validator.ERRCODE_${constants.toUpperCase($bean.name)}_NOT_FOUND, "${beanVar}", String.valueOf($pk_var));
+	        }
+	        ${beanClass}Dto dto = this.getDtoBuilder().convert(${beanVar});
+	        return dto;
+        } catch (ApsSystemException e) {
+            logger.error("Error loading ${beanVar} {}", $pk_var, e);
+            throw new RestServerError("error in loading ${beanVar}", e);
+        }
+    }
+
+    private ${beanClass} create${beanClass}(${beanClass}Request ${beanVar}Request) {
+        ${beanClass} ${beanVar} = new ${beanClass}();
+        BeanUtils.copyProperties(${beanVar}Request, ${beanVar});
+        return ${beanVar};
+    }
+
+
+    protected BeanPropertyBindingResult validateForAdd(${beanClass} ${beanVar}) {
+        BeanPropertyBindingResult errors = new BeanPropertyBindingResult(${beanVar}, "${beanVar}");
+        return errors;
+    }
+
+    protected BeanPropertyBindingResult validateForDelete(${beanClass} ${beanVar}) {
+        BeanPropertyBindingResult errors = new BeanPropertyBindingResult(${beanVar}, "${beanVar}");
+        return errors;
+    }
+
+    protected BeanPropertyBindingResult validateForUpdate(${beanClass} ${beanVar}) {
+        BeanPropertyBindingResult errors = new BeanPropertyBindingResult(${beanVar}, "${beanVar}");
+        return errors;
     }
 
 }
+
