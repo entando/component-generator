@@ -71,7 +71,7 @@ INSERT INTO localstrings ( keycode, langcode, stringvalue ) VALUES ('${i18keyPre
 
 
 #if($bean.buildWidgets())
-INSERT INTO guifragment (code, widgettypecode, plugincode, gui, defaultgui, locked) VALUES ('${builder.pluginName}_is_front_${beanClass}_entry', '#if($builder.plugin)$builder.pluginName#end${beanClass}_list_form', '${builder.pluginName}', NULL, '<#assign c=JspTaglibs["http://java.sun.com/jsp/jstl/core"]>
+INSERT INTO guifragment (code, widgettypecode, plugincode, gui, defaultgui, locked) VALUES ('#if($builder.plugin)$builder.pluginName#end${beanClass}_is_front_${beanClass}_entry', '#if($builder.plugin)$builder.pluginName#end${beanClass}_list_form', '#if($builder.plugin)$builder.pluginName#end', NULL, '<#assign c=JspTaglibs["http://java.sun.com/jsp/jstl/core"]>
 <#assign s=JspTaglibs["/struts-tags"]>
 <#assign wp=JspTaglibs["/aps-core"]>
 <#assign wpsf=JspTaglibs["/apsadmin-form"]>
@@ -165,7 +165,7 @@ jQuery(function($) {
 	</@wpsf.submit>
 </form>
 </section>', 1);
-INSERT INTO guifragment (code, widgettypecode, plugincode, gui, defaultgui, locked) VALUES ('${builder.pluginName}_is_front_${beanClass}_error', '#if($builder.plugin)$builder.pluginName#end${beanClass}_list_form', '${builder.pluginName}', NULL, '<pre>
+INSERT INTO guifragment (code, widgettypecode, plugincode, gui, defaultgui, locked) VALUES ('#if($builder.plugin)$builder.pluginName#end${beanClass}_is_front_${beanClass}_error', '#if($builder.plugin)$builder.pluginName#end${beanClass}_list_form', '${builder.pluginName}', NULL, '<pre>
    __   _ __   _ __   ___   _ __  
  /''__`\/\`''__\/\`''__\/ __`\/\`''__\
 /\  __/\ \ \/ \ \ \//\ \L\ \ \ \/ 
@@ -177,7 +177,7 @@ INSERT INTO guifragment (code, widgettypecode, plugincode, gui, defaultgui, lock
 
 
 
-INSERT INTO guifragment (code, widgettypecode, plugincode, gui, defaultgui, locked) VALUES ('${builder.pluginName}_is_front_${beanClass}_list', '#if($builder.plugin)$builder.pluginName#end${beanClass}_list_form', '${builder.pluginName}', NULL, '<#assign c=JspTaglibs["http://java.sun.com/jsp/jstl/core"]>
+INSERT INTO guifragment (code, widgettypecode, plugincode, gui, defaultgui, locked) VALUES ('#if($builder.plugin)$builder.pluginName#end${beanClass}_is_front_${beanClass}_list', '#if($builder.plugin)$builder.pluginName#end${beanClass}_list_form', '#if($builder.plugin)$builder.pluginName#end', NULL, '<#assign c=JspTaglibs["http://java.sun.com/jsp/jstl/core"]>
 <#assign s=JspTaglibs["/struts-tags"]>
 <#assign wp=JspTaglibs["/aps-core"]>
 <#assign wpsa=JspTaglibs["/apsadmin-core"]>
@@ -327,7 +327,7 @@ jQuery(function($) {
 </form>
 </section>', 1);
 
-INSERT INTO guifragment (code, widgettypecode, plugincode, gui, defaultgui, locked) VALUES ('${builder.pluginName}_is_front_${beanClass}_trash', '#if($builder.plugin)$builder.pluginName#end${beanClass}_list_form', '${builder.pluginName}', NULL, '<#assign c=JspTaglibs["http://java.sun.com/jsp/jstl/core"]>
+INSERT INTO guifragment (code, widgettypecode, plugincode, gui, defaultgui, locked) VALUES ('#if($builder.plugin)$builder.pluginName#end${beanClass}_is_front_${beanClass}_trash', '#if($builder.plugin)$builder.pluginName#end${beanClass}_list_form', '#if($builder.plugin)$builder.pluginName#end', NULL, '<#assign c=JspTaglibs["http://java.sun.com/jsp/jstl/core"]>
 <#assign s=JspTaglibs["/struts-tags"]>
 <#assign wp=JspTaglibs["/aps-core"]>
 <#assign wpsf=JspTaglibs["/apsadmin-form"]>

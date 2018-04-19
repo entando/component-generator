@@ -50,7 +50,7 @@ public class InternalServletFileBuilder {
 
 	
 	public static String getInternalServletJspFilePath(EdoBean bean, String suffix) {
-		String folder = bean.getEdoBuilder().getWebinfApsFolder();
+        String folder = bean.getEdoBuilder().getWebinfApsFolderInternalServlet();
 		String subfolder = "jsp/internalservlet/".replaceAll("/", Matcher.quoteReplacement(File.separator));
 		folder = folder + subfolder;
 		folder = folder + bean.getName().toLowerCase() + File.separator;
