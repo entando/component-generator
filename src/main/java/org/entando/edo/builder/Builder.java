@@ -50,11 +50,11 @@ public class Builder {
         this.writeSpringModelXml(render, contextElements, bean);
         this.writeEntantoInit(render, contextElements, bean);
         this.writeAPI(render, contextElements, bean);
-        //
-        //		this.writeAction(render, contextElements, bean);
+
+        this.writeAction(render, contextElements, bean);
         //		this.writeJspAction(render, contextElements, bean);
         //
-        //		this.writeWidgets(render, contextElements, bean);
+        this.writeWidgets(render, contextElements, bean);
         //
         this.writeTestService(render, contextElements, bean);
         //		this.writeTestAction(render, contextElements, bean);

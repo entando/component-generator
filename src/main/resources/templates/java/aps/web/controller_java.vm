@@ -41,7 +41,7 @@ import ${builder.packageName}.${constants.restPackage}.${constants.getLowerCase(
 
 @RestController
 @RequestMapping(value = "/${beanVar}s")
-public class CatController {
+public class ${beanClass}Controller {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -72,7 +72,7 @@ public class CatController {
     public ResponseEntity<RestResponse> get${beanClass}s(RestListRequest requestList) throws JsonProcessingException {
         this.get${beanClass}Validator().validateRestListRequest(requestList, ${beanClass}Dto.class);
         PagedMetadata<${beanClass}Dto> result = this.get${beanClass}Service().get${beanClass}s(requestList);
-        this.getCatValidator().validateRestListResult(requestList, result);
+        this.get${beanClass}Validator().validateRestListResult(requestList, result);
         logger.debug("Main Response -> {}", result);
         return new ResponseEntity<>(new RestResponse(result.getBody(), null, result), HttpStatus.OK);
     }
@@ -90,7 +90,7 @@ public class CatController {
 
     @RestAccessControl(permission = "$builder.permission")
     @RequestMapping(value = "/{${beanVar}${pk_varName}}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<RestResponse> updateGroup(@PathVariable String ${beanVar}${pk_varName}, @Valid @RequestBody ${beanClass}Request ${beanVar}Request, BindingResult bindingResult) {
+    public ResponseEntity<RestResponse> update${beanClass}(@PathVariable String ${beanVar}${pk_varName}, @Valid @RequestBody ${beanClass}Request ${beanVar}Request, BindingResult bindingResult) {
         //field validations
         if (bindingResult.hasErrors()) {
             throw new ValidationGenericException(bindingResult);

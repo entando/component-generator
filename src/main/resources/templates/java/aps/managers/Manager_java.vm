@@ -112,7 +112,7 @@ public class ${beanClass}Manager extends AbstractService implements I${beanClass
 		}
 	}
 
-## #parse("templates/java/aps/managers/inc/manager_api_methods.vm")
+#parse("templates/java/aps/managers/inc/manager_api_methods.vm")
 
 	private void notify${beanClass}ChangedEvent(${beanClass} ${beanVar}, int operationCode) {
 		${beanClass}ChangedEvent event = new ${beanClass}ChangedEvent();

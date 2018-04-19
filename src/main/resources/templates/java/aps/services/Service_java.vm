@@ -38,7 +38,7 @@ public class ${beanClass}Service implements I${beanClass}Service {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    private I${beanClass}Manager catManager;
+    private I${beanClass}Manager ${beanVar}Manager;
     private IDtoBuilder<${beanClass}, ${beanClass}Dto> dtoBuilder;
 
 
