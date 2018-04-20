@@ -147,7 +147,7 @@ public class EdoBuilder {
 		if (this.isPlugin()) {
 			apsSpringPath = apsSpringPath + "plugins" + File.separator + this.getPluginName() + File.separator;
 		} else {
-			apsSpringPath = apsSpringPath + this.getProjectName() + File.separator;	
+            //apsSpringPath = apsSpringPath; /*+ this.getProjectName() + File.separator;	*/
 		}
 		apsSpringPath = apsSpringPath + "aps" + File.separator + "managers" + File.separator;
 
@@ -163,7 +163,7 @@ public class EdoBuilder {
 		if (this.isPlugin()) {
 			apsSpringPath = apsSpringPath + "plugins" + File.separator + this.getPluginName() + File.separator;
 		} else {
-			apsSpringPath = apsSpringPath + this.getProjectName() + File.separator;	
+            //apsSpringPath = apsSpringPath + this.getProjectName() + File.separator;	
 		}
 		apsSpringPath = apsSpringPath + "apsadmin" + File.separator;
 		return apsSpringPath;
@@ -201,7 +201,7 @@ public class EdoBuilder {
 		if (this.isPlugin()) {
 			folder = folder + "plugins" + File.separator + this.getPluginName() + File.separator;	
 		}
-        folder = folder + File.separator + "aps" + File.separator;
+        folder = folder + "aps" + File.separator;
         //folder = folder + this.getProjectName() + File.separator + "aps" + File.separator;
 		return folder;	
 	}
@@ -209,10 +209,11 @@ public class EdoBuilder {
     public String getWebinfApsFolderInternalServlet() {
         String folder = this.getBaseDir() + FolderConstants.getWebInfFolder();
         if (this.isPlugin()) {
-            folder = folder + "plugins" + File.separator + this.getPluginName() + File.separator;
+            folder = folder + "plugins" + File.separator + this.getPluginName() + File.separator + "aps" + File.separator;
+            return folder;
         }
-        //folder = folder + File.separator + "aps" + File.separator;
-        folder = folder + this.getProjectName() + File.separator + "aps" + File.separator;
+
+        folder = folder /*+ this.getProjectName() + File.separator*/ + "aps" + File.separator;
         return folder;
     }
 

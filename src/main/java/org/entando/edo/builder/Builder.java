@@ -52,12 +52,12 @@ public class Builder {
         this.writeAPI(render, contextElements, bean);
 
         this.writeAction(render, contextElements, bean);
-        //		this.writeJspAction(render, contextElements, bean);
+        this.writeJspAction(render, contextElements, bean);
         //
         this.writeWidgets(render, contextElements, bean);
         //
         this.writeTestService(render, contextElements, bean);
-        //		this.writeTestAction(render, contextElements, bean);
+        this.writeTestAction(render, contextElements, bean);
 
         this.saveReport(render, contextElements, bean);
 
