@@ -50,7 +50,6 @@ public class Report implements Serializable  {
 		try {
 			return Report.getInstance();
 		} catch (InstanceAlreadyExistsException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null; 

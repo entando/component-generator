@@ -8,12 +8,13 @@
 
 <struts>
 
+#if($builder.assetsConf.specialWidget)
+	<include file="${builder.packageFolder}/${constants.apsadminPackage}/$constants.getLowerCase($beanVar)/${beanVar}.xml"/>
+#end
+#if($builder.assetsConf.internalServlet)
 	<!-- include this snippet into your struts-plugin.xml file or rename this file 
 		edit also this file: /src/test/java/apsadmin/${constants.getCapitalize($builder.springBeanPreposition)}ApsAdminBaseTestCase.java
 	-->
-
-	<include file="${builder.packageFolder}/${constants.apsadminPackage}/$constants.getLowerCase($beanVar)/${beanVar}.xml"/>
-#if($bean.buildWidgets())
 	<include file="${builder.packageFolder}/${constants.apsadminPackage}/portal/specialwidget/$constants.getLowerCase($beanVar)/${beanVar}SpecialWidget.xml"/>
 	<include file="${builder.packageFolder}/aps/internalservlet/$constants.getLowerCase($beanVar)/${beanVar}Front.xml"/>
 #end

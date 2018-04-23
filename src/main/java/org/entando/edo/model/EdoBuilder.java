@@ -20,6 +20,7 @@ import java.util.regex.Matcher;
 
 import org.apache.commons.lang.StringUtils;
 import org.entando.edo.builder.FolderConstants;
+import org.entando.edo.model.json.EdoAssetsConf;
 
 public class EdoBuilder {
 
@@ -267,9 +268,18 @@ public class EdoBuilder {
 		this._beans = beans;
 	}
 
-	private String _packageName;
-	private String _baseDir = System.getProperty("user.dir");
-	private String _permission = "superuser";
+    public EdoAssetsConf getAssetsConf() {
+        return assetsConf;
+    }
+
+    public void setAssetsConf(EdoAssetsConf assetsConf) {
+        this.assetsConf = assetsConf;
+    }
+
+    private String _packageName;
+    private String _baseDir = EdoConstants.BASE_DIR_DEFAULT;
+    private String _permission = EdoConstants.PERMISSION_DEFAULT;
 	private String _originalArgs = null;
+    private EdoAssetsConf assetsConf = new EdoAssetsConf();
 	private List<EdoBean> _beans = new ArrayList<EdoBean>();
 }

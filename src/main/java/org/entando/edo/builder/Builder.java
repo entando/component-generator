@@ -43,19 +43,45 @@ public class Builder {
         contextElements.put("bean", bean);
         contextElements.put("constants", new EdoConstants());
 
-        this.writeService(render, contextElements, bean);
-        this.writeController(render, contextElements, bean);
-
         this.writeJavaModel(render, contextElements, bean);
         this.writeSpringModelXml(render, contextElements, bean);
         this.writeEntantoInit(render, contextElements, bean);
-        this.writeAPI(render, contextElements, bean);
 
-        this.writeAction(render, contextElements, bean);
-        this.writeJspAction(render, contextElements, bean);
+        if (builder.getAssetsConf().isRest()) {
+            this.writeService(render, contextElements, bean);
+            this.writeRestController(render, contextElements, bean);
+        }
+
+        if (builder.getAssetsConf().isCxf()) {
+            this.writeCxfAPI(render, contextElements, bean);
+        }
+
+
         //
-        this.writeWidgets(render, contextElements, bean);
-        //
+
+        if (builder.getAssetsConf().isSpecialWidget()) {
+            this.writeSpecilWidget(render, contextElements, bean);
+        }
+
+        if (builder.getAssetsConf().isInternalServlet()) {
+            this.writeInternalServlet(render, contextElements, bean);
+        }
+
+
+        if (builder.getAssetsConf().isAdminConsole() || builder.getAssetsConf().isSpecialWidget()) {
+            this.writeAction(render, contextElements, bean);
+            this.writeJspAction(render, contextElements, bean);
+        }
+
+        if (builder.getAssetsConf().isSpecialWidget() || builder.getAssetsConf().isAdminConsole()) {
+            //STRUTS_PLUGIN
+            String strutsPluginFilePath = ControllerFileBuilder.getActionStrutsPluginFilePath(bean);
+            String actionStrutsPluginContent = render.render(Templates.ACTION_STRUTS_PLUGIN, contextElements);
+            this.writeFile(bean.getEdoBuilder().getBaseDir(), strutsPluginFilePath, actionStrutsPluginContent);
+
+        }
+
+
         this.writeTestService(render, contextElements, bean);
         this.writeTestAction(render, contextElements, bean);
 
@@ -129,7 +155,7 @@ public class Builder {
         }
     }
 
-    private void writeAPI(Render render, Map<String, Object> contextElements, EdoBean bean) {
+    private void writeCxfAPI(Render render, Map<String, Object> contextElements, EdoBean bean) {
         try {
             //jaxbbean
             String apiBeanPath = Filebuilder.getApiBeanFilePath(bean);
@@ -215,7 +241,7 @@ public class Builder {
         }
     }
 
-    private void writeController(Render render, Map<String, Object> contextElements, EdoBean bean) throws Throwable {
+    private void writeRestController(Render render, Map<String, Object> contextElements, EdoBean bean) throws Throwable {
         //dtorequest
         String pojoPath = ServiceFileBuilder.getDtoRequestFilePath(bean);
         String javaContent = render.render(Templates.BEAN_DTO_REQUEST, contextElements);
@@ -258,6 +284,7 @@ public class Builder {
 
     private void writeAction(Render render, Map<String, Object> contextElements, EdoBean bean) {
         try {
+
             //ACTION
             String actionFilePath = ControllerFileBuilder.getActionFilePath(bean);
             String actionJava = render.render(Templates.ACTION_JAVA, contextElements);
@@ -300,10 +327,7 @@ public class Builder {
             String actionPropertiesEnContent = render.render(Templates.ACTION_PACKAGE_PROPERTIES, contextElements);
             this.writeFile(bean.getEdoBuilder().getBaseDir(), actionPropertiesEnFilePath, actionPropertiesEnContent);
 
-            //STRUTS_PLUGIN
-            String strutsPluginFilePath = ControllerFileBuilder.getActionStrutsPluginFilePath(bean);
-            String actionStrutsPluginContent = render.render(Templates.ACTION_STRUTS_PLUGIN, contextElements);
-            this.writeFile(bean.getEdoBuilder().getBaseDir(), strutsPluginFilePath, actionStrutsPluginContent);
+
 
             //SHORTCUTS
             String shortcutFilePath = ControllerFileBuilder.getActionShortCutFilePath(bean);
@@ -339,14 +363,8 @@ public class Builder {
         }
     }
 
-    private void writeWidgets(Render render, Map<String, Object> contextElements, EdoBean bean) {
-        if (bean.buildWidgets()) {
-            this.writeWidget(render, contextElements, bean);
-            this.writeInternalServlet(render, contextElements, bean);
-        }
-    }
 
-    private void writeWidget(Render render, Map<String, Object> contextElements, EdoBean bean) {
+    private void writeSpecilWidget(Render render, Map<String, Object> contextElements, EdoBean bean) {
         try {
             //SPECIAL WIDGET_ACTION
             String specialWidgetActionFilePath = WidgetFileBuilder.getSpecialWidgetActionFilePath(bean);

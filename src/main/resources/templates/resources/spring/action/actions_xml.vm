@@ -33,13 +33,14 @@
 	</bean>
 
 
-#if($bean.buildWidgets())
+#if($builder.assetsConf.specialWidget)
 	<bean id="${springPrep}${beanClass}ConfigAction" class="${builder.packageName}.${constants.apsadminPackage}.portal.specialwidget.$constants.getLowerCase($beanVar).${beanClass}ConfigAction"
 		parent="simpleWidgetAction" scope="prototype">
 		<property name="$constants.getUnCapitalize($beanClass)Manager" ref="${springPrep}${beanClass}Manager" />
 	</bean>
+#end
 
-
+#if($builder.assetsConf.internalServlet)
 	<!-- INTERNAL_SERVLET -->
 	<bean id="${springPrep}${beanClass}FinderFrontEndAction" scope="prototype" 
 			class="${builder.packageName}.aps.internalservlet.$constants.getLowerCase($beanVar).${beanClass}FinderFrontEndAction" 

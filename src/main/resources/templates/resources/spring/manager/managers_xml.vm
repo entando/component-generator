@@ -22,9 +22,10 @@
 		<property name="keyGeneratorManager" ref="KeyGeneratorManager" />
 		<property name="${daoName}" ref="${springPrep}${beanClass}DAO" />
 	</bean>
-
+	
+#if($builder.assetsConf.rest)
     <bean id="${springPrep}${beanClass}Service" class="${package}.${beanClass}Service" >
         <property name="$managerName" ref="${springPrep}${beanClass}Manager" />
     </bean>
-
+#end
 </beans>

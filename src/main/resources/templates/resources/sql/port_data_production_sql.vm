@@ -9,7 +9,8 @@
 #set( $i18keyBean = $constants.toUpperCase($bean.name))
 #set( $pk_field = $bean.fields[0])
 #set ( $d = "$")
-#if($bean.buildWidgets())
+
+#if($builder.assetsConf.specialWidget)
 INSERT INTO widgetcatalog (code, titles, parameters, plugincode, parenttypecode, defaultconfig, locked, maingroup) VALUES ('#if($builder.plugin)$builder.pluginName#end${beanClass}', '<?xml version="1.0" encoding="UTF-8"?>
 <properties>
 <property key="en">Publish ${beanClass}</property>
@@ -18,7 +19,9 @@ INSERT INTO widgetcatalog (code, titles, parameters, plugincode, parenttypecode,
 	<parameter name="$pk_field.name">$pk_field.name</parameter>
 	<action name="${springPrep}${beanClass}Config"/>
 </config>',#if($builder.plugin)'$builder.pluginName'#else NULL #end, NULL, NULL, 1, 'free');
+#end
 
+#if($builder.assetsConf.internalServlet)
 INSERT INTO widgetcatalog (code, titles, parameters, plugincode, parenttypecode, defaultconfig, locked, maingroup) VALUES ('#if($builder.plugin)$builder.pluginName#end${beanClass}_list_form', '<?xml version="1.0" encoding="UTF-8"?>
 <properties>
 <property key="en">${beanClass} List and Form</property>
@@ -27,7 +30,7 @@ INSERT INTO widgetcatalog (code, titles, parameters, plugincode, parenttypecode,
 <properties>
 <property key="actionPath">/ExtStr2/do/FrontEnd/${builder.springBeanPreposition}/${beanClass}/list.action</property>
 </properties>', 1, 'free');
-#end
+
 
 #set( $i18keyPrep = "")
 #if($builder.plugin)
@@ -70,7 +73,7 @@ INSERT INTO localstrings ( keycode, langcode, stringvalue ) VALUES ('${i18keyPre
 INSERT INTO localstrings ( keycode, langcode, stringvalue ) VALUES ('${i18keyPrep}${i18keyBean}_NOT_FOUND', 'en', '${bean.name} not found');
 
 
-#if($bean.buildWidgets())
+
 INSERT INTO guifragment (code, widgettypecode, plugincode, gui, defaultgui, locked) VALUES ('#if($builder.plugin)$builder.pluginName#end${beanClass}_is_front_${beanClass}_entry', '#if($builder.plugin)$builder.pluginName#end${beanClass}_list_form', '#if($builder.plugin)$builder.pluginName#end', NULL, '<#assign c=JspTaglibs["http://java.sun.com/jsp/jstl/core"]>
 <#assign s=JspTaglibs["/struts-tags"]>
 <#assign wp=JspTaglibs["/aps-core"]>
@@ -376,3 +379,4 @@ INSERT INTO guifragment (code, widgettypecode, plugincode, gui, defaultgui, lock
 </section>', 1);
 
 #end
+

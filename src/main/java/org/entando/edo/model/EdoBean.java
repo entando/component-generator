@@ -24,9 +24,6 @@ import org.apache.commons.lang.StringUtils;
 
 public class EdoBean {
 	
-	public boolean buildWidgets() {
-		return true;
-	}
 
 	public boolean buildApi() {
 		return true;
@@ -136,6 +133,10 @@ public class EdoBean {
 		return searchFields;
 	}
 	
+    public void addField(EdoField field) {
+        this.getFields().add(field);
+    }
+
 	public String getName() {
 		return _name;
 	}
