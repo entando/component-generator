@@ -67,9 +67,12 @@ public class Builder {
             this.writeInternalServlet(render, contextElements, bean);
         }
 
+        if (builder.getAssetsConf().isAdminConsole() || builder.getAssetsConf().isInternalServlet()) {
+            this.writeAction(render, contextElements, bean);
+
+        }
 
         if (builder.getAssetsConf().isAdminConsole()) {
-            this.writeAction(render, contextElements, bean);
             this.writeJspAction(render, contextElements, bean);
         }
 

@@ -14,6 +14,7 @@
 		xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
 				http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd" >
 
+
 #if($builder.assetsConf.adminConsole)
 #if($builder.plugin)
 	<bean id="${springPrep}${beanClass}PluginSubMenu" class="com.agiletec.apsadmin.system.plugin.PluginSubMenuContainer" >
@@ -32,7 +33,9 @@
 			parent="abstractBaseAction" >
 		<property name="$constants.getUnCapitalize($beanClass)Manager" ref="${springPrep}${beanClass}Manager" />
 	</bean>
-	
+
+#end
+
 #if($builder.assetsConf.internalServlet)
 	<!-- INTERNAL_SERVLET -->
 	<bean id="${springPrep}${beanClass}FinderFrontEndAction" scope="prototype" 
@@ -46,9 +49,6 @@
 			parent="abstractBaseAction" >
 		<property name="$constants.getUnCapitalize($beanClass)Manager" ref="${springPrep}${beanClass}Manager" />
 	</bean>
-#end
- 	
-	
 #end
 
 #if($builder.assetsConf.specialWidget)

@@ -5,6 +5,7 @@
 #set( $pk_type_gen = $bean.fields[0].type.javaTypeGeneric)
 #set( $pk_var = $bean.fields[0].name)
 #set( $pk_varName = ${constants.getCapitalize($bean.fields[0].name)})
+#set( $springPrep = $constants.getLowerCase($builder.springBeanPreposition))
 #parse("templates/common/license/java_license.vm")
 package ${builder.packageName}.${constants.restPackage}.${constants.getLowerCase($bean.name)};
 
@@ -40,7 +41,7 @@ import ${builder.packageName}.${constants.restPackage}.${constants.getLowerCase(
 import ${builder.packageName}.${constants.restPackage}.${constants.getLowerCase($bean.name)}.validator.${beanClass}Validator;
 
 @RestController
-@RequestMapping(value = "/${beanVar}s")
+@RequestMapping(value = "/${springPrep}/${beanVar}s")
 public class ${beanClass}Controller {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());

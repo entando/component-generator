@@ -27,5 +27,6 @@
     <bean id="${springPrep}${beanClass}Service" class="${package}.${beanClass}Service" >
         <property name="$managerName" ref="${springPrep}${beanClass}Manager" />
     </bean>
+    
 #end
 </beans>
