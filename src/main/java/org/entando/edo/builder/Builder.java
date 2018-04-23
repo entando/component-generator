@@ -68,7 +68,7 @@ public class Builder {
         }
 
 
-        if (builder.getAssetsConf().isAdminConsole() || builder.getAssetsConf().isSpecialWidget()) {
+        if (builder.getAssetsConf().isAdminConsole()) {
             this.writeAction(render, contextElements, bean);
             this.writeJspAction(render, contextElements, bean);
         }
@@ -79,6 +79,10 @@ public class Builder {
             String actionStrutsPluginContent = render.render(Templates.ACTION_STRUTS_PLUGIN, contextElements);
             this.writeFile(bean.getEdoBuilder().getBaseDir(), strutsPluginFilePath, actionStrutsPluginContent);
 
+            //SPRING
+            String springFilePath = ControllerFileBuilder.getActionSpringFilePath(bean);
+            String actionSpringContent = render.render(Templates.ACTION_SPRING, contextElements);
+            this.writeFile(bean.getEdoBuilder().getBaseDir(), springFilePath, actionSpringContent);
         }
 
 
@@ -339,10 +343,6 @@ public class Builder {
             String actionTilesContent = render.render(Templates.ACTION_TILES, contextElements);
             this.writeFile(bean.getEdoBuilder().getBaseDir(), tilesFilePath, actionTilesContent);
 
-            //SPRING
-            String springFilePath = ControllerFileBuilder.getActionSpringFilePath(bean);
-            String actionSpringContent = render.render(Templates.ACTION_SPRING, contextElements);
-            this.writeFile(bean.getEdoBuilder().getBaseDir(), springFilePath, actionSpringContent);
 
 
             if (bean.getEdoBuilder().isPlugin()) {

@@ -14,6 +14,7 @@
 		xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
 				http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd" >
 
+#if($builder.assetsConf.adminConsole)
 #if($builder.plugin)
 	<bean id="${springPrep}${beanClass}PluginSubMenu" class="com.agiletec.apsadmin.system.plugin.PluginSubMenuContainer" >
 		<property name="subMenuFilePath"><value>/WEB-INF/${path}/apsadmin/jsp/common/layouts/subMenu.jsp</value></property>
@@ -31,15 +32,7 @@
 			parent="abstractBaseAction" >
 		<property name="$constants.getUnCapitalize($beanClass)Manager" ref="${springPrep}${beanClass}Manager" />
 	</bean>
-
-
-#if($builder.assetsConf.specialWidget)
-	<bean id="${springPrep}${beanClass}ConfigAction" class="${builder.packageName}.${constants.apsadminPackage}.portal.specialwidget.$constants.getLowerCase($beanVar).${beanClass}ConfigAction"
-		parent="simpleWidgetAction" scope="prototype">
-		<property name="$constants.getUnCapitalize($beanClass)Manager" ref="${springPrep}${beanClass}Manager" />
-	</bean>
-#end
-
+	
 #if($builder.assetsConf.internalServlet)
 	<!-- INTERNAL_SERVLET -->
 	<bean id="${springPrep}${beanClass}FinderFrontEndAction" scope="prototype" 
@@ -55,5 +48,15 @@
 	</bean>
 #end
  	
+	
+#end
+
+#if($builder.assetsConf.specialWidget)
+	<bean id="${springPrep}${beanClass}ConfigAction" class="${builder.packageName}.${constants.apsadminPackage}.portal.specialwidget.$constants.getLowerCase($beanVar).${beanClass}ConfigAction"
+		parent="simpleWidgetAction" scope="prototype">
+		<property name="$constants.getUnCapitalize($beanClass)Manager" ref="${springPrep}${beanClass}Manager" />
+	</bean>
+#end
+
  	
 </beans>
