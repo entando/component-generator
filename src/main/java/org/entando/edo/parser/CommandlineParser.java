@@ -78,19 +78,6 @@ public class CommandlineParser {
             edoBuilder = edoInput.buildEdoBuilder();
             edoBuilder.setOriginalArgs(originalArgs);
 
-            //            edoBuilder = new EdoBuilder();
-            //            edoBuilder.setOriginalArgs(originalArgs);
-            //
-            //            if (null != cl) {
-            //                args = processCommandline(cl, edoBuilder, args);
-            //            }
-            //            if (StringUtils.isBlank(edoBuilder.getPackageName())) {
-            //                _logger.warn("No package name!, skip");
-            //                return null;
-            //            }
-            //            /////////
-            //
-
             if (this.checkForPom) {
                 _logger.trace("check for pom.xml");
                 boolean pomExists = new File(edoBuilder.getBaseDir(), "pom.xml").exists();
@@ -100,37 +87,21 @@ public class CommandlineParser {
                 }
                 _logger.trace("found {}.pom.xml", edoBuilder.getBaseDir());
             }
-            //
-            //
-            //            EdoBean edoBean = new EdoBean();
-            //            IAgrumentParser parser = new NameParser();
-            //            String a[] = parser.parse(edoBean, args);
-            //
-            //            parser = new FieldsParser();
-            //            a = parser.parse(edoBean, a);
-            //            if (a.length > 0) {
-            //                _logger.warn("These parameters were skipped: " + Arrays.toString(a));
-            //            }
-            //            edoBuilder.addBean(edoBean);
+
 
         } catch (ParseException exp) {
             _logger.error("Error parsing command line", exp);
         } catch (Throwable t) {
-            // _logger.error("Error parsing command line", t);
+            _logger.error("Error parsing command line");
             throw t;
         }
         return edoBuilder;
     }
 
 
-
-
     private static Options createCommandLineOptions() {
         final Options options = new Options();
         options.addOption(OPTION_EDO_FILE_SHORT, OPTION_EDO_FILE, true, "the edo model descriptor");
-        //		options.addOption(OPTION_BASE_DIR, OPTION_BASE_DIR, true, "full path of edo work directory. Should be the root of an Entando project. By default is the current directory");
-        //		options.addOption(OPTION_PERMISSION, OPTION_PERMISSION, true, "code of the Entando permission used to protect actions. Default is 'superuser'");
-        //		options.addOption(OPTION_PACKAGE, OPTION_PACKAGE, true, "fully qualified package name, for example: com.mycompany");
         return options;
     }
 
@@ -143,9 +114,7 @@ public class CommandlineParser {
 
     private EdoInput processCommandline(CommandLine cl, String[] args) {
         EdoInput edoInput = processFile(cl);
-
         Set<ConstraintViolation<EdoInput>> violations = validator.validate(edoInput);
-
         if (violations.size() > 0) {
             for (ConstraintViolation<EdoInput> v : violations) {
                 _logger.error(v.getMessage());
@@ -154,23 +123,6 @@ public class CommandlineParser {
         }
         return edoInput;
     }
-
-    //    /**
-    //     * Setta le opzioni e pulisce args!
-    //     * @param cl
-    //     * @param edoBean
-    //     * @param args
-    //     * @return
-    //     * @throws IllegalArgumentException
-    //     */
-    //    private String[] processCommandline(CommandLine cl,  String[] args) {
-    //        processFile(cl);
-    //        //		processBaseDir(cl, edoBuilder);
-    //        //		processPermission(cl, edoBuilder);
-    //        //		processPackage(cl, edoBuilder);
-    //        args = Arrays.copyOfRange(args, cl.getOptions().length, args.length);
-    //        return args;
-    //    }
 
     protected EdoInput processFile(CommandLine cl) {
         try {
@@ -188,66 +140,12 @@ public class CommandlineParser {
             } else {
                 _logger.error("no input file specified");
                 throw new EdoInputException("no input file specified");
-
             }
-
         } catch (IOException e) {
             _logger.error("error parsing input file", e);
             throw new EdoInputException("error parsing input file", e);
         }
     }
-
-
-    //    protected void processPackage(CommandLine cl, EdoBuilder edoBuilder) {
-    //        String packageName = null;
-    //        if (cl.hasOption(OPTION_PACKAGE)) {
-    //            String packageNameParam = cl.getOptionValue(OPTION_PACKAGE);
-    //            if (StringUtils.isNotBlank(packageNameParam)) {
-    //                if (PackageValidator.isValidPackageName(packageNameParam)) {
-    //                    packageName = packageNameParam;
-    //                } else {
-    //                    _logger.error("invalid package name specified: {}", packageName);
-    //                    throw new IllegalArgumentException("invalid package name specified: " + packageName);
-    //                }
-    //            }
-    //        } else {
-    //            _logger.trace("auto generate packagename");
-    //            if (!cl.getArgList().isEmpty()) {
-    //                packageName = "org.entando.entando.plugins.jp" + cl.getArgs()[0].toLowerCase();
-    //            } else {
-    //                _logger.warn("Unable to generate the default package name. No enough args");
-    //            }
-    //        }
-    //
-    //        edoBuilder.setPackageName(packageName);
-    //        _logger.debug("packagename: is '{}'", edoBuilder.getPackageName());
-    //    }
-    //
-    //    protected void processPermission(CommandLine cl, EdoBuilder edoBuilder) {
-    //        if (cl.hasOption(OPTION_PERMISSION)) {
-    //            String perm = cl.getOptionValue(OPTION_PERMISSION);
-    //            if (StringUtils.isNotBlank(perm)) {
-    //                edoBuilder.setPermission(perm);
-    //            }
-    //        }
-    //        _logger.debug("permission is: '{}'", edoBuilder.getPermission());
-    //    }
-    //
-    //
-    //
-    //    protected void processBaseDir(CommandLine cl, EdoBuilder edoBuilder) {
-    //        if (cl.hasOption(OPTION_BASE_DIR)) {
-    //            String baseDir = cl.getOptionValue(OPTION_BASE_DIR);
-    //            if (StringUtils.isNotBlank(baseDir)) {
-    //                if (baseDir.endsWith(File.separator)) {
-    //                    baseDir = StringUtils.removeEnd(baseDir, File.separator);
-    //                }
-    //                edoBuilder.setBaseDir(baseDir);
-    //            }
-    //        }
-    //        _logger.debug("baseDir is: '{}'", edoBuilder.getBaseDir());
-    //    }
-
 
     protected void setCheckForPom(boolean checkForPom) {
         this.checkForPom = checkForPom;
@@ -257,7 +155,4 @@ public class CommandlineParser {
 
     public static final String OPTION_EDO_FILE_SHORT = "f";
     public static final String OPTION_EDO_FILE = "file";
-    //    public static final String OPTION_BASE_DIR = "baseDir";
-    //    public static final String OPTION_PERMISSION = "permission";
-    //    public static final String OPTION_PACKAGE = "package";
 }

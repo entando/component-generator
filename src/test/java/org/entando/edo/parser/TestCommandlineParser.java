@@ -34,7 +34,9 @@ public class TestCommandlineParser  {
 		commandline.setBaseDir(System.getProperty("user.dir") + File.separator + "target" + File.separator + "sandbox");
 		commandline.setBeanExpression("Person id:primary_key name:string surname:string-r20");
 		commandline.setPackageName("com.entando.plugins.jpacme");
+
 		EdoBuilder edoBuilder = commandline.generate();
+
 		EdoBean bean = edoBuilder.getBean();
 		
 		Assert.assertNotNull(bean);
