@@ -86,7 +86,7 @@ $ edo -f edoDescriptor.json
 ### Options (must be set BEFORE any argument):
 
 * **--file**  
-  The path of the edo _file descriptor_ file.
+  The path of the edo _file descriptor_.
 
 ### File Descriptor:
 This file contains the parameters used to build your assets.
@@ -126,7 +126,7 @@ This file contains the parameters used to build your assets.
 
 * `baseDir`: The path of the main directory, the root folder of your project. A `pom.xml` file must exist in the same directory.
 * `permission`: The `code` of an existing Entando permission. If not specified, default value is *superuser*
-* `packageName`: The package that will be used. If not specified, Edo will create a package following the *Entando Plugin Pattern*`
+* `packageName`: The package that will be used. If not specified, Edo will create a package following the *Entando Plugin Pattern*. See *Plugin mode* for more details
 * `model/name`: The name of the bean
 
 * `model/fields`: The bean fields 
@@ -155,11 +155,18 @@ This file contains the parameters used to build your assets.
 * **primary_key**
 
 
-#### Primary Keyy
+#### Primary Key
 
 If no primary key is specified, by default Edo creates a `id:int` field and uses it as the primary key. 
 
 If you want to specify a different name for the primary key, declare it as first field with the property `primaryKey: true`.
+
+#### Plugin mode
+
+If the packageName is like `org.entando.entando.plugins.jp<name>` than Edo applies the *Entando Plugin Pattern*, otherwise it will act as you are building a custom feature.    
+In this case, if your assets contains `apache-tiles` definitions make sure to register them in your web.xml    
+Edo creates a file like this:   `/WEB-INF/<projectName>/apsadmin/**tiles.xml`   
+that must be registered in your `web.xml`.
 
 ### Warning
 

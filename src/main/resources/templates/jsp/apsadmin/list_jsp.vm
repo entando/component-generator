@@ -58,7 +58,7 @@
 	  <div class="input-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
 			<div id="search-advanced" class="collapse well collapse-input-group">
 #end
-#if(!$foreach.first)
+#if(!$f.primaryKey)
 #parse("templates/jsp/apsadmin/inc/search_form_input_field.vm")
 #end
 #if($bean.searchFields.size() > 1 && $foreach.last)
