@@ -1,9 +1,9 @@
 #set( $builder = $bean.edoBuilder)
 #set( $beanVar = $constants.getUnCapitalize($bean.name))
 #set( $beanClass = $bean.name)
-#set( $pk_type = $bean.fields[0].type.javaType)
-#set( $pk_type_gen = $bean.fields[0].type.javaTypeGeneric)
-#set( $pk_var = $bean.fields[0].name)
+#set( $pk_type = $bean.primaryKeyField.type.javaType)
+#set( $pk_type_gen = $bean.primaryKeyField.type.javaTypeGeneric)
+#set( $pk_var = $bean.primaryKeyField.name)
 #set( $queryName = $constants.toUpperCase($beanClass))
 #set( $tableName = $bean.tableName)
 #parse("templates/common/license/java_license.vm")
@@ -160,7 +160,7 @@ public class ${beanClass}DAO extends#if($bean.entandoSearcherAvailable) Abstract
 #parse("templates/java/aps/managers/inc/dao_stat_by_object.vm")
 #end##if ! 1st
 #end## foreach
-#set ($f = $bean.fields[0])
+#set ($f = $bean.primaryKeyField)
 #parse("templates/java/aps/managers/inc/dao_stat_by_object.vm")
 			stat.executeUpdate();
 		} catch (Throwable t) {

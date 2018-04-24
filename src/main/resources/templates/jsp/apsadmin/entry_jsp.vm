@@ -1,7 +1,7 @@
 #set( $builder = $bean.edoBuilder)
 #set( $beanVar = $constants.getUnCapitalize($bean.name))
 #set( $beanClass = $bean.name)
-#set( $pk_field = $bean.fields[0])
+#set( $pk_field = $bean.primaryKeyField)
 #if($builder.plugin)
 #set($label_prep="${builder.pluginName}.")
 #else
@@ -49,7 +49,7 @@
 	</p>
 
 #foreach($f in $bean.fields)
-#if($foreach.first)
+#if($f.primaryKey)
 #else
 #parse("templates/jsp/apsadmin/inc/input_field_witherrors.vm")
 #end

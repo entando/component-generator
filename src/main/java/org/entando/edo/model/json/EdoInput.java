@@ -102,7 +102,7 @@ public class EdoInput {
             pk.setRequired(true);
             pk.setPrimaryKey(true);
         } else {
-            edoBean.addField(EdoField.getDefaultPrimaryKey());
+            edoBean.addField(EdoField.getDefaultPrimaryKey(), true);
         }
     }
 

@@ -7,7 +7,7 @@
 #set( $i18keyPrep = ${builder.pluginName}+"_")
 #end
 #set( $i18keyBean = $constants.toUpperCase($bean.name))
-#set( $pk_field = $bean.fields[0])
+#set( $pk_field = $bean.primaryKeyField)
 #set ( $d = "$")
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
