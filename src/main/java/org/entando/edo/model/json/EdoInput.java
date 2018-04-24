@@ -1,8 +1,5 @@
 package org.entando.edo.model.json;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
@@ -80,9 +77,9 @@ public class EdoInput {
         EdoBean edoBean = new EdoBean();
         edoBean.setEdoBuilder(builder);
         edoBean.setName(this.getModel().getName());
-        List<EdoField> fields = new ArrayList<>();
+        //List<EdoField> fields = new ArrayList<>();
         this.getModel().getFields().forEach((v) -> edoBean.addField(new EdoField(v)));
-        edoBean.setFields(fields);
+        //edoBean.setFields(fields);
 
         this.addDefaultPk(edoBean);
         this.addDefaultPackage(builder);

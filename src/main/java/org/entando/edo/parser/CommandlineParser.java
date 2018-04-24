@@ -19,6 +19,12 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.cli.CommandLine;
@@ -38,7 +44,12 @@ public class CommandlineParser {
 
     private static Logger _logger = LogManager.getLogger(CommandlineParser.class);
 
+    private static Validator validator;
+
     public EdoBuilder generate(String[] args) throws Throwable {
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        validator = factory.getValidator();
+
         EdoBuilder edoBuilder = null;
         try {
             if (null != args) {
@@ -63,6 +74,7 @@ public class CommandlineParser {
             }
 
             EdoInput edoInput = this.processCommandline(cl, args);
+
             edoBuilder = edoInput.buildEdoBuilder();
             edoBuilder.setOriginalArgs(originalArgs);
 
@@ -104,7 +116,7 @@ public class CommandlineParser {
         } catch (ParseException exp) {
             _logger.error("Error parsing command line", exp);
         } catch (Throwable t) {
-            _logger.error("Error parsing command line", t);
+            // _logger.error("Error parsing command line", t);
             throw t;
         }
         return edoBuilder;
@@ -131,6 +143,15 @@ public class CommandlineParser {
 
     private EdoInput processCommandline(CommandLine cl, String[] args) {
         EdoInput edoInput = processFile(cl);
+
+        Set<ConstraintViolation<EdoInput>> violations = validator.validate(edoInput);
+
+        if (violations.size() > 0) {
+            for (ConstraintViolation<EdoInput> v : violations) {
+                _logger.error(v.getMessage());
+            }
+            throw new EdoInputException("validation errors");
+        }
         return edoInput;
     }
 
