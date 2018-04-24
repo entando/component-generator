@@ -35,7 +35,7 @@ public class ${beanClass} {
 #elseif($f.type.javaType == 'BigDecimal')
 			dataType = DataType.BIG_DECIMAL_NUMERIC,
 #end
-		#if($f.length)width=$f.length, #end canBeNull=#if ($f.required)false#else true#end#if($foreach.first), id = true#end)
+		#if($f.length)width=$f.length, #end canBeNull=#if ($f.required)false#else true#end#if($f.primaryKey), id = true#end)
 	private $f.type.javaType _${f.name};
 	
 #end
