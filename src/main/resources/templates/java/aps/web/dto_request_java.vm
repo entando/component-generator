@@ -12,7 +12,9 @@ public class ${bean.name}Request {
 #foreach ($f in $bean.fields)
 #if ($f.required)
 #if($f.type.javaType == 'String')
+#if($f.length)
 	@Size(max = ${f.length}, message = "string.size.invalid")
+#end
 	@NotBlank(message = "$beanVar.${f.name}.notBlank")
 #elseif($f.type.javaType == 'int')
     @NotNull(message = "$beanVar.${f.name}.notBlank")	
