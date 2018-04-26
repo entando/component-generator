@@ -17,9 +17,10 @@ public class BeanModel {
 
     public static final String ERR_BEANMODEL_FIELD_NAME_EMPTY = "Field name is required";
     public static final String ERR_BEANMODEL_FIELD_TYPE_EMPTY = "Field type is required";
-    public static final String ERR_BEANMODEL_FIELD_TYPE_INVALID = "Field type is not valid. Use one of: int, date, string, bigdecimal, primary_key";
-    public static final String ERR_BEANMODEL_PACKAGE = "Invalid package definition";
-    public static final String ERR_BEANMODEL_NAME = "Invalid class name";
+    public static final String ERR_BEANMODEL_FIELD_TYPE_INVALID = "Field type '${validatedValue}' is not valid. Use one of: int, date, string, bigdecimal, primary_key";
+    public static final String ERR_BEANMODEL_PACKAGE = "Invalid package definition '${validatedValue}'";
+    public static final String ERR_BEANMODEL_NAME = "Invalid class name '${validatedValue}'";
+    public static final String ERR_BEANMODEL_BASEDIR = "Invalid baseDir '${validatedValue.baseDir}' specified. This value is required when -z option is not speficied";
 
     @ValidEdoClassName(message = ERR_BEANMODEL_NAME)
     private String name;
@@ -28,8 +29,6 @@ public class BeanModel {
     @NotNull(message = ERR_BEANMODEL_FIELD_LIST_NULL)
     @Size(min = 1, message = ERR_BEANMODEL_FIELD_LIST_EMPTY)
 
-    //    @JsonProperty("fields")
-    //    private Map<String, Field> fields = new LinkedHashMap<>();
     @JsonProperty("fields")
     private List<Field> fields = new ArrayList<>();
 

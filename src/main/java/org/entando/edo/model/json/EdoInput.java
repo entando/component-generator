@@ -4,17 +4,23 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang.StringUtils;
+import org.entando.edo.builder.out.ZipWriter;
 import org.entando.edo.datatype.PrimaryKeyDataType;
 import org.entando.edo.model.EdoBean;
 import org.entando.edo.model.EdoBuilder;
 import org.entando.edo.model.EdoConstants;
 import org.entando.edo.model.EdoField;
+import org.entando.edo.model.validation.constraints.ValidBaseDir;
 import org.entando.edo.model.validation.constraints.ValidEdoPackage;
 
+@Valid
+@ValidBaseDir(message = BeanModel.ERR_BEANMODEL_BASEDIR)
 public class EdoInput {
 
     @NotNull
     private String baseDir = EdoConstants.BASE_DIR_DEFAULT;
+
+    private String zipDir;
 
     @NotNull
     private String permission = EdoConstants.PERMISSION_DEFAULT;
@@ -85,6 +91,11 @@ public class EdoInput {
         this.addDefaultPackage(builder);
 
         builder.getBeans().add(edoBean);
+
+
+        if (StringUtils.isNotBlank(this.getZipDir())) {
+            builder.setEdoWriter(new ZipWriter(builder, this.getZipDir()));
+        }
         return builder;
     }
 
@@ -104,6 +115,14 @@ public class EdoInput {
         } else {
             edoBean.addField(EdoField.getDefaultPrimaryKey(), true);
         }
+    }
+
+    public String getZipDir() {
+        return zipDir;
+    }
+
+    public void setZipDir(String zipDir) {
+        this.zipDir = zipDir;
     }
 
 }

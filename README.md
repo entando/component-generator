@@ -85,8 +85,8 @@ $ edo -f edoDescriptor.json
 
 ### Options (must be set BEFORE any argument):
 
-* **--file**  
-  The path of the edo _file descriptor_.
+* **--file**    (Required) The path of the edo _file descriptor_.
+* **--zip**     (Optional) Path of a directory where Edo will save the assets as zip file
 
 ### File Descriptor:
 This file contains the parameters used to build your assets.
@@ -124,7 +124,7 @@ This file contains the parameters used to build your assets.
 
 ```
 
-* `baseDir`: The path of the main directory, the root folder of your project. A `pom.xml` file must exist in the same directory.
+* `baseDir`: The path of the main directory, the root folder of your project. A `pom.xml` file must exist in the same directory.   If the output is a zip file, eg: `java -jar edo-<version>.jar -f /tmp/edo/foo.json  -z /tmp/projects/sandbox` the `pom.xml` is non necessary anymore and `baseDir` can be null.
 * `permission`: The `code` of an existing Entando permission. If not specified, default value is *superuser*
 * `packageName`: The package that will be used. If not specified, Edo will create a package following the *Entando Plugin Pattern*. See *Plugin mode* for more details
 * `model/name`: The name of the bean

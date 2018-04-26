@@ -33,6 +33,7 @@ import org.apache.commons.cli.GnuParser;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -102,6 +103,7 @@ public class CommandlineParser {
     private static Options createCommandLineOptions() {
         final Options options = new Options();
         options.addOption(OPTION_EDO_FILE_SHORT, OPTION_EDO_FILE, true, "the edo model descriptor");
+        options.addOption(OPTION_EDO_FILE_OUTPUT_ZIP_SHORT, OPTION_EDO_FILE_OUTPUT_ZIP, true, "path to the directory where to save the assets");
         return options;
     }
 
@@ -114,6 +116,8 @@ public class CommandlineParser {
 
     private EdoInput processCommandline(CommandLine cl, String[] args) {
         EdoInput edoInput = processFile(cl);
+        this.processZipOut(edoInput, cl);
+
         Set<ConstraintViolation<EdoInput>> violations = validator.validate(edoInput);
         if (violations.size() > 0) {
             for (ConstraintViolation<EdoInput> v : violations) {
@@ -147,6 +151,41 @@ public class CommandlineParser {
         }
     }
 
+    protected void processZipOut(EdoInput edoInput, CommandLine cl) {
+        try {
+            if (cl.hasOption(OPTION_EDO_FILE_OUTPUT_ZIP)) {
+                String filePath = cl.getOptionValue(OPTION_EDO_FILE_OUTPUT_ZIP);
+                if (StringUtils.isBlank(filePath)) {
+                    _logger.error("invalid path specifed");
+                    throw new IllegalArgumentException("invalid path specifed");
+                }
+
+                File x = new File(filePath);
+
+                if (!x.exists()) {
+                    FileUtils.forceMkdir(x);
+                }
+
+                if (x.isDirectory()) {
+                    if (!x.canWrite()) {
+                        throw new EdoInputException("the folder cannot be written");
+                    }
+                } else {
+                    if (!x.getParentFile().canWrite()) {
+                        throw new EdoInputException("the folder cannot be written");
+                    }
+                }
+
+                edoInput.setZipDir(filePath);
+                this.checkForPom = false;
+            }
+
+        } catch (IOException e) {
+            _logger.error("error parsing out file", e);
+            throw new EdoInputException("error parsing out file", e);
+        }
+    }
+
     protected void setCheckForPom(boolean checkForPom) {
         this.checkForPom = checkForPom;
     }
@@ -155,4 +194,7 @@ public class CommandlineParser {
 
     public static final String OPTION_EDO_FILE_SHORT = "f";
     public static final String OPTION_EDO_FILE = "file";
+
+    public static final String OPTION_EDO_FILE_OUTPUT_ZIP_SHORT = "z";
+    public static final String OPTION_EDO_FILE_OUTPUT_ZIP = "zip";
 }

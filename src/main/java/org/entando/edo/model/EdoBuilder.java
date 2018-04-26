@@ -20,11 +20,21 @@ import java.util.regex.Matcher;
 
 import org.apache.commons.lang.StringUtils;
 import org.entando.edo.builder.FolderConstants;
+import org.entando.edo.builder.out.EdoWriter;
+import org.entando.edo.builder.out.FileSystemWriter;
 import org.entando.edo.model.json.EdoAssetsConf;
 
 public class EdoBuilder {
 
-	public void addBean (EdoBean edoBean) {
+    public EdoBuilder() {
+        this.setEdoWriter(new FileSystemWriter(this));
+    }
+
+    public EdoBuilder(EdoWriter edoWriter) {
+        this.setEdoWriter(edoWriter);
+    }
+
+    public void addBean(EdoBean edoBean) {
 		edoBean.setEdoBuilder(this);
 		this.getBeans().add(edoBean);
 	}
@@ -276,10 +286,21 @@ public class EdoBuilder {
         this.assetsConf = assetsConf;
     }
 
+    public EdoWriter getEdoWriter() {
+        return edoWriter;
+    }
+
+    public void setEdoWriter(EdoWriter edoWriter) {
+        this.edoWriter = edoWriter;
+    }
+
     private String _packageName;
     private String _baseDir = EdoConstants.BASE_DIR_DEFAULT;
     private String _permission = EdoConstants.PERMISSION_DEFAULT;
 	private String _originalArgs = null;
     private EdoAssetsConf assetsConf = new EdoAssetsConf();
 	private List<EdoBean> _beans = new ArrayList<EdoBean>();
+
+    private EdoWriter edoWriter;
+
 }
