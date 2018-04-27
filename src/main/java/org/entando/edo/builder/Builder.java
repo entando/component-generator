@@ -71,15 +71,15 @@ public class Builder {
         }
 
         if (builder.getAssetsConf().isAdminConsole() || builder.getAssetsConf().isInternalServlet()) {
-            this.writeAction(render, contextElements, bean);
+            this.writeStruts2Action(render, contextElements, bean);
 
         }
 
         if (builder.getAssetsConf().isAdminConsole()) {
-            this.writeJspAction(render, contextElements, bean);
+            this.writeStruts2Jsp(render, contextElements, bean);
         }
 
-        if (builder.getAssetsConf().isSpecialWidget() || builder.getAssetsConf().isAdminConsole()) {
+        if (builder.getAssetsConf().isSpecialWidget() || builder.getAssetsConf().isAdminConsole() || builder.getAssetsConf().isInternalServlet()) {
             //STRUTS_PLUGIN
             String strutsPluginFilePath = ControllerFileBuilder.getActionStrutsPluginFilePath(bean);
             String actionStrutsPluginContent = render.render(Templates.ACTION_STRUTS_PLUGIN, contextElements);
@@ -106,7 +106,6 @@ public class Builder {
      * @param bean
      */
     private void saveReport(Render render, Map<String, Object> contextElements, EdoBean bean) {
-        File file = null;
         try {
             Calendar cal = Calendar.getInstance();
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
@@ -115,15 +114,10 @@ public class Builder {
             contextElements.put("report", Report.getInstance());
             String text = render.render(Templates.EDO_REPORT, contextElements);
             String filename = "edo_" + nowString + "_" + bean.getName() + "-report.txt";
-            //            file = new File(bean.getEdoBuilder().getBaseDir() + File.separator + filename);
-            //
-            //            
-            //            FileUtils.writeStringToFile(file, text, "UTF-8");
             bean.getEdoBuilder().getEdoWriter().write(filename, text);
         } catch (Throwable t) {
             logger.error("error!", t);
         }
-
     }
 
     private void writeJavaModel(Render render, Map<String, Object> contextElements, EdoBean bean) {
@@ -294,7 +288,7 @@ public class Builder {
     }
 
 
-    private void writeAction(Render render, Map<String, Object> contextElements, EdoBean bean) {
+    private void writeStruts2Action(Render render, Map<String, Object> contextElements, EdoBean bean) {
         try {
 
             //ACTION
@@ -458,7 +452,7 @@ public class Builder {
     }
 
 
-    private void writeJspAction(Render render, Map<String, Object> contextElements, EdoBean bean) {
+    private void writeStruts2Jsp(Render render, Map<String, Object> contextElements, EdoBean bean) {
         try {
             //ENTRY
             String entryFilePath = ControllerFileBuilder.getJspEntryFilePath(bean);
