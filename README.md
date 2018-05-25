@@ -9,7 +9,7 @@ Use it to generate the following parts of Entando Components with a single comma
 * Pojo
 * DAO, Manager, events
 * Entando component descriptor and related files
-* REST API
+* REST API, CXF and SpringMVC
 * Backoffice actions, validations, tiles and JSPs
 * A basic set of utility classes for JUnit tests
 * Widgets, custom tags
@@ -18,7 +18,10 @@ Use it to generate the following parts of Entando Components with a single comma
 
 ## Tentative Roadmap
 
-* Permit to pick what's to be generated
+* More than one bean at the same time
+* admin console UI producers
+* Change the template engine
+
 
 ## Installation from binary package
 
@@ -59,53 +62,89 @@ $ ant build
 ### Windows and OS X / Unix without the `edo` alias
 
 ```
-$ java -jar <PATH_TO_YOUR_JAR>/edo-x.y.z.jar [options] beanName field#1 field#2 ... field#n
+$ java -jar <PATH_TO_YOUR_JAR>/edo-x.y.z.jar [options]
 ```
 
 **Example:**  
+
 ```
-$ java -jar <PATH_TO_YOUR_JAR>/edo-x.y.z.jar [options] Zombie name:string-r deathDate:date
+$ java -jar <PATH_TO_YOUR_JAR>/edo-x.y.z.jar -f edoDescriptor.json
 ```
 
 ### OS X / Unix with the `edo` alias
 
 ```
-$ edo [options] beanName field#1 field#2 ... field#n
+$ edo [options] 
 ```
 
 **Example:**  
+
 ```
-$ edo [options] Zombie name:string-r deathDate:date
+$ edo -f edoDescriptor.json
 ```
 
 ### Options (must be set BEFORE any argument):
 
-* **--baseDir**  
-  The path of the main directory, the root folder of your project. If not specified, will be used the current directory.  
-  A `pom.xml` file must exist in the same directory.
-* **--permission**  
-  The `code` of an existing Entando permission.  
-  If not specified, default value is *superuser*
-* **--package**  
-  The package that will be used.  
-  If not specified, Edo will create a package following the *Entando Plugin Pattern*
+* **--file**    (Required) The path of the edo _file descriptor_.
+* **--zip**     (Optional) Path of a directory where Edo will save the assets as zip file
 
-#### Option Examples
+### File Descriptor:
+This file contains the parameters used to build your assets.
 
 ```
-$ edo --baseDir=/tmp Foo name:string
+{
+  "baseDir" : "/path/to/my/project/projectName",
+  "permission" : "superuser",
+  "packageName" : "org.entando.entando.plugins.jpzoo",
+  "model" : {
+    "name" : "Animal",
+    "fields" : [ {
+      "name" : "name",
+      "type" : "string",
+      "required" : true,
+      "length" : null,
+      "primaryKey" : false
+    }, {
+      "name" : "weight",
+      "type" : "int",
+      "required" : false,
+      "length" : null,
+      "primaryKey" : false
+    } ]
+  },
+  "assets" : {
+    "rest" : true,
+    "cxf" : true,
+    "specialWidget" : true,
+    "internalServlet" : true,
+    "adminConsole" : true,
+    "adminConsoleProducer" : null
+  }
+}
 
-$ edo --baseDir=/tmp --package=org.entando.entando.plugins.jppet Cat name:string
-
-$ edo --baseDir=/tmp --package=com.mycompany -permission=manage_pet Dog name:string
 ```
 
-### Arguments
+* `baseDir`: The path of the main directory, the root folder of your project. A `pom.xml` file must exist in the same directory.   If the output is a zip file, eg: `java -jar edo-<version>.jar -f /tmp/edo/foo.json  -z /tmp/projects/sandbox` the `pom.xml` is non necessary anymore and `baseDir` can be null.
+* `permission`: The `code` of an existing Entando permission. If not specified, default value is *superuser*
+* `packageName`: The package that will be used. If not specified, Edo will create a package following the *Entando Plugin Pattern*. See *Plugin mode* for more details
+* `model/name`: The name of the bean
 
-* **bean name**:  
-  The name of the bean
-* **field definition**:  
-  The field name, followed by the field data type and field options
+* `model/fields`: The bean fields 
+* `model/fields/name`: the field name
+* `model/fields/type`: the filed type, one of _Field Data Types_
+* `model/fields/required`: whether the field is required (optional)
+* `model/fields/length`: the field length (optional)
+* `model/fields/primaryKey`: whether the field is the primary key (optional)
+
+* `assets/rest`: whether to produce _SpringMVC_ rest endpoints   
+* `assets/cxf`: whether to produce _CXF_ rest endpoints   
+* `assets/specialWidget`: whether to produce the assets needed for an entando _widget_   
+* `assets/internalServlet`: whether to produce the assets needed to expose CRUD operations through entando _internalServlet widget_     
+* `assets/adminConsole`: whether to produce the assets needed for _backoffice_ administration UI     
+* `assets/adminConsoleProducer`: [TODO] the adminConsole UI producer     
+
+
+
 
 #### Field Data Types
 
@@ -115,37 +154,19 @@ $ edo --baseDir=/tmp --package=com.mycompany -permission=manage_pet Dog name:str
 * **bigdecimal**
 * **primary_key**
 
-#### Field Options
-
-* **-**:  
-  The separator between field data type and field options
-* **r**:  
-  Flags a field as *required*
-* **{1...n}** (i.e. an integer)  
-  Available only for the `string` data type, forces the max lentgh up to this value
-
-**Examples:**
-
-```
-$ edo Foo name:string
-
-$ edo Foo name:string-8
-
-$ edo Foo name:string-8r
-
-$ edo Foo name:string-r8
-```
 
 #### Primary Key
 
-By default Edo creates a `id:int` field and uses it as the primary key. 
+If no primary key is specified, by default Edo creates a `id:int` field and uses it as the primary key. 
 
-If you want to specify a different name for the primary key, declare it as first field using the `primary_key` field data type.
+If you want to specify a different name for the primary key, declare it as first field with the property `primaryKey: true`.
 
-**Example:**
-```
-$ edo Foo fooid:primary_key name:string
-```
+#### Plugin mode
+
+If the packageName is like `org.entando.entando.plugins.jp<name>` than Edo applies the *Entando Plugin Pattern*, otherwise it will act as you are building a custom feature.    
+In this case, if your assets contains `apache-tiles` definitions make sure to register them in your web.xml    
+Edo creates a file like this:   `/WEB-INF/<projectName>/apsadmin/**tiles.xml`   
+that must be registered in your `web.xml`.
 
 ### Warning
 
@@ -169,143 +190,181 @@ Only the following files won't get overwritten, because these files are meant to
 
 ## A full example
 
-In a project named `myportal`, given the following command line
+Given this file `/tmp/edo/foo.json` 
 
 ```
-$ edo --package=org.mycompany Foo name:string-r10
+{
+  "packageName" : "org.mycompany",
+  "model" : {
+    "name" : "Foo",
+    "fields" : [ {
+      "name" : "name",
+      "type" : "string",
+      "required" : true,
+      "length" : 10,
+      "primaryKey" : false
+    } ]
+  },
+  "assets" : {
+    "rest" : true,
+    "cxf" : true,
+    "specialWidget" : true,
+    "internalServlet" : true,
+    "adminConsole" : true,
+    "adminConsoleProducer" : null
+  }
+}
+```
+
+```
+$ java -jar edo-<version>.jar -f /tmp/edo/foo.json 
 ```
 
 Edo will create these files:
 
 ```
-├── edo_YYYYMMdd_HHmmss_Foo-report.txt
+
+├── edo_20180424_135604_Foo-report.txt
 └── src
     ├── main
-    │   ├── java
-    │   │   └── org
-    │   │       └── mycompany
-    │   │           ├── aps
-    │   │           │   ├── internalservlet
-    │   │           │   │   └── foo
-    │   │           │   │       ├── FooFinderFrontEndAction.java
-    │   │           │   │       ├── FooFrontEndAction.java
-    │   │           │   │       └── fooFront.xml
-    │   │           │   ├── system
-    │   │           │   │   ├── init
-    │   │           │   │   │   └── servdb
-    │   │           │   │   │       └── Foo.java
-    │   │           │   │   └── services
-    │   │           │   │       └── foo
-    │   │           │   │           ├── api
-    │   │           │   │           │   ├── FooListResponse.java
-    │   │           │   │           │   ├── FooListResponseResult.java
-    │   │           │   │           │   ├── FooResponse.java
-    │   │           │   │           │   ├── FooResponseResult.java
-    │   │           │   │           │   └── JAXBFoo.java
-    │   │           │   │           ├── event
-    │   │           │   │           │   ├── FooChangedEvent.java
-    │   │           │   │           │   └── FooChangedObserver.java
-    │   │           │   │           ├── FooDAO.java
-    │   │           │   │           ├── Foo.java
-    │   │           │   │           ├── FooManager.java
-    │   │           │   │           ├── IFooDAO.java
-    │   │           │   │           └── IFooManager.java
-    │   │           │   └── tags
-    │   │           │       ├── FooListTag.java
-    │   │           │       └── FooTag.java
-    │   │           └── apsadmin
-    │   │               ├── foo
-    │   │               │   ├── FooAction.java
-    │   │               │   ├── FooAction-validation.xml
-    │   │               │   ├── FooFinderAction.java
-    │   │               │   ├── foo.xml
-    │   │               │   ├── package_en.properties
-    │   │               │   └── package_it.properties
-    │   │               └── portal
-    │   │                   └── specialwidget
-    │   │                       └── foo
-    │   │                           ├── FooConfigAction.java
-    │   │                           ├── fooSpecialWidget.xml
-    │   │                           ├── package_en.properties
-    │   │                           └── package_it.properties
-    │   ├── resources
-    │   │   ├── api
-    │   │   │   └── myportal
-    │   │   │       └── aps
-    │   │   │           └── apiMethods.xml
-    │   │   ├── component
-    │   │   │   └── myportal
-    │   │   │       └── component.xml
-    │   │   ├── entando-struts-plugin.xml
-    │   │   ├── shortcuts
-    │   │   │   └── apsadmin
-    │   │   │       └── shortcuts.xml
-    │   │   ├── spring
-    │   │   │   └── myportal
-    │   │   │       ├── aps
-    │   │   │       │   └── managers
-    │   │   │       │       └── myportalFooManagersConfig.xml
-    │   │   │       └── apsadmin
-    │   │   │           └── myportalFooActionsConfig.xml
-    │   │   └── sql
-    │   │       └── misc
-    │   │           └── myportal_foo
-    │   │               ├── port_data_production.sql
-    │   │               └── serv_data_production.sql
-    │   ├── tld
-    │   │   └── myportal
-    │   │       └── myportal-core.tld
-    │   └── webapp
-    │       └── WEB-INF
-    │           ├── aps
-    │           │   └── jsp
-    │           │       ├── internalservlet
-    │           │       │   └── foo
-    │           │       │       ├── frontend-foo-entry.jsp
-    │           │       │       ├── frontend-foo-error.jsp
-    │           │       │       ├── frontend-foo-list.jsp
-    │           │       │       └── frontend-foo-trash.jsp
-    │           │       └── widgets
-    │           │           └── Foo.jsp
-    │           └── myportal
-    │               └── apsadmin
-    │                   ├── jsp
-    │                   │   ├── common
-    │                   │   │   └── layouts
-    │                   │   │       └── assets-more
-    │                   │   │           ├── foo-entry-extras.jsp
-    │                   │   │           ├── foo-list-extras.jsp
-    │                   │   │           └── foo-trash-extras.jsp
-    │                   │   ├── foo
-    │                   │   │   ├── foo-entry.jsp
-    │                   │   │   ├── foo-list.jsp
-    │                   │   │   └── foo-trash.jsp
-    │                   │   └── portal
-    │                   │       └── specialwidget
-    │                   │           └── foo
-    │                   │               └── foo-config.jsp
-    │                   └── myportal-tiles.xml
+    │   ├── java
+    │   │   └── org
+    │   │       └── mycompany
+    │   │           ├── aps
+    │   │           │   ├── internalservlet
+    │   │           │   │   └── foo
+    │   │           │   │       ├── FooFinderFrontEndAction.java
+    │   │           │   │       ├── FooFrontEndAction.java
+    │   │           │   │       └── fooFront.xml
+    │   │           │   ├── system
+    │   │           │   │   ├── init
+    │   │           │   │   │   └── servdb
+    │   │           │   │   │       └── Foo.java
+    │   │           │   │   └── services
+    │   │           │   │       └── foo
+    │   │           │   │           ├── api
+    │   │           │   │           │   ├── FooListResponse.java
+    │   │           │   │           │   ├── FooListResponseResult.java
+    │   │           │   │           │   ├── FooResponse.java
+    │   │           │   │           │   ├── FooResponseResult.java
+    │   │           │   │           │   └── JAXBFoo.java
+    │   │           │   │           ├── event
+    │   │           │   │           │   ├── FooChangedEvent.java
+    │   │           │   │           │   └── FooChangedObserver.java
+    │   │           │   │           ├── FooDAO.java
+    │   │           │   │           ├── Foo.java
+    │   │           │   │           ├── FooManager.java
+    │   │           │   │           ├── FooService.java
+    │   │           │   │           ├── IFooDAO.java
+    │   │           │   │           ├── IFooManager.java
+    │   │           │   │           ├── IFooService.java
+    │   │           │   │           └── model
+    │   │           │   │               └── FooDto.java
+    │   │           │   └── tags
+    │   │           │       ├── FooListTag.java
+    │   │           │       └── FooTag.java
+    │   │           ├── apsadmin
+    │   │           │   ├── foo
+    │   │           │   │   ├── FooAction.java
+    │   │           │   │   ├── FooAction-validation.xml
+    │   │           │   │   ├── FooFinderAction.java
+    │   │           │   │   ├── foo.xml
+    │   │           │   │   ├── package_en.properties
+    │   │           │   │   └── package_it.properties
+    │   │           │   └── portal
+    │   │           │       └── specialwidget
+    │   │           │           └── foo
+    │   │           │               ├── FooConfigAction.java
+    │   │           │               ├── fooSpecialWidget.xml
+    │   │           │               ├── package_en.properties
+    │   │           │               └── package_it.properties
+    │   │           └── web
+    │   │               └── foo
+    │   │                   ├── FooController.java
+    │   │                   ├── model
+    │   │                   │   └── FooRequest.java
+    │   │                   └── validator
+    │   │                       └── FooValidator.java
+    │   ├── resources
+    │   │   ├── api
+    │   │   │   └── 1
+    │   │   │       └── aps
+    │   │   │           └── apiMethods.xml
+    │   │   ├── component
+    │   │   │   └── 1
+    │   │   │       └── component.xml
+    │   │   ├── entando-struts-plugin.xml
+    │   │   ├── shortcuts
+    │   │   │   └── 1
+    │   │   │       └── apsadmin
+    │   │   │           └── shortcuts.xml
+    │   │   ├── spring
+    │   │   │   ├── aps
+    │   │   │   │   └── managers
+    │   │   │   │       └── 1FooManagersConfig.xml
+    │   │   │   └── apsadmin
+    │   │   │       └── 1FooActionsConfig.xml
+    │   │   └── sql
+    │   │       └── misc
+    │   │           └── 1
+    │   │               ├── port_data_production.sql
+    │   │               └── serv_data_production.sql
+    │   ├── tld
+    │   │   └── 1
+    │   │       └── 1-core.tld
+    │   └── webapp
+    │       └── WEB-INF
+    │           ├── 1
+    │           │   └── apsadmin
+    │           │       ├── 1-tiles.xml
+    │           │       └── jsp
+    │           │           ├── common
+    │           │           │   └── layouts
+    │           │           │       └── assets-more
+    │           │           │           ├── foo-entry-extras.jsp
+    │           │           │           ├── foo-list-extras.jsp
+    │           │           │           └── foo-trash-extras.jsp
+    │           │           ├── foo
+    │           │           │   ├── foo-entry.jsp
+    │           │           │   ├── foo-list.jsp
+    │           │           │   └── foo-trash.jsp
+    │           │           └── portal
+    │           │               └── specialwidget
+    │           │                   └── foo
+    │           │                       └── foo-config.jsp
+    │           └── aps
+    │               └── jsp
+    │                   ├── internalservlet
+    │                   │   └── foo
+    │                   │       ├── frontend-foo-entry.jsp
+    │                   │       ├── frontend-foo-error.jsp
+    │                   │       ├── frontend-foo-list.jsp
+    │                   │       └── frontend-foo-trash.jsp
+    │                   └── widgets
+    │                       └── Foo.jsp
     └── test
         ├── java
-        │   └── org
-        │       └── mycompany
-        │           ├── aps
-        │           │   ├── MyportalBaseTestCase.java
-        │           │   └── system
-        │           │       └── services
-        │           │           └── TestFooManager.java
-        │           ├── apsadmin
-        │           │   ├── foo
-        │           │   │   ├── TestFooAction.java
-        │           │   │   └── TestFooFinderAction.java
-        │           │   └── MyportalApsAdminBaseTestCase.java
-        │           └── MyportalConfigTestUtils.java
+        │   └── org
+        │       └── mycompany
+        │           ├── 1ConfigTestUtils.java
+        │           ├── aps
+        │           │   ├── 1BaseTestCase.java
+        │           │   └── system
+        │           │       └── services
+        │           │           └── TestFooManager.java
+        │           └── apsadmin
+        │               ├── 1ApsAdminBaseTestCase.java
+        │               └── foo
+        │                   ├── TestFooAction.java
+        │                   └── TestFooFinderAction.java
         └── resources
             └── sql
                 └── misc
-                    └── myportal_foo
+                    └── 1
                         ├── port_data_test.sql
                         └── serv_data_test.sql
+
+
 ```
 
 ## Issues

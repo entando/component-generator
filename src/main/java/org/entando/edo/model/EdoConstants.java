@@ -21,6 +21,9 @@ import org.apache.commons.lang.StringUtils;
  */
 public  class EdoConstants {
 
+    public static final String PERMISSION_DEFAULT = "superuser";
+    public static final String BASE_DIR_DEFAULT = System.getProperty("user.dir");
+
 	public static String getLowerCase(String s) {
 		return s.toLowerCase();
 	}
@@ -52,6 +55,10 @@ public  class EdoConstants {
 	public static String getServicesPackage() {
 		return "aps.system.services";
 	}
+
+    public static String getRestPackage() {
+        return "web";
+    }
 	
 	public static String getApsadminPackage() {
 		 return "apsadmin";

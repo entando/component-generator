@@ -2,9 +2,9 @@
 #set( $daovar = "${constants.getUnCapitalize($bean.name)}DAO")
 #set( $beanVar = $constants.getLowerCase($bean.name))
 #set( $beanClass = $bean.name)
-#set( $pk_type = $bean.fields[0].type.javaType)
-#set( $pk_type_gen = $bean.fields[0].type.javaTypeGeneric)
-#set( $pk_var = $bean.fields[0].name)
+#set( $pk_type = $bean.primaryKeyField.type.javaType)
+#set( $pk_type_gen = $bean.primaryKeyField.type.javaTypeGeneric)
+#set( $pk_var = $bean.primaryKeyField.name)
 #set( $tableName = $bean.tableName)
 #parse("templates/common/license/java_license.vm")
 package ${builder.packageName}.${constants.initPackage};
@@ -35,7 +35,7 @@ public class ${beanClass} {
 #elseif($f.type.javaType == 'BigDecimal')
 			dataType = DataType.BIG_DECIMAL_NUMERIC,
 #end
-		#if($f.length)width=$f.length, #end canBeNull=#if ($f.required)false#else true#end#if($foreach.first), id = true#end)
+		#if($f.length)width=$f.length, #end canBeNull=#if ($f.required)false#else true#end#if($f.primaryKey), id = true#end)
 	private $f.type.javaType _${f.name};
 	
 #end

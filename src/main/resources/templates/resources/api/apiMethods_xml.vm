@@ -1,7 +1,7 @@
 #set( $builder = $bean.edoBuilder)
 #set( $beanClass = $bean.name)
 #set( $beanVar = $constants.getUnCapitalize($bean.name))
-#set( $pk_var = $bean.fields[0].name)
+#set( $pk_var = $bean.primaryKeyField.name)
 #set( $springPrep = $constants.getLowerCase($builder.springBeanPreposition))
 <apiMethodDefinitions>
 

@@ -20,13 +20,14 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
+import org.entando.edo.datatype.PrimaryKeyDataType;
 
 
 public class EdoBean {
 	
-	public boolean buildWidgets() {
-		return true;
-	}
+    public EdoField getPrimaryKeyField() {
+        return _fields.stream().filter(i -> i.getType().getClass().equals(PrimaryKeyDataType.class)).findFirst().orElse(null);
+    }
 
 	public boolean buildApi() {
 		return true;
@@ -136,6 +137,14 @@ public class EdoBean {
 		return searchFields;
 	}
 	
+    public void addField(EdoField field) {
+        this.getFields().add(field);
+    }
+
+    public void addField(EdoField field, boolean top) {
+        this.getFields().add(0, field);
+    }
+
 	public String getName() {
 		return _name;
 	}

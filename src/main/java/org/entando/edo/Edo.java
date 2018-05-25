@@ -19,6 +19,7 @@ import org.entando.edo.builder.Builder;
 import org.entando.edo.model.EdoBean;
 import org.entando.edo.model.EdoBuilder;
 import org.entando.edo.parser.CommandlineParser;
+import org.entando.edo.parser.EdoInputException;
 
 public class Edo {
 
@@ -37,8 +38,10 @@ public class Edo {
 			b.build(edoBuilder);
 			logger.info("Done");
 
+        } catch (EdoInputException ex) {
+            logger.error(ex.getMessage());
 		} catch (Throwable t) {
-			logger.error("Error", t);
+            logger.error("Error", t);
 		}
 	}
 }

@@ -5,7 +5,7 @@
 #set ( $d = "$")
 #set ( $br_o = "{")
 #set ( $br_c = "}")
-#set( $pk = $bean.fields[0])
+#set( $pk = $bean.primaryKeyField)
 #set( $i18keyPrep = "")
 #if($builder.plugin)
 #set( $i18keyPrep = ${builder.pluginName}+"_")

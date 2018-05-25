@@ -1,0 +1,31 @@
+#set( $builder = $bean.edoBuilder)
+#set( $beanVar = $constants.getUnCapitalize($bean.name))
+#set( $beanClass = $bean.name)
+#set( $pk_type = $bean.primaryKeyField.type.javaType)
+#set( $pk_type_gen = $bean.primaryKeyField.type.javaTypeGeneric)
+#set( $pk_var = $bean.primaryKeyField.name)
+#set( $springPrep = $constants.getLowerCase($builder.springBeanPreposition))
+#parse("templates/common/license/java_license.vm")
+package ${builder.packageName}.${constants.servicesPackage}.$constants.getLowerCase($bean.name);
+
+import  ${builder.packageName}.${constants.servicesPackage}.${constants.getLowerCase($bean.name)}.model.${beanClass}Dto;
+import org.entando.entando.web.common.model.PagedMetadata;
+import org.entando.entando.web.common.model.RestListRequest;
+import ${builder.packageName}.${constants.restPackage}.${constants.getLowerCase($bean.name)}.model.${beanClass}Request;
+
+public interface I${beanClass}Service {
+
+    public String BEAN_NAME = "${springPrep}${beanClass}Service";
+
+    public PagedMetadata<${beanClass}Dto> get${beanClass}s(RestListRequest requestList);
+
+    public ${beanClass}Dto update${beanClass}(${beanClass}Request ${beanVar}Request);
+
+    public ${beanClass}Dto add${beanClass}(${beanClass}Request ${beanVar}Request);
+
+    public void remove${beanClass}($pk_type $pk_var);
+
+    public ${beanClass}Dto get${beanClass}($pk_type  $pk_var);
+
+}
+

@@ -1,9 +1,9 @@
 #set( $daovar = "${constants.getUnCapitalize($bean.name)}DAO")
 #set( $beanVar = $constants.getUnCapitalize($bean.name))
 #set( $beanClass = $bean.name)
-#set( $pk_type = $bean.fields[0].type.javaType)
-#set( $pk_type_gen = $bean.fields[0].type.javaTypeGeneric)
-#set( $pk_var = $bean.fields[0].name)
+#set( $pk_type = $bean.primaryKeyField.type.javaType)
+#set( $pk_type_gen = $bean.primaryKeyField.type.javaTypeGeneric)
+#set( $pk_var = $bean.primaryKeyField.name)
 
 	/**
 	 * GET http://localhost:8080/<portal>/api/rs/en/${beanVar}s?

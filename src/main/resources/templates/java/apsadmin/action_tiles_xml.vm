@@ -35,7 +35,7 @@
 		<put-attribute name="extraResources" value="/WEB-INF/${path}/apsadmin/jsp/common/layouts/assets-more/${beanVar}-trash-extras.jsp"/>
 	</definition>
 
-#if($bean.buildWidgets())
+#if($builder.assetsConf.specialWidget)
     <definition extends="layout.default" name="${springPrep}.admin.page.widget.${beanClass}.entry">
 		<put-attribute name="title" value="${label_prep}title.${beanVar}Management" />
 		<put-attribute name="body" value="/WEB-INF/${path}/apsadmin/jsp/portal/specialwidget/$constants.getLowerCase(${beanVar})/${beanVar}-config.jsp" />

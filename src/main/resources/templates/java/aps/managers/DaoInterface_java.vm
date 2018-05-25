@@ -1,9 +1,9 @@
 #set( $builder = $bean.edoBuilder)
 #set( $beanVar = $constants.getUnCapitalize($bean.name))
 #set( $beanClass = $bean.name)
-#set( $pk_type = $bean.fields[0].type.javaType)
-#set( $pk_type_gen = $bean.fields[0].type.javaTypeGeneric)
-#set( $pk_var = $bean.fields[0].name)
+#set( $pk_type = $bean.primaryKeyField.type.javaType)
+#set( $pk_type_gen = $bean.primaryKeyField.type.javaTypeGeneric)
+#set( $pk_var = $bean.primaryKeyField.name)
 #parse("templates/common/license/java_license.vm")
 package ${builder.packageName}.${constants.servicesPackage}.$constants.getLowerCase($bean.name);
 
@@ -28,6 +28,6 @@ public interface I${beanClass}DAO {
 	public void update${beanClass}(${beanClass} $beanVar);
 
 	public void insert${beanClass}(${beanClass} $beanVar);
-	
 
+    public int count${beanClass}s(FieldSearchFilter[] filters);
 }

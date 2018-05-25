@@ -1,9 +1,9 @@
 #set( $builder = $bean.edoBuilder)
 #set( $beanVar = $constants.getUnCapitalize($bean.name))
 #set( $beanClass = $bean.name)
-#set( $pk_type = $bean.fields[0].type.javaType)
-#set( $pk_type_gen = $bean.fields[0].type.javaTypeGeneric)
-#set( $pk_var = $bean.fields[0].name)
+#set( $pk_type = $bean.primaryKeyField.type.javaType)
+#set( $pk_type_gen = $bean.primaryKeyField.type.javaTypeGeneric)
+#set( $pk_var = $bean.primaryKeyField.name)
 #set( $queryName = $constants.toUpperCase($beanClass))
 #set( $tableName = $bean.tableName)
 #parse("templates/common/license/java_license.vm")
@@ -30,7 +30,19 @@ import org.slf4j.LoggerFactory;
 
 public class ${beanClass}DAO extends#if($bean.entandoSearcherAvailable) AbstractSearcherDAO#else AbstractDAO#end implements I${beanClass}DAO {
 
-	private static final Logger _logger =  LoggerFactory.getLogger(${beanClass}DAO.class);
+	private static final Logger logger =  LoggerFactory.getLogger(${beanClass}DAO.class);
+
+    @Override
+    public int count${beanClass}s(FieldSearchFilter[] filters) {
+        Integer ${beanVar}s = null;
+        try {
+            ${beanVar}s = super.countId(filters);
+        } catch (Throwable t) {
+            logger.error("error in count ${beanVar}s", t);
+            throw new RuntimeException("error in count ${beanVar}s", t);
+        }
+        return ${beanVar}s;
+    }
 
 #if($bean.entandoSearcherAvailable)
 	@Override
@@ -47,11 +59,6 @@ public class ${beanClass}DAO extends#if($bean.entandoSearcherAvailable) Abstract
 	protected String getMasterTableIdFieldName() {
 		return "$pk_var";
 	}
-	
-	@Override
-	protected boolean isForceCaseInsensitiveLikeSearch() {
-		return true;
-	}
 
 	@Override
 	public List<$pk_type_gen> search${beanClass}s(FieldSearchFilter[] filters) {
@@ -59,7 +66,7 @@ public class ${beanClass}DAO extends#if($bean.entandoSearcherAvailable) Abstract
 		try {
 			${beanVar}sId  = super.searchId(filters);
 		} catch (Throwable t) {
-			_logger.error("error in search${beanClass}s",  t);
+			logger.error("error in search${beanClass}s",  t);
 			throw new RuntimeException("error in search${beanClass}s", t);
 		}
 		return ${beanVar}sId;
@@ -81,7 +88,7 @@ public class ${beanClass}DAO extends#if($bean.entandoSearcherAvailable) Abstract
 				${beanVar}sId.add($pk_var);
 			}
 		} catch (Throwable t) {
-			_logger.error("Error loading ${beanClass} list",  t);
+			logger.error("Error loading ${beanClass} list",  t);
 			throw new RuntimeException("Error loading ${beanClass} list", t);
 		} finally {
 			closeDaoResources(res, stat, conn);
@@ -100,7 +107,7 @@ public class ${beanClass}DAO extends#if($bean.entandoSearcherAvailable) Abstract
  			conn.commit();
 		} catch (Throwable t) {
 			this.executeRollback(conn);
-			_logger.error("Error on insert ${beanVar}",  t);
+			logger.error("Error on insert ${beanVar}",  t);
 			throw new RuntimeException("Error on insert ${beanVar}", t);
 		} finally {
 			this.closeDaoResources(null, stat, conn);
@@ -117,7 +124,7 @@ public class ${beanClass}DAO extends#if($bean.entandoSearcherAvailable) Abstract
 #end
 			stat.executeUpdate();
 		} catch (Throwable t) {
-			_logger.error("Error on insert ${beanVar}",  t);
+			logger.error("Error on insert ${beanVar}",  t);
 			throw new RuntimeException("Error on insert ${beanVar}", t);
 		} finally {
 			this.closeDaoResources(null, stat, null);
@@ -135,7 +142,7 @@ public class ${beanClass}DAO extends#if($bean.entandoSearcherAvailable) Abstract
  			conn.commit();
 		} catch (Throwable t) {
 			this.executeRollback(conn);
-			_logger.error("Error updating ${beanVar} {}", ${beanVar}.get${constants.getCapitalize($pk_var)}(),  t);
+			logger.error("Error updating ${beanVar} {}", ${beanVar}.get${constants.getCapitalize($pk_var)}(),  t);
 			throw new RuntimeException("Error updating ${beanVar}", t);
 		} finally {
 			this.closeDaoResources(null, stat, conn);
@@ -153,11 +160,11 @@ public class ${beanClass}DAO extends#if($bean.entandoSearcherAvailable) Abstract
 #parse("templates/java/aps/managers/inc/dao_stat_by_object.vm")
 #end##if ! 1st
 #end## foreach
-#set ($f = $bean.fields[0])
+#set ($f = $bean.primaryKeyField)
 #parse("templates/java/aps/managers/inc/dao_stat_by_object.vm")
 			stat.executeUpdate();
 		} catch (Throwable t) {
-			_logger.error("Error updating ${beanVar} {}", ${beanVar}.get${constants.getCapitalize($pk_var)}(),  t);
+			logger.error("Error updating ${beanVar} {}", ${beanVar}.get${constants.getCapitalize($pk_var)}(),  t);
 			throw new RuntimeException("Error updating ${beanVar}", t);
 		} finally {
 			this.closeDaoResources(null, stat, null);
@@ -175,7 +182,7 @@ public class ${beanClass}DAO extends#if($bean.entandoSearcherAvailable) Abstract
  			conn.commit();
 		} catch (Throwable t) {
 			this.executeRollback(conn);
-			_logger.error("Error deleting ${beanVar} {}", $pk_var, t);
+			logger.error("Error deleting ${beanVar} {}", $pk_var, t);
 			throw new RuntimeException("Error deleting ${beanVar}", t);
 		} finally {
 			this.closeDaoResources(null, stat, conn);
@@ -190,7 +197,7 @@ public class ${beanClass}DAO extends#if($bean.entandoSearcherAvailable) Abstract
 #parse("templates/java/aps/managers/inc/dao_stat_by_param.vm")		
 			stat.executeUpdate();
 		} catch (Throwable t) {
-			_logger.error("Error deleting ${beanVar} {}", $pk_var, t);
+			logger.error("Error deleting ${beanVar} {}", $pk_var, t);
 			throw new RuntimeException("Error deleting ${beanVar}", t);
 		} finally {
 			this.closeDaoResources(null, stat, null);
@@ -206,7 +213,7 @@ public class ${beanClass}DAO extends#if($bean.entandoSearcherAvailable) Abstract
 			conn = this.getConnection();
 			${beanVar} = this.load${beanClass}($pk_var, conn);
 		} catch (Throwable t) {
-			_logger.error("Error loading ${beanVar} with $pk_var {}", $pk_var, t);
+			logger.error("Error loading ${beanVar} with $pk_var {}", $pk_var, t);
 			throw new RuntimeException("Error loading ${beanVar} with $pk_var " + $pk_var, t);
 		} finally {
 			closeDaoResources(res, stat, conn);
@@ -227,7 +234,7 @@ public class ${beanClass}DAO extends#if($bean.entandoSearcherAvailable) Abstract
 				${beanVar} = this.build${beanClass}FromRes(res);
 			}
 		} catch (Throwable t) {
-			_logger.error("Error loading ${beanVar} with $pk_var {}", $pk_var, t);
+			logger.error("Error loading ${beanVar} with $pk_var {}", $pk_var, t);
 			throw new RuntimeException("Error loading ${beanVar} with $pk_var " + $pk_var, t);
 		} finally {
 			closeDaoResources(res, stat, null);
@@ -251,7 +258,7 @@ public class ${beanClass}DAO extends#if($bean.entandoSearcherAvailable) Abstract
 			${beanVar}.set${fieldName}(res.get${fieldType}("$constants.getLowerCase($f.name)"));
 #end#end
 		} catch (Throwable t) {
-			_logger.error("Error in build${beanClass}FromRes", t);
+			logger.error("Error in build${beanClass}FromRes", t);
 		}
 		return ${beanVar};
 	}

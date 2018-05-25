@@ -1,14 +1,15 @@
 #set( $builder = $bean.edoBuilder)
 #set( $beanVar = $constants.getUnCapitalize($bean.name))
 #set( $beanClass = $bean.name)
-#set( $pk_type = $bean.fields[0].type.javaType)
-#set( $pk_type_gen = $bean.fields[0].type.javaTypeGeneric)
-#set( $pk_var = $bean.fields[0].name)
+#set( $pk_type = $bean.primaryKeyField.type.javaType)
+#set( $pk_type_gen = $bean.primaryKeyField.type.javaTypeGeneric)
+#set( $pk_var = $bean.primaryKeyField.name)
 #parse("templates/common/license/java_license.vm")
 package ${builder.packageName}.${constants.servicesPackage}.$constants.getLowerCase($bean.name);
 
 import java.util.List;
 import com.agiletec.aps.system.exception.ApsSystemException;
+import com.agiletec.aps.system.common.model.dao.SearcherDaoPaginatedResult;
 $bean.getImports(false)
 #if($bean.entandoSearcherAvailable)
 import com.agiletec.aps.system.common.FieldSearchFilter;
@@ -30,4 +31,5 @@ public interface I${beanClass}Manager {
 
 	public void delete${beanClass}($pk_type $pk_var) throws ApsSystemException;
 
+	public SearcherDaoPaginatedResult<${beanClass}> get${beanClass}s(List<FieldSearchFilter> fieldSearchFilters) throws ApsSystemException;
 }

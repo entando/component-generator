@@ -27,6 +27,35 @@ public class MockCommandLineParser extends CommandlineParser {
 		return this.generate(this.getArgs());
 	}
 
+    //    protected EdoInput processFile(CommandLine cl) {
+    //
+    //        EdoInput edoInput = new EdoInput();
+    //        edoInput.setBaseDir(this.getBaseDir());
+    //        edoInput.setPackageName(this.getPackageName());
+    //        edoInput.setPermission(this.getp);
+    //
+    //        try {
+    //            if (cl.hasOption(OPTION_EDO_FILE)) {
+    //                String filePath = cl.getOptionValue(OPTION_EDO_FILE);
+    //                if (StringUtils.isBlank(filePath)) {
+    //                    _logger.error("invalid path specifed");
+    //                    throw new IllegalArgumentException("invalid path specifed");
+    //                }
+    //
+    //                ObjectMapper mapper = new ObjectMapper();
+    //                Path path = Paths.get(filePath);
+    //                EdoInput input = mapper.readValue(new File(path.toUri()), EdoInput.class);
+    //                return input;
+    //            } else {
+    //                _logger.error("no input file specified");
+    //                throw new EdoInputException("no input file specified");
+    //            }
+    //        } catch (IOException e) {
+    //            _logger.error("error parsing input file", e);
+    //            throw new EdoInputException("error parsing input file", e);
+    //        }
+    //    }
+
 	public String[] getArgs() {
 		return this.getOptions().split(" ");
 	}

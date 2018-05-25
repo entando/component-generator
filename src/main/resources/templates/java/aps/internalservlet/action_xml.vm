@@ -3,9 +3,9 @@
 #set( $beanClass = $bean.name)
 #set( $springPrep = $constants.getLowerCase($builder.springBeanPreposition))
 #if($builder.plugin)
-#set($path="plugins/${builder.pluginName}")
+#set($path="/plugins/${builder.pluginName}")
 #else
-#set($path=$constants.getUnCapitalize($builder.projectName))
+#set($path="")
 #end
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE struts PUBLIC
@@ -19,7 +19,7 @@
 		<global-results>
 			<result name="failure" type="guiFragment">
 				<param name="code">${builder.pluginName}_is_front_${beanClass}_error</param>
-				<param name="jspLocation">/WEB-INF/${path}/aps/jsp/internalservlet/$constants.getLowerCase($beanVar)/frontend-${beanVar}-error.jsp</param>
+				<param name="jspLocation">/WEB-INF${path}/aps/jsp/internalservlet/$constants.getLowerCase($beanVar)/frontend-${beanVar}-error.jsp</param>
 			</result>
     	</global-results>
 		

@@ -1,7 +1,7 @@
 #set( $builder = $bean.edoBuilder)
 #set( $beanVar = $constants.getUnCapitalize($bean.name))
 #set( $beanClass = $bean.name)
-#set( $pk_var = $bean.fields[0].name)
+#set( $pk_var = $bean.primaryKeyField.name)
 #parse("templates/common/license/java_license.vm")
 package ${builder.packageName}.${constants.apsadminPackage}.$constants.getLowerCase($beanVar);
 

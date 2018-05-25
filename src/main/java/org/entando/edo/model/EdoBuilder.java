@@ -20,10 +20,21 @@ import java.util.regex.Matcher;
 
 import org.apache.commons.lang.StringUtils;
 import org.entando.edo.builder.FolderConstants;
+import org.entando.edo.builder.out.EdoWriter;
+import org.entando.edo.builder.out.FileSystemWriter;
+import org.entando.edo.model.json.EdoAssetsConf;
 
 public class EdoBuilder {
 
-	public void addBean (EdoBean edoBean) {
+    public EdoBuilder() {
+        this.setEdoWriter(new FileSystemWriter(this));
+    }
+
+    public EdoBuilder(EdoWriter edoWriter) {
+        this.setEdoWriter(edoWriter);
+    }
+
+    public void addBean(EdoBean edoBean) {
 		edoBean.setEdoBuilder(this);
 		this.getBeans().add(edoBean);
 	}
@@ -147,7 +158,7 @@ public class EdoBuilder {
 		if (this.isPlugin()) {
 			apsSpringPath = apsSpringPath + "plugins" + File.separator + this.getPluginName() + File.separator;
 		} else {
-			apsSpringPath = apsSpringPath + this.getProjectName() + File.separator;	
+            //apsSpringPath = apsSpringPath; /*+ this.getProjectName() + File.separator;	*/
 		}
 		apsSpringPath = apsSpringPath + "aps" + File.separator + "managers" + File.separator;
 
@@ -163,7 +174,7 @@ public class EdoBuilder {
 		if (this.isPlugin()) {
 			apsSpringPath = apsSpringPath + "plugins" + File.separator + this.getPluginName() + File.separator;
 		} else {
-			apsSpringPath = apsSpringPath + this.getProjectName() + File.separator;	
+            //apsSpringPath = apsSpringPath + this.getProjectName() + File.separator;	
 		}
 		apsSpringPath = apsSpringPath + "apsadmin" + File.separator;
 		return apsSpringPath;
@@ -201,9 +212,21 @@ public class EdoBuilder {
 		if (this.isPlugin()) {
 			folder = folder + "plugins" + File.separator + this.getPluginName() + File.separator;	
 		}
-		folder = folder + "aps" + File.separator;
+        folder = folder + "aps" + File.separator;
+        //folder = folder + this.getProjectName() + File.separator + "aps" + File.separator;
 		return folder;	
 	}
+
+    public String getWebinfApsFolderInternalServlet() {
+        String folder = this.getBaseDir() + FolderConstants.getWebInfFolder();
+        if (this.isPlugin()) {
+            folder = folder + "plugins" + File.separator + this.getPluginName() + File.separator + "aps" + File.separator;
+            return folder;
+        }
+
+        folder = folder /*+ this.getProjectName() + File.separator*/ + "aps" + File.separator;
+        return folder;
+    }
 
 	public String getWebinfApsadminFolder() {
 		String folder = this.getBaseDir() + FolderConstants.getWebInfFolder();
@@ -255,9 +278,29 @@ public class EdoBuilder {
 		this._beans = beans;
 	}
 
-	private String _packageName;
-	private String _baseDir = System.getProperty("user.dir");
-	private String _permission = "superuser";
+    public EdoAssetsConf getAssetsConf() {
+        return assetsConf;
+    }
+
+    public void setAssetsConf(EdoAssetsConf assetsConf) {
+        this.assetsConf = assetsConf;
+    }
+
+    public EdoWriter getEdoWriter() {
+        return edoWriter;
+    }
+
+    public void setEdoWriter(EdoWriter edoWriter) {
+        this.edoWriter = edoWriter;
+    }
+
+    private String _packageName;
+    private String _baseDir = EdoConstants.BASE_DIR_DEFAULT;
+    private String _permission = EdoConstants.PERMISSION_DEFAULT;
 	private String _originalArgs = null;
+    private EdoAssetsConf assetsConf = new EdoAssetsConf();
 	private List<EdoBean> _beans = new ArrayList<EdoBean>();
+
+    private EdoWriter edoWriter;
+
 }

@@ -1,4 +1,4 @@
-#set( $pk_type = $bean.fields[0].type.javaType)
+#set( $pk_type = $bean.primaryKeyField.type.javaType)
 import java.util.Properties;
 
 import javax.ws.rs.core.Response;

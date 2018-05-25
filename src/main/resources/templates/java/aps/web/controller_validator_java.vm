@@ -1,0 +1,43 @@
+#set( $builder = $bean.edoBuilder)
+#set( $beanVar = $constants.getUnCapitalize($bean.name))
+#set( $beanClass = $bean.name)
+#set( $pk_type = $bean.primaryKeyField.type.javaType)
+#set( $pk_type_gen = $bean.primaryKeyField.type.javaTypeGeneric)
+#set( $pk_var = $bean.primaryKeyField.name)
+#set( $pk_varName = ${constants.getCapitalize($bean.primaryKeyField.name)})
+#parse("templates/common/license/java_license.vm")
+package ${builder.packageName}.${constants.restPackage}.${constants.getLowerCase($bean.name)}.validator;
+
+## $bean.getImports(false)
+import org.apache.commons.lang3.StringUtils;
+import org.entando.entando.web.common.validator.AbstractPaginationValidator;
+import org.springframework.stereotype.Component;
+import org.springframework.validation.Errors;
+import ${builder.packageName}.${constants.restPackage}.${constants.getLowerCase($bean.name)}.model.${beanClass}Request;
+
+
+@Component
+public class ${beanClass}Validator extends AbstractPaginationValidator {
+
+    public static final String ERRCODE_URINAME_MISMATCH = "1";
+    public static final String ERRCODE_${constants.toUpperCase($bean.name)}_NOT_FOUND = "2" ;
+    public static final String ERRCODE_${constants.toUpperCase($bean.name)}_ALREADY_EXISTS = "3";
+
+
+    @Override
+    public boolean supports(Class<?> paramClass) {
+        return ${beanClass}Request.class.equals(paramClass);
+    }
+
+    @Override
+    public void validate(Object target, Errors errors) {
+        //${beanClass}Request request = (${beanClass}Request) target;
+    }
+
+    public void validateBodyName(String ${beanVar}${pk_varName}, ${beanClass}Request ${beanVar}Request, Errors errors) {
+        if (!StringUtils.equals(${beanVar}${pk_varName}, String.valueOf(${beanVar}Request.get${pk_varName}()))) {
+            errors.rejectValue("$bean.primaryKeyField.name", ERRCODE_URINAME_MISMATCH, new Object[]{${beanVar}${pk_varName}, ${beanVar}Request.get${pk_varName}()}, "${beanVar}.${bean.primaryKeyField.name}.mismatch");
+        }
+    }
+
+}
