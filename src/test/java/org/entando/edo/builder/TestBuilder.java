@@ -13,6 +13,14 @@
  */
 package org.entando.edo.builder;
 
+import junit.framework.Assert;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.entando.edo.mock.builder.MockBuilder;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
@@ -20,16 +28,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Matcher;
-
-import junit.framework.Assert;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.entando.edo.mock.builder.MockBuilder;
-import org.entando.edo.mock.parser.MockCommandLineParser;
-import org.entando.edo.model.EdoBuilder;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
 
 public class TestBuilder {
 
@@ -45,13 +43,13 @@ public class TestBuilder {
 	public static void createArtifacts() throws Throwable {
 		logger.info("creating artifacts...");
 
-		MockCommandLineParser commandline = new MockCommandLineParser();
-		commandline.setBaseDir(System.getProperty("user.dir") + File.separator + "target" + File.separator + "sandbox");
-		commandline.setPackageName("org.entando.entando.plugins.jppet");
-		commandline.setBeanExpression("Cat name:string-r8 age:int weight:bigdecimal createdat:date");
-		EdoBuilder edoBuilder = commandline.generate();
-		builder.build(edoBuilder);
-		logger.info("start tests");
+//		MockCommandLineParser commandline = new MockCommandLineParser();
+////		commandline.setBaseDir(System.getProperty("user.dir") + File.separator + "target" + File.separator + "sandbox");
+//		commandline.setPackageName("org.entando.entando.plugins.jppet");
+//		commandline.setBeanExpression("Cat name:string-r8 age:int weight:bigdecimal createdat:date");
+//		EdoBuilder edoBuilder = commandline.generate();
+//		builder.build(edoBuilder);
+//		logger.info("start tests");
 	}
 
 	@AfterClass

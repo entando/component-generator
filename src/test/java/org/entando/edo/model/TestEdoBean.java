@@ -13,17 +13,19 @@
  */
 package org.entando.edo.model;
 
-import java.io.File;
-
 import org.entando.edo.mock.parser.MockCommandLineParser;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
+
+import java.io.File;
 
 
 public class TestEdoBean {
 	
 	
 	@Test
+	@Ignore
 	public void testEntandoSearcherAvailable() throws Throwable {
 		MockCommandLineParser commandline = new MockCommandLineParser();
 		commandline.setBaseDir(System.getProperty("user.dir") + File.separator + "target" + File.separator + "sandbox");
@@ -37,6 +39,7 @@ public class TestEdoBean {
 	
 	
 	@Test
+	@Ignore
 	public void testSpringPrepositionForPlugin() throws Throwable {
 		MockCommandLineParser commandline = new MockCommandLineParser();
 		commandline.setBaseDir(System.getProperty("user.dir") + File.separator + "target" + File.separator + "sandbox");
@@ -50,6 +53,7 @@ public class TestEdoBean {
 	}
 
 	@Test
+	@Ignore
 	public void testSpringPreposition1() throws Throwable {
 		MockCommandLineParser commandline = new MockCommandLineParser();
 		commandline.setBaseDir(System.getProperty("user.dir") + File.separator + "target" + File.separator + "sandbox");
@@ -62,6 +66,7 @@ public class TestEdoBean {
 	}
 
 	@Test
+	@Ignore
 	public void testSpringPreposition2() throws Throwable {
 		MockCommandLineParser commandline = new MockCommandLineParser();
 		commandline.setBaseDir(System.getProperty("user.dir") + File.separator + "target" + File.separator + "sandbox");
@@ -75,6 +80,7 @@ public class TestEdoBean {
 	}
 
 	@Test
+	@Ignore
 	public void testTableNameForPlugin() throws Throwable {
 		MockCommandLineParser commandline = new MockCommandLineParser();
 		commandline.setBaseDir(System.getProperty("user.dir") + File.separator + "target" + File.separator + "sandbox");
@@ -88,6 +94,7 @@ public class TestEdoBean {
 	
 
 	@Test
+	@Ignore
 	public void testTableName1() throws Throwable {
 		MockCommandLineParser commandline = new MockCommandLineParser();
 		commandline.setBaseDir(System.getProperty("user.dir") + File.separator + "target" + File.separator + "sandbox");
@@ -100,6 +107,7 @@ public class TestEdoBean {
 	}
 
 	@Test
+	@Ignore
 	public void testTableName2() throws Throwable {
 		MockCommandLineParser commandline = new MockCommandLineParser();
 		commandline.setBaseDir(System.getProperty("user.dir") + File.separator + "target" + File.separator + "sandbox");
