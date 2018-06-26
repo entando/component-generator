@@ -26,7 +26,7 @@
     	<action name="list" class="${springPrep}${beanClass}FinderFrontEndAction">
     		<result type="guiFragment">
 				<param name="code">${builder.pluginName}_is_front_${beanClass}_list</param>
-				<param name="jspLocation">/WEB-INF/${path}/aps/jsp/internalservlet/$constants.getLowerCase($beanVar)/frontend-${beanVar}-list.jsp</param>
+				<param name="jspLocation">/WEB-INF${path}/aps/jsp/internalservlet/$constants.getLowerCase($beanVar)/frontend-${beanVar}-list.jsp</param>
 			</result>
 			<interceptor-ref name="entandoFrontEndFreeStack"></interceptor-ref>
         </action>
@@ -34,7 +34,7 @@
     	<action name="search" class="${springPrep}${beanClass}FinderFrontEndAction">
             <result type="guiFragment">
 				<param name="code">${builder.pluginName}_is_front_${beanClass}_list</param>
-				<param name="jspLocation">/WEB-INF/${path}/aps/jsp/internalservlet/$constants.getLowerCase($beanVar)/frontend-${beanVar}-list.jsp</param>
+				<param name="jspLocation">/WEB-INF${path}/aps/jsp/internalservlet/$constants.getLowerCase($beanVar)/frontend-${beanVar}-list.jsp</param>
 			</result>
 			<interceptor-ref name="entandoFrontEndFreeStack"></interceptor-ref>
         </action>
@@ -42,7 +42,7 @@
         <action name="new" class="${springPrep}${beanClass}FrontEndAction" method="new${beanClass}">
             <result type="guiFragment">
 				<param name="code">${builder.pluginName}_is_front_${beanClass}_entry</param>
-				<param name="jspLocation">/WEB-INF/${path}/aps/jsp/internalservlet/$constants.getLowerCase($beanVar)/frontend-${beanVar}-entry.jsp</param>
+				<param name="jspLocation">/WEB-INF${path}/aps/jsp/internalservlet/$constants.getLowerCase($beanVar)/frontend-${beanVar}-entry.jsp</param>
 			</result>
 			<interceptor-ref name="entandoFrontEndFreeStack"></interceptor-ref>
         </action>
@@ -50,7 +50,7 @@
         <action name="edit" class="${springPrep}${beanClass}FrontEndAction" method="edit">
             <result type="guiFragment">
 				<param name="code">${builder.pluginName}_is_front_${beanClass}_entry</param>
-				<param name="jspLocation">/WEB-INF/${path}/aps/jsp/internalservlet/$constants.getLowerCase($beanVar)/frontend-${beanVar}-entry.jsp</param>
+				<param name="jspLocation">/WEB-INF${path}/aps/jsp/internalservlet/$constants.getLowerCase($beanVar)/frontend-${beanVar}-entry.jsp</param>
 			</result>
 			<result name="input" type="frontRedirectAction">
 				<param name="actionName">list</param>
@@ -61,7 +61,7 @@
         <action name="save" class="${springPrep}${beanClass}FrontEndAction" method="save">
         	<result name="input" type="guiFragment">
 				<param name="code">${builder.pluginName}_is_front_${beanClass}_entry</param>
-				<param name="jspLocation">/WEB-INF/${path}/aps/jsp/internalservlet/$constants.getLowerCase($beanVar)/frontend-${beanVar}-entry.jsp</param>
+				<param name="jspLocation">/WEB-INF${path}/aps/jsp/internalservlet/$constants.getLowerCase($beanVar)/frontend-${beanVar}-entry.jsp</param>
 			</result>
 			<result type="frontRedirectAction">
 				<param name="actionName">list</param>
@@ -72,7 +72,7 @@
     	<action name="trash" class="${springPrep}${beanClass}FrontEndAction" method="trash">
             <result type="guiFragment">
 				<param name="code">${builder.pluginName}_is_front_${beanClass}_trash</param>
-				<param name="jspLocation">/WEB-INF/${path}/aps/jsp/internalservlet/$constants.getLowerCase($beanVar)/frontend-${beanVar}-trash.jsp</param>
+				<param name="jspLocation">/WEB-INF${path}/aps/jsp/internalservlet/$constants.getLowerCase($beanVar)/frontend-${beanVar}-trash.jsp</param>
 			</result>
 			<result name="input" type="frontRedirectAction">
 				<param name="actionName">list</param>
