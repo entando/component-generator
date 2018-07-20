@@ -40,4 +40,9 @@ public class ${beanClass}Validator extends AbstractPaginationValidator {
         }
     }
 
+    @Override
+    protected String getDefaultSortProperty() {
+        return "$bean.primaryKeyField.name";
+    }
+
 }
