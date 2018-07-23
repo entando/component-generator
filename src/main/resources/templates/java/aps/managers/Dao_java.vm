@@ -60,17 +60,18 @@ public class ${beanClass}DAO extends#if($bean.entandoSearcherAvailable) Abstract
 		return "$pk_var";
 	}
 
-	@Override
-	public List<$pk_type_gen> search${beanClass}s(FieldSearchFilter[] filters) {
-		List ${beanVar}sId = null;
-		try {
-			${beanVar}sId  = super.searchId(filters);
-		} catch (Throwable t) {
-			logger.error("error in search${beanClass}s",  t);
-			throw new RuntimeException("error in search${beanClass}s", t);
-		}
-		return ${beanVar}sId;
-	}
+    @Override
+    public List<$pk_type_gen> search${beanClass}s(FieldSearchFilter[] filters) {
+    #if($f.type.javaType == "String")
+        return super.searchId(filters);
+    #else
+        List<Integer> ${beanVar}sId = new ArrayList<>();
+        List<String> masterList = super.searchId(filters);
+        masterList.stream().forEach(idString -> ${beanVar}sId.add(Integer.parseInt(idString)));
+        return ${beanVar}sId;
+    #end
+    }
+
 #end
 
 	@Override

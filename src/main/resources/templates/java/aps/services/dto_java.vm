@@ -3,10 +3,18 @@
 package ${builder.packageName}.${constants.servicesPackage}.${constants.getLowerCase($bean.name)}.model;
 
 $bean.getImports(false)
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import org.entando.entando.web.common.json.JsonDateDeserializer;
+import org.entando.entando.web.common.json.JsonDateSerializer;
 
 public class ${bean.name}Dto {
 
 #foreach ($f in $bean.fields)	
+#if($f.type.javaType == 'Date')
+    @JsonSerialize(using = JsonDateSerializer.class)
+    @JsonDeserialize(using = JsonDateDeserializer.class)
+#end
 	private $f.type.getJavaType() $f.getName();
 #end
 

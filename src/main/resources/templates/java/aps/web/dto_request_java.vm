@@ -6,6 +6,10 @@ package ${builder.packageName}.${constants.restPackage}.${constants.getLowerCase
 $bean.getImports(false)
 import javax.validation.constraints.*;
 import org.hibernate.validator.constraints.NotBlank;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import org.entando.entando.web.common.json.JsonDateDeserializer;
+import org.entando.entando.web.common.json.JsonDateSerializer;
 
 public class ${bean.name}Request {
 
@@ -20,8 +24,16 @@ public class ${bean.name}Request {
     @NotNull(message = "$beanVar.${f.name}.notBlank")	
 #end
 #end
+#if($f.type.javaType == 'int')
+	private $f.type.getJavaType() $f.getName();
+#else
+#if($f.type.javaType == 'Date')
+    @JsonSerialize(using = JsonDateSerializer.class)
+    @JsonDeserialize(using = JsonDateDeserializer.class)
+#end
 	private $f.type.getJavaTypeGeneric() $f.getName();
-	
+#end
+
 #end
 
 #foreach ($f in $bean.fields)
