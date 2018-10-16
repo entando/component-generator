@@ -5,8 +5,13 @@
          xmlns:if="ant:if"
          xmlns:unless="ant:unless">
 
+  <condition property="mvnexec" value="mvn.bat">
+    <os family="windows" />
+  </condition>
+  <property name="mvnexec" value="mvn"/>
+
 	<target name="build" description="Build it ">
-	    <exec dir="." executable="mvn.bat">
+	    <exec dir="." executable="${mvnexec}">
 			<arg line="clean package shade:shade -DskipTests" />
 		</exec>
 	</target>
