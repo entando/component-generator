@@ -47,9 +47,8 @@ $ ant
 
 #### Windows
 
-1. (Ant bug) Open `build-maven.xml` and replace any occurrency of `executable="mvn"` with `executable="mvn.bat"`
-2. Build (see next section)
-3. Copy `target/edo-x.y.z.jar` into a folder of your choice
+1. Build (see next section)
+2. Copy `target/edo-x.y.z.jar` into a folder of your choice
 
 ### Build only
 
