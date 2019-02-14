@@ -26,7 +26,7 @@ import org.entando.entando.aps.system.services.DtoBuilder;
 import org.entando.entando.aps.system.services.IDtoBuilder;
 import org.entando.entando.web.common.model.PagedMetadata;
 import org.entando.entando.web.common.model.RestListRequest;
-import org.entando.entando.aps.system.exception.RestRourceNotFoundException;
+import org.entando.entando.aps.system.exception.ResourceNotFoundException;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -98,7 +98,7 @@ public class ${beanClass}Service implements I${beanClass}Service {
         try {
 	        ${beanClass} ${beanVar} = this.get${beanClass}Manager().get${beanClass}(${beanVar}Request.get${pk_varName}());
 	        if (null == ${beanVar}) {
-	            throw new RestRourceNotFoundException(${beanClass}Validator.ERRCODE_${constants.toUpperCase($bean.name)}_NOT_FOUND, "${beanVar}", String.valueOf(${beanVar}Request.get${pk_varName}()));
+	            throw new ResourceNotFoundException(${beanClass}Validator.ERRCODE_${constants.toUpperCase($bean.name)}_NOT_FOUND, "${beanVar}", String.valueOf(${beanVar}Request.get${pk_varName}()));
 	        }
         	BeanUtils.copyProperties(${beanVar}Request, ${beanVar});
             BeanPropertyBindingResult validationResult = this.validateForUpdate(${beanVar});
@@ -155,7 +155,7 @@ public class ${beanClass}Service implements I${beanClass}Service {
 	        ${beanClass} ${beanVar} = this.get${beanClass}Manager().get${beanClass}($pk_var);
 	        if (null == ${beanVar}) {
 	            logger.warn("no ${beanVar} found with code {}", $pk_var);
-	            throw new RestRourceNotFoundException(${beanClass}Validator.ERRCODE_${constants.toUpperCase($bean.name)}_NOT_FOUND, "${beanVar}", String.valueOf($pk_var));
+	            throw new ResourceNotFoundException(${beanClass}Validator.ERRCODE_${constants.toUpperCase($bean.name)}_NOT_FOUND, "${beanVar}", String.valueOf($pk_var));
 	        }
 	        ${beanClass}Dto dto = this.getDtoBuilder().convert(${beanVar});
 	        return dto;
