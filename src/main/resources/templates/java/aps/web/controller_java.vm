@@ -78,13 +78,13 @@ public class ${beanClass}Controller {
 
     @RestAccessControl(permission = "$builder.permission")
     @RequestMapping(value = "/{${beanVar}${pk_varName}}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<RestResponse> get${beanClass}(@PathVariable String ${beanVar}${pk_varName}) {
+    public ResponseEntity<SimpleRestResponse<${beanClass}Dto>> get${beanClass}(@PathVariable String ${beanVar}${pk_varName}) {
 #if($pk_type_gen == "String")
 		${beanClass}Dto ${beanVar} = this.get${beanClass}Service().get${beanClass}(${beanVar}${pk_varName});
 #elseif($pk_type_gen == "Integer")
 		${beanClass}Dto ${beanVar} = this.get${beanClass}Service().get${beanClass}(Integer.valueOf(${beanVar}${pk_varName}));
 #end
-        return new ResponseEntity<>(new RestResponse(${beanVar}), HttpStatus.OK);
+        return new ResponseEntity<>(new SimpleRestResponse<>(${beanVar}), HttpStatus.OK);
     }
 
     @RestAccessControl(permission = "$builder.permission")
